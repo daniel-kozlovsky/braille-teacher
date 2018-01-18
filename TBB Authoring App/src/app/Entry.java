@@ -10,7 +10,7 @@ public class Entry {
 
 			@Override
 			public void run() {
-				final MainScreen m = new MainScreen();
+				final ApplicationWindow m = new ApplicationWindow();
 				m.setVisible(true);
 			}
 			

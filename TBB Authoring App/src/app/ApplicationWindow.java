@@ -8,7 +8,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 
-public class MainScreen extends JFrame {
+public class ApplicationWindow extends JFrame {
 	
 	//common button size for styling consistency
 	public final Dimension BUTTON_SIZE = new Dimension(100, 30);
@@ -19,7 +19,7 @@ public class MainScreen extends JFrame {
 	JButton buttonImportScenario;
 	
 	
-	public MainScreen()
+	public ApplicationWindow()
 	{
 		initFrame();
 		initComponents();
