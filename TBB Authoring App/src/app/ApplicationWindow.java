@@ -2,27 +2,26 @@ package app;
 
 import java.awt.Dimension;
 import java.awt.HeadlessException;
+import java.awt.Rectangle;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 
+@SuppressWarnings("serial")
 public class ApplicationWindow extends JFrame {
 	
-	//common button size for styling consistency
-	public final Dimension BUTTON_SIZE = new Dimension(100, 30);
-	
-	JPanel PanelComponentField;
-	
-	JButton buttonNewScenario;
-	JButton buttonImportScenario;
-	
+	//Size of main panel
+	public final Rectangle MainPanelArea = new Rectangle(this.getX(), this.getY(),
+													this.getWidth(), this.getHeight());
+	MainPanel PanelComponentField;
 	
 	public ApplicationWindow()
 	{
 		initFrame();
 		initComponents();
+		PanelComponentField.setVisible(true); //First visible panel
 		
 		//pack();
 	}
@@ -35,31 +34,14 @@ public class ApplicationWindow extends JFrame {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setVisible(true);
 		
-		//Panel
-		PanelComponentField = new JPanel();
-		this.add(PanelComponentField);
-		
 	}
 	
 	private void initComponents()
 	{
-		
-		//Import new Scenario Button
-		buttonImportScenario = new JButton("Import Scenario");
-		buttonImportScenario.setSize(BUTTON_SIZE);
-		buttonImportScenario.setLocation(30,30);
-		buttonImportScenario.setVisible(true);
-		PanelComponentField.add(buttonImportScenario);
-		
-		//Create new Scenario button
-		buttonNewScenario = new JButton("New Scenario...");
-		buttonNewScenario.setSize(BUTTON_SIZE);
-		buttonNewScenario.setLocation(30, 50);
-		buttonNewScenario.setVisible(true);
-		
-		
-		PanelComponentField.add(buttonImportScenario);
-		PanelComponentField.add(buttonNewScenario);
+		//Panel
+		PanelComponentField = new MainPanel();
+		PanelComponentField.setBounds(MainPanelArea);
+		this.add(PanelComponentField);
 		
 	}
 
