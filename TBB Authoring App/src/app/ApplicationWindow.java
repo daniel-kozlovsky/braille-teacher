@@ -12,6 +12,10 @@ import javax.swing.JPanel;
 @SuppressWarnings("serial")
 public class ApplicationWindow extends JFrame {
 	
+	//Size of Frame
+	private final int FRAME_WIDTH = 500;
+	private final int FRAME_HEIGHT = 500;
+	
 	//Size of main panel
 	public final Rectangle MainPanelArea = new Rectangle(this.getX(), this.getY(),
 													this.getWidth(), this.getHeight());
@@ -23,13 +27,13 @@ public class ApplicationWindow extends JFrame {
 		initComponents();
 		PanelComponentField.setVisible(true); //First visible panel
 		
-		//pack();
 	}
 	
 	private void initFrame()
 	{
 		setTitle("Authoring App");
-		setSize(500, 500);
+		setSize(FRAME_WIDTH, FRAME_HEIGHT);
+		
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setVisible(true);

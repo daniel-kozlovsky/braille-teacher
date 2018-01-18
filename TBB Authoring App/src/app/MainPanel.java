@@ -22,20 +22,19 @@ public class MainPanel extends JPanel {
 	private void initComponents()
 	{
 		//Import new Scenario Button
-				buttonImportScenario = new JButton("Import Scenario");
-				buttonImportScenario.setSize(BUTTON_SIZE);
-				buttonImportScenario.setLocation(30,30);
-				buttonImportScenario.setVisible(true);
-				
-				
-				//Create new Scenario button
-				buttonNewScenario = new JButton("New Scenario...");
-				buttonNewScenario.setSize(BUTTON_SIZE);
-				buttonNewScenario.setLocation(30, 50);
-				buttonNewScenario.setVisible(true);
-				
-				this.add(buttonImportScenario);
-				this.add(buttonNewScenario);
+		buttonImportScenario = new JButton("Import Scenario");
+		buttonImportScenario.setSize(BUTTON_SIZE);
+		buttonImportScenario.setLocation(30,30);
+		buttonImportScenario.setVisible(true);
+		
+		//Create new Scenario button
+		buttonNewScenario = new JButton("New Scenario...");
+		buttonNewScenario.setSize(BUTTON_SIZE);
+		buttonNewScenario.setLocation(30, 50);
+		buttonNewScenario.setVisible(true);
+		
+		this.add(buttonImportScenario);
+		this.add(buttonNewScenario);
 	}
 
 }
