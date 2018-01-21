@@ -43,7 +43,7 @@ public class ApplicationWindow extends JFrame {
 	private void initComponents()
 	{
 		//Panel
-		PanelComponentField = new MainPanel();
+		PanelComponentField = new MainPanel(this);
 		PanelComponentField.setBounds(MainPanelArea);
 		this.add(PanelComponentField);
 		
