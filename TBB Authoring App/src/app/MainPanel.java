@@ -25,6 +25,8 @@ public class MainPanel extends JPanel {
 		buttonImportScenario = new JButton("Import Scenario");
 		buttonImportScenario.setSize(BUTTON_SIZE);
 		buttonImportScenario.setLocation(30,30);
+		buttonImportScenario.getAccessibleContext().setAccessibleName("Import Scenario");
+		buttonImportScenario.getAccessibleContext().setAccessibleDescription("description test");
 		buttonImportScenario.setVisible(true);
 		
 		//Create new Scenario button
