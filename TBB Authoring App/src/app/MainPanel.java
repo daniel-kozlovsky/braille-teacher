@@ -1,8 +1,11 @@
 package app;
 
 import java.awt.Dimension;
+import java.awt.TextArea;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
 
 import javax.swing.*;
 
@@ -24,6 +27,9 @@ public class MainPanel extends JPanel {
 	
 	private void initComponents()
 	{
+		
+		TextArea ta = new TextArea();
+		
 		//Import new Scenario Button
 		buttonImportScenario = new JButton("Import Scenario");
 		buttonImportScenario.setSize(BUTTON_SIZE);
@@ -51,6 +57,31 @@ public class MainPanel extends JPanel {
 			}
 		});
 		
+		buttonImportScenario.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				
+				JFileChooser fc = new JFileChooser();
+				fc.showOpenDialog(buttonNewScenario);
+				try {
+					Scanner sc = new Scanner(fc.getSelectedFile());
+					
+					StringBuffer input = new StringBuffer();
+					
+					while(sc.hasNext()){
+						ta.append(sc.nextLine()+'\n');
+					}
+					
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			}
+		});
+		
+		this.add(ta);
 		this.add(buttonImportScenario);
 		this.add(buttonNewScenario);
 	}
