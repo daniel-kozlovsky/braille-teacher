@@ -3,12 +3,10 @@ package app;
 import javax.swing.SwingUtilities;
 
 public class Entry {
-// change A 
+ 
 	public static void main(String[] args) {
-		
-// this Kirollos kamel testing branch 
-		//Change B
-
+			
+		//Master change
 		
 		SwingUtilities.invokeLater( new Runnable() {
 
