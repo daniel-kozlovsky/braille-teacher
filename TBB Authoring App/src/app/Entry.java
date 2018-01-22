@@ -3,12 +3,12 @@ package app;
 import javax.swing.SwingUtilities;
 
 public class Entry {
-// change A 
+ 
 	public static void main(String[] args) {
 		
 
-		//Change B
-
+		
+		//Master change
 		
 		SwingUtilities.invokeLater( new Runnable() {
 
