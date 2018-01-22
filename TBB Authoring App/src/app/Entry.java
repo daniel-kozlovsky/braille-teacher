@@ -6,8 +6,8 @@ public class Entry {
 
 	public static void main(String[] args) {
 		
-	
-	
+		//Not broken program
+		
 		SwingUtilities.invokeLater( new Runnable() {
 
 			@Override
