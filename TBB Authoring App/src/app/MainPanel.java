@@ -15,6 +15,7 @@ public class MainPanel extends JPanel {
 	public final Dimension BUTTON_SIZE = new Dimension(100, 30);
 	private JFrame parent;
 	
+	//check master
 	
 	JButton buttonNewScenario;
 	JButton buttonImportScenario;
