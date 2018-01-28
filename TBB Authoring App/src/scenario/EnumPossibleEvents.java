@@ -9,7 +9,8 @@ package scenario;
  */
 public enum EnumPossibleEvents {
 	
-	PAUSE ("Pause", "pauses the simulation", "/~pause");
+	PAUSE ("Pause", "Pauses the simulation", "/~pause");
+	//TODO: add values for all commands
 	/*DISP_STRING,
 	REPEAT,
 	END_REPEAT,
