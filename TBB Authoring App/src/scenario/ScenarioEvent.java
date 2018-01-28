@@ -1,18 +1,16 @@
 package scenario;
-
-
 /**
- * An event or action that can happen within a scenario.
+ * Defines an event in a scenario.
  * 
- * @author DKozlovsky
+ * @author DK
+ *
  */
 public class ScenarioEvent {
+	
 	
 	public ScenarioEvent()
 	{
 		
 	}
-	
-	
 
 }
