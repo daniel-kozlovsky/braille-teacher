@@ -1,12 +1,9 @@
 package app;
 
-import java.awt.Dimension;
-import java.awt.HeadlessException;
-import java.awt.Rectangle;
 
-import javax.swing.JButton;
+import java.awt.Rectangle;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
+
 
 
 @SuppressWarnings("serial")
