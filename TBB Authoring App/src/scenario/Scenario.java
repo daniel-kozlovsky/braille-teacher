@@ -14,14 +14,14 @@ public class Scenario {
 	private int numCells;
 	private int numButtons;
 	
-	private ArrayList<EnumPossibleEvents> runningScenario;
+	private ArrayList<ScenarioEvent> runningScenario;
 	
 	public Scenario()
 	{
 		//TODO: Implement
 	}
 	
-	public EnumPossibleEvents getEvent(int index)
+	public ScenarioEvent getEvent(int index)
 	{
 		//TODO: Implement
 		return null;
@@ -32,7 +32,7 @@ public class Scenario {
 	 * 
 	 * @param event The event or action to be added
 	 */
-	public void addEvent(EnumPossibleEvents event)
+	public void addEvent(ScenarioEvent event)
 	{
 		//TODO: Implement
 	}
@@ -42,7 +42,7 @@ public class Scenario {
 	 * 
 	 * @param event The event to be removed
 	 */
-	public void removeEvent(EnumPossibleEvents event)
+	public void removeEvent(ScenarioEvent event)
 	{
 		//TODO: Implement
 	}
@@ -55,7 +55,7 @@ public class Scenario {
 	 * @param event The event to move
 	 * @param newIndex The new position of the event
 	 */
-	public void moveEvent(EnumPossibleEvents event, int newIndex)
+	public void moveEvent(ScenarioEvent event, int newIndex)
 	{
 		//TODO: Implement
 	}
