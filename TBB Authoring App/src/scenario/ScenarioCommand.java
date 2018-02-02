@@ -5,10 +5,10 @@ import java.util.Arrays;
 /**
  * Defines an event in a scenario.
  * 
- * @author DK
+ * @author DKozlovsky
  *
  */
-public abstract class ScenarioEvent{
+public abstract class ScenarioCommand{
 	
 	private String name;
 	private String description;
@@ -18,13 +18,14 @@ public abstract class ScenarioEvent{
 	
 	
 	
-	public ScenarioEvent(EnumPossibleEvents event)
+	public ScenarioCommand(EnumPossibleCommands event)
 	{
 		this.name = event.getName();
 		this.description = event.getDescription();
 		this.format = event.getFormat();
 		this.argumentTypes = event.getArgumentTypes();
 	}
+	
 	/**
 	 * Set the arguments for a specific command. Overwrites current arguments. 
 	 *
@@ -76,6 +77,14 @@ public abstract class ScenarioEvent{
 	public String getFormat()
 	{
 		return format;
+	}
+	/**
+	 * get the arguments for a command
+	 * @return the arguments
+	 */
+	public Object[] getArguments()
+	{
+		return this.arguments;
 	}
 
 }

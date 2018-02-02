@@ -3,7 +3,7 @@ package scenario;
 /**
  * Formats and exports a scenario. 
  * 
- * @author DK
+ * @author DKozlovsky
  *
  */
 public class ScenarioFormatter {

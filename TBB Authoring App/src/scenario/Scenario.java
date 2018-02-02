@@ -4,7 +4,8 @@ import java.util.ArrayList;
 
 /**
  * Data structure which defines a scenario. Used for storing and accessing
- * a scenario.
+ * a scenario. ScenarioEvents in the Scenario are in the order that the simulation 
+ * will iterate through (chronological).
  * 
  * @author DKozlovsky
  *
@@ -15,7 +16,7 @@ public class Scenario {
 	private int numButtons;
 	
 	
-	private ArrayList<ScenarioEvent> runningScenario;
+	private ArrayList<ScenarioCommand> runningScenario;
 	
 	public Scenario()
 	{
@@ -23,7 +24,7 @@ public class Scenario {
 		
 	}
 	
-	public ScenarioEvent getEvent(int index)
+	public ScenarioCommand getEvent(int index)
 	{
 		//TODO: Implement
 		
@@ -35,7 +36,7 @@ public class Scenario {
 	 * 
 	 * @param event The event or action to be added
 	 */
-	public void addEvent(ScenarioEvent event)
+	public void addEvent(ScenarioCommand event)
 	{
 		//TODO: Implement
 	}
@@ -45,7 +46,7 @@ public class Scenario {
 	 * 
 	 * @param event The event to be removed
 	 */
-	public void removeEvent(ScenarioEvent event)
+	public void removeEvent(ScenarioCommand event)
 	{
 		//TODO: Implement
 	}
@@ -58,7 +59,7 @@ public class Scenario {
 	 * @param event The event to move
 	 * @param newIndex The new position of the event
 	 */
-	public void moveEvent(ScenarioEvent event, int newIndex)
+	public void moveEvent(ScenarioCommand event, int newIndex)
 	{
 		//TODO: Implement
 	}
