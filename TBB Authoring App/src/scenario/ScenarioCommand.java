@@ -33,18 +33,18 @@ public abstract class ScenarioCommand{
 	 * and same types.
 	 * Example: the disp_cell_char command must have arguments {Integer, String}.
 	 * 
-	 * @throws ImproperArgumentsException If parameter conditions are not satisfied.
+	 * @throws IllegalArgumentException If parameter conditions are not satisfied.
 	 * 
 	 */
-	public void setArguments(Object[] arguments) throws ImproperArgumentsException
+	public void setArguments(Object[] arguments) throws IllegalArgumentException
 	{
 		if(arguments.length != this.argumentTypes.length)
 		{
-			throw new ImproperArgumentsException("Invalid amount of arguments!");
+			throw new IllegalArgumentException("Invalid amount of arguments!");
 		}
 		else if(!Arrays.equals(arguments, this.argumentTypes))
 		{
-			throw new ImproperArgumentsException("Invalid types in argument");
+			throw new IllegalArgumentException("Invalid types in argument");
 		}
 		else
 		{

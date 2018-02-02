@@ -6,14 +6,14 @@ package scenario;
  * @author DKozlovsky
  *
  */
-public class ImproperArgumentsException extends Exception {
+public class ImproperFormatException extends Exception {
 
-	public ImproperArgumentsException() {
+	public ImproperFormatException() {
 		super();
 		
 	}
 
-	public ImproperArgumentsException(String message) {
+	public ImproperFormatException(String message) {
 		super(message);
 		
 	}

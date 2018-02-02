@@ -1,6 +1,7 @@
 package scenario;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Data structure which defines a scenario. Used for storing and accessing
@@ -10,16 +11,18 @@ import java.util.ArrayList;
  * @author DKozlovsky
  *
  */
-public class Scenario {
+public class Scenario implements Iterable<ScenarioCommand> {
 	
-	private int numCells;
-	private int numButtons;
+	private final int NUM_CELLS;
+	private final int NUM_BUTTONS;
 	
 	
 	private ArrayList<ScenarioCommand> runningScenario;
 	
+	
 	/**
-	 * Default constructor; sets to 0
+	 * Default constructor; sets cells and buttons to 0
+	 * Note* the number of cells and buttons cannot be reset
 	 */
 	public Scenario()
 	{
@@ -30,12 +33,23 @@ public class Scenario {
 	 * Set number of braille cells and buttons
 	 * @param numcells
 	 * @param numbuttons
+	 * @throws IllegalArgumentException if any parameter is negative
 	 */
-	public Scenario(int numcells, int numbuttons)
+	public Scenario(int numcells, int numbuttons) throws IllegalArgumentException
 	{
-		numCells = numcells;
-		numButtons = numbuttons;
+		if(numcells < 0 | numbuttons < 0)
+		{
+			throw new IllegalArgumentException("Cannot have negative number of buttons or cells!");
+		}
+		NUM_CELLS = numcells;
+		NUM_BUTTONS = numbuttons;
 		runningScenario = new ArrayList<ScenarioCommand>();
+	}
+	
+	@Override
+	public Iterator<ScenarioCommand> iterator() {
+		
+		return runningScenario.iterator();
 	}
 	
 	/**
@@ -44,7 +58,7 @@ public class Scenario {
 	 */
 	public int getNumCells()
 	{
-		return numCells;
+		return NUM_CELLS;
 	}
 	
 	/**
@@ -53,7 +67,7 @@ public class Scenario {
 	 */
 	public int getNumButtons()
 	{
-		return numButtons;
+		return NUM_BUTTONS;
 	}
 	
 	public ScenarioCommand getEvent(int index)
@@ -101,5 +115,7 @@ public class Scenario {
 		
 		
 	}
+
+	
 
 }

@@ -1,5 +1,7 @@
 package scenario;
 
+import java.util.ArrayList;
+
 /**
  * Formats and exports a scenario. 
  * 
@@ -8,11 +10,22 @@ package scenario;
  */
 public class ScenarioFormatter {
 	
-	/**
-	 * Exports a given scenario.
-	 */
-	public void export()
+	private ArrayList<String> scenarioText;
+	
+	public ScenarioFormatter()
 	{
+		scenarioText = new ArrayList<String>();
+	}
+	
+	/**
+	 * Exports a scenario
+	 * 
+	 * @param scenario the scenario to format
+	 * @param filename name of the created text file
+	 */
+	public void export(Scenario scenario, String filename)
+	{
+		format(scenario);
 		//TODO: Implement
 	}
 	
@@ -21,10 +34,19 @@ public class ScenarioFormatter {
 	 * by EECS 2311 Scenario File Format Documentation
 	 * @see https://wiki.eecs.yorku.ca/course_archive/2017-18/W/2311/_media/scenarioformat.pdf
 	 * 
-	 * @param scenario The scenario to be formatted
+	 * @param scenario The scenario to be formatted.
+	 *  Every scenario command must have its arguments satisfied
 	 */
 	private void format(Scenario scenario)
 	{
+		//First two lines common for all scenarios
+		scenarioText.add("Cells " + scenario.getNumCells());
+		scenarioText.add("Button " + scenario.getNumButtons());
+		
+		for(ScenarioCommand command : scenario)
+		{
+			
+		}
 		
 	}
 
