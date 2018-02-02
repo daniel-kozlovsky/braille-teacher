@@ -25,7 +25,7 @@ public class ScenarioFormatter {
 	 */
 	private void format(Scenario scenario)
 	{
-		//TODO: Implement
+		
 	}
 
 }

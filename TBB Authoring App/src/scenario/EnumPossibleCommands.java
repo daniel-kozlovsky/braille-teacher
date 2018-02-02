@@ -1,7 +1,7 @@
 package scenario;
 
 /**
- * All the possible commands, action and events for a scenario
+ * All the possible commands, action and commands for a scenario
  * Includes: name, description,formatted command and a class array indicating 
  * number of arguments and types of each. 
  * 
@@ -28,7 +28,7 @@ public enum EnumPossibleCommands {
 	REPEAT("Repeat", "Sets the beginning of some text to be repeated",
 			"/~repeat:", new Class<?>[] {String.class}),
 	/**
-	 * Sets up end of text to be repeated
+	 * Sets up end of text to be repeated. Must be accompanied with END_REPEAT
 	 */
 	END_REPEAT("End Repeat", "Sets the end of some text to be repeated", 
 			"/~end-repeat", new Class<?>[] {String.class}),
@@ -43,7 +43,7 @@ public enum EnumPossibleCommands {
 	SKIP_BUTTON("Skip Button", "Makes button skip to a different point in scenario",
 			"/~skip-button:", new Class<?>[] {Integer.class, String.class}),
 	/**
-	 * Location to skip to
+	 * Location to skip to. Must be accompanied with GO_HERE
 	 */
 	GO_HERE("Skip Here", "Skips to this location in the scenario",
 			"/~", new Class<?>[] {String.class}),
@@ -68,7 +68,7 @@ public enum EnumPossibleCommands {
 	SKIP("Skip", "Skips to specified location in scenario",
 			"/~skip:", new Class<?>[] {String.class}),
 	/**
-	 * Location to skip to
+	 * Location to skip to. Must be accompanied with SKIP_LOCATION
 	 */
 	SKIP_LOCATION("Skip Location", "Location to skip to", 
 			"/~", new Class<?>[] {String.class}),
@@ -105,32 +105,32 @@ public enum EnumPossibleCommands {
 	
 	
 	
-	private final String eventName;
-	private final String eventDesc;
-	private final String eventFormat;
+	private final String commandName;
+	private final String commandDesc;
+	private final String commandFormat;
 	private final Class<?>[] argumentTypes;
 	
-	EnumPossibleCommands(String eventname, String eventdesc, String eventformat, Class<?>[] args)
+	EnumPossibleCommands(String commandname, String commanddesc, String commandformat, Class<?>[] args)
 	{
 		this.argumentTypes = args;
-		this.eventName = eventname;
-		this.eventDesc = eventdesc;
-		this.eventFormat = eventformat;
+		this.commandName = commandname;
+		this.commandDesc = commanddesc;
+		this.commandFormat = commandformat;
 	}
 	
 	public String getName()
 	{
-		return eventName;
+		return commandName;
 	}
 	
 	public String getDescription() 
 	{
-		return eventDesc;
+		return commandDesc;
 	}
 	
 	public String getFormat()
 	{
-		return eventFormat;
+		return commandFormat;
 	}
 	
 	public Class<?>[] getArgumentTypes()
