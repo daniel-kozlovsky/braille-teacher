@@ -9,7 +9,7 @@ package scenario;
  */
 public enum EnumPossibleEvents {
 	
-	PAUSE ("Pause", "Pauses the simulation", "/~pause:");
+	PAUSE ("Pause", "Pauses the simulation", "/~pause:", new Class<?>[] {Integer.class});
 	//TODO: add values for all commands
 	/*DISP_STRING,
 	REPEAT,
@@ -20,6 +20,7 @@ public enum EnumPossibleEvents {
 	SOUND,
 	RESET_BUTTONS,
 	SKIP,
+	SKIP_LOCATION,
 	DISP_CLEAR_ALL,
 	DISP_CLEAR_CELL;*/
 	
@@ -27,9 +28,11 @@ public enum EnumPossibleEvents {
 	private final String eventName;
 	private final String eventDesc;
 	private final String eventFormat;
+	private final Class<?>[] argumentTypes;
 	
-	EnumPossibleEvents(String eventname, String eventdesc, String eventformat)
+	EnumPossibleEvents(String eventname, String eventdesc, String eventformat, Class<?>[] args)
 	{
+		this.argumentTypes = args;
 		this.eventName = eventname;
 		this.eventDesc = eventdesc;
 		this.eventFormat = eventformat;
@@ -49,5 +52,11 @@ public enum EnumPossibleEvents {
 	{
 		return eventFormat;
 	}
+	
+	public Class<?>[] getArgumentTypes()
+	{
+		return argumentTypes;
+	}
+	
 
 }
