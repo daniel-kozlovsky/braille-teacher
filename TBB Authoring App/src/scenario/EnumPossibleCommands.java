@@ -31,7 +31,7 @@ public enum EnumPossibleCommands {
 	 * Sets up end of text to be repeated. Must be accompanied with END_REPEAT
 	 */
 	END_REPEAT("End Repeat", "Sets the end of some text to be repeated", 
-			"/~end-repeat", new Class<?>[] {String.class}),
+			"/~end-repeat", new Class<?>[] {}),
 	/**
 	 * Sets a button to repeat most recent set up 'repeat' text
 	 */

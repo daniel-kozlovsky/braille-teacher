@@ -10,20 +10,14 @@ import java.util.Arrays;
  */
 public abstract class ScenarioCommand{
 	
-	private String name;
-	private String description;
-	private String format;
-	private Object[] argumentTypes;
+	
 	private Object[] arguments;
+	private EnumPossibleCommands command;
 	
 	
-	
-	public ScenarioCommand(EnumPossibleCommands event)
+	public ScenarioCommand(EnumPossibleCommands command)
 	{
-		this.name = event.getName();
-		this.description = event.getDescription();
-		this.format = event.getFormat();
-		this.argumentTypes = event.getArgumentTypes();
+		this.command = command;
 	}
 	
 	/**
@@ -38,11 +32,12 @@ public abstract class ScenarioCommand{
 	 */
 	public void setArguments(Object[] arguments) throws IllegalArgumentException
 	{
-		if(arguments.length != this.argumentTypes.length)
+		if(arguments.length != command.getArgumentTypes().length)
 		{
 			throw new IllegalArgumentException("Invalid amount of arguments!");
 		}
-		else if(!Arrays.equals(arguments, this.argumentTypes))
+		//TODO fix argument type check. Current else if is wrong.
+		else if(!Arrays.equals(arguments, command.getArgumentTypes()))
 		{
 			throw new IllegalArgumentException("Invalid types in argument");
 		}
@@ -58,7 +53,7 @@ public abstract class ScenarioCommand{
 	 */
 	public String getName()
 	{
-		return name;
+		return command.getName();
 	}
 	
 	/**
@@ -67,7 +62,7 @@ public abstract class ScenarioCommand{
 	 */
 	public String getDescription() 
 	{
-		return description;
+		return command.getDescription();
 	}
 	
 	/**
@@ -76,7 +71,7 @@ public abstract class ScenarioCommand{
 	 */
 	public String getFormat()
 	{
-		return format;
+		return command.getFormat();
 	}
 	/**
 	 * get the arguments for a command
@@ -85,6 +80,19 @@ public abstract class ScenarioCommand{
 	public Object[] getArguments()
 	{
 		return this.arguments;
+	}
+	
+	/**
+	 * Gets the type of command that this ScenarioCommand is. 
+	 * Does not return reference to actual command.
+	 * 
+	 * @return a copy of the command
+	 */
+	public EnumPossibleCommands getEnum()
+	{
+		EnumPossibleCommands e = command;
+		return e;
+		//TODO: Test privacy
 	}
 
 }
