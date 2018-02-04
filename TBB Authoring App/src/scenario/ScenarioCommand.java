@@ -8,7 +8,7 @@ import java.util.Arrays;
  * @author DKozlovsky
  *
  */
-class ScenarioCommand{
+public class ScenarioCommand{
 	
 	
 	private Object[] arguments;
@@ -18,14 +18,14 @@ class ScenarioCommand{
 	
 	/**
 	 * A new instance of ScenarioCommand which encapsulates a command or event in 
-	 * the working scenario. Same instance cannot be used in more than one scenario.
+	 * the working scenario. Can only be made through a scenario. Same instance cannot be used in more than one scenario.
 	 * 
 	 * @param command the type of command that this will be.
 	 * @param numcells number of braille cells in the scenario
 	 * @param numbuttons number of buttons in the scenario
 	 * @param arguments argument for specified command. If no arguments are required, pass in null.
 	 */
-	public ScenarioCommand(EnumPossibleCommands command, Object[] arguments, int numCells, int numButtons)
+	ScenarioCommand(EnumPossibleCommands command, Object[] arguments, int numCells, int numButtons)
 	{
 		NUM_CELLS_IN_SCENARIO = numCells;
 		NUM_BUTTONS_IN_SCENARIO =  numButtons;

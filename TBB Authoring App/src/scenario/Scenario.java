@@ -11,7 +11,7 @@ import java.util.Iterator;
  * @author DKozlovsky
  *
  */
-//TODO : factory method for creating ScenarioCommands
+
 public class Scenario implements Iterable<ScenarioCommand> {
 	
 	private final int NUM_CELLS;
@@ -45,6 +45,16 @@ public class Scenario implements Iterable<ScenarioCommand> {
 		NUM_CELLS = numcells;
 		NUM_BUTTONS = numbuttons;
 		runningScenario = new ArrayList<ScenarioCommand>();
+	}
+	/**
+	 * Factory method for creating a scenario command 
+	 * @param cmd the type of specific command it is
+	 * @param args the arguments for the command
+	 * @return a new instance of ScenarioCommand with specified parameters
+	 */
+	public ScenarioCommand createNewCommand(EnumPossibleCommands cmd, Object[] args)
+	{
+		return new ScenarioCommand(cmd, args, NUM_CELLS, NUM_BUTTONS);
 	}
 	
 	@Override
