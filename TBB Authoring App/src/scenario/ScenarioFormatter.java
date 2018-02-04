@@ -40,7 +40,7 @@ public class ScenarioFormatter {
 	}
 	
 	/**
-	 * Formats a scenario for exporting. The format is text and is outlined 
+	 * Formats a scenario for exporting. Overwrites existing formatting. The format is text and is outlined 
 	 * by EECS 2311 Scenario File Format Documentation
 	 * @see https://wiki.eecs.yorku.ca/course_archive/2017-18/W/2311/_media/scenarioformat.pdf
 	 * 
@@ -50,55 +50,30 @@ public class ScenarioFormatter {
 	 */
 	private void format(Scenario scenario) throws MissingArgumentException
 	{
+		
+		scenarioText.clear();
 		//First two lines common for all scenarios
 		scenarioText.add("Cells " + scenario.getNumCells());
 		scenarioText.add("Button " + scenario.getNumButtons());
 		
 		for(ScenarioCommand command : scenario)
 		{
-			
 			validateArguments(command);
-			String stringToAdd;
+			StringBuilder stringToAdd = new StringBuilder();
 			
-			
-			//TODO format scenario - add to array list
-			
-			scenarioText.add(stringToAdd);
-		}
-		
-	}
-	/**
-	 * Checks arguments for a ScenarioCommand to make sure they are not null if they
-	 * are required by the command encapsulated by ScenarioCommand
-	 * 
-	 * @param cmd - The ScenarioCommand to check
-	 * @throws MissingArgumentException if null arguments are found when required
-	 */
-	private void validateArguments(ScenarioCommand cmd) throws MissingArgumentException
-	{
-		//TODO this is to loop to specify error message. may remove
-		for(EnumPossibleCommands enumCmd : EnumPossibleCommands.values())
-		{
-			//skip commands without arguments
-			if(cmd.getEnum() != EnumPossibleCommands.END_REPEAT && 
-					cmd.getEnum() != EnumPossibleCommands.USER_INPUT &&
-					cmd.getEnum() != EnumPossibleCommands.RESET_BUTTONS &&
-					cmd.getEnum() != EnumPossibleCommands.DISP_CLEAR_ALL)
+			//Format - Identifier
+			stringToAdd.append(command.getFormat());
+			//each argument
+			//safe because only int or String allowed
+			for(Object arg : command.getArguments())
 			{
-				//TODO see above
-				if(cmd.getEnum().equals(enumCmd))
-				{	
-					//null arguments found
-					if(cmd.getArguments().equals(null))
-					{
-						throw new MissingArgumentException(
-								"Missing required argument for " + enumCmd.toString());
-					}
-				}
+				stringToAdd.append((String) arg + " ");
 			}
+			
+			scenarioText.add(stringToAdd.toString());
 		}
 		
-		
 	}
+	
 
 }

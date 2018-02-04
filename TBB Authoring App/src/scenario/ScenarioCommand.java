@@ -15,9 +15,10 @@ public abstract class ScenarioCommand{
 	private EnumPossibleCommands command;
 	
 	
-	public ScenarioCommand(EnumPossibleCommands command)
+	public ScenarioCommand(EnumPossibleCommands command, Object[] arguments)
 	{
 		this.command = command;
+		setArguments(arguments);
 	}
 	
 	/**
@@ -32,6 +33,8 @@ public abstract class ScenarioCommand{
 	 */
 	public void setArguments(Object[] arguments) throws IllegalArgumentException
 	{
+		//TODO need to specify argument bounds
+		
 		if(arguments.length != command.getArgumentTypes().length)
 		{
 			throw new IllegalArgumentException("Invalid amount of arguments!");
@@ -93,6 +96,40 @@ public abstract class ScenarioCommand{
 		EnumPossibleCommands e = command;
 		return e;
 		//TODO: Test privacy
+	}
+	/**
+	 * Checks arguments for a ScenarioCommand to make sure they are not null if they
+	 * are required by the command encapsulated by ScenarioCommand
+	 * 
+	 * @param cmd - The ScenarioCommand to check
+	 * @throws MissingArgumentException if null arguments are found when required
+	 */
+	private void validateArguments(ScenarioCommand cmd) throws MissingArgumentException
+	{
+		//TODO error checks for arguments bounds
+		//TODO this is to loop to specify error message. may remove
+		for(EnumPossibleCommands enumCmd : EnumPossibleCommands.values())
+		{
+			//skip commands without arguments
+			if(cmd.getEnum() != EnumPossibleCommands.END_REPEAT && 
+					cmd.getEnum() != EnumPossibleCommands.USER_INPUT &&
+					cmd.getEnum() != EnumPossibleCommands.RESET_BUTTONS &&
+					cmd.getEnum() != EnumPossibleCommands.DISP_CLEAR_ALL)
+			{
+				//TODO see above
+				if(cmd.getEnum().equals(enumCmd))
+				{	
+					//null arguments found
+					if(cmd.getArguments().equals(null))
+					{
+						throw new MissingArgumentException(
+								"Missing required argument for " + enumCmd.toString());
+					}
+				}
+			}
+		}
+		
+		
 	}
 
 }
