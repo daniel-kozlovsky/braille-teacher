@@ -90,7 +90,7 @@ public class ScenarioFormatter {
 				for(Object arg : command.getArguments())
 				{
 					
-						stringToAdd.append((String) arg + " ");
+						stringToAdd.append(arg.toString() + " ");
 				}
 			}
 			
@@ -98,6 +98,7 @@ public class ScenarioFormatter {
 		}
 		
 	}
+	//TODO add command validate to check command like skip are closed
 	
 
 }
