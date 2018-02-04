@@ -24,14 +24,17 @@ public class ScenarioCreator extends JPanel {
 	private TextArea ta = new TextArea();
 	private JButton addquestion;
 	private JButton addItem;
-	private JButton moveup;
-	private JButton moveDown;
-	private  int senarionumber=1;
+	private JButton performAction;
+	private JButton pause;
+	
+	private  int senarionumber;
 	String cell;
 	String buttons;
-
+	private JComboBox comboBox;
+	private JPanel panel;
 	public ScenarioCreator(JFrame parent) {
 		this.parent = parent;
+		this.setLayout(null);
 		// creating new  window to add the number of cells
 		JOptionPane jcell= new JOptionPane();
 		jcell.getAccessibleContext().setAccessibleDescription(" How many cells do you need ");
@@ -39,7 +42,7 @@ public class ScenarioCreator extends JPanel {
 		//creating new window to add the numnber of buttons
 		JOptionPane jbutton= new JOptionPane();
 		jbutton.getAccessibleContext().setAccessibleDescription(" How many buttons do you need ");
-		buttons=	jbutton.showInputDialog(parent," How many buttons do you need ",null);
+		buttons =	jbutton.showInputDialog(parent," How many buttons do you need ",null);
 		
 		
 		
@@ -55,6 +58,7 @@ public class ScenarioCreator extends JPanel {
 	}	
 
 	private void initComponents() throws FileNotFoundException, UnsupportedEncodingException {
+		
 		//creating the Scenario file
 		PrintWriter writer = new PrintWriter("Senario_"+senarionumber+".txt", "UTF-8");
 		senarionumber++;
@@ -65,23 +69,19 @@ public class ScenarioCreator extends JPanel {
 		writer.println("Button " +Integer.parseInt(buttons));
 		
 		JTextField questionText = new JTextField(30);
-// text field  customization 
-		ta.setLocation(HEIGHT / 2, WIDTH / 2);
-		ta.setLocation(ImageObserver.WIDTH / 2, 5);
-		ta.setVisible(true);
-		
-		
-		
-		
-		
-		
+		questionText.setLocation(192, 229);
+		questionText.setSize(241, 30);
+
 		
 		// add Audio button customization
-		JTextField audioTextField = new JTextField(30);
+		JTextField audioTextField = new JTextField(20);
+		audioTextField.setLocation(192, 173);
+		audioTextField.setSize(241, 30);
 		audioTextField.getAccessibleContext().setAccessibleDescription("Textfield for speaker audio script.");
 		addAudioButton = new JButton("Add Audio");
-		addAudioButton.setLocation(ImageObserver.WIDTH / 2, 0);
+		addAudioButton.setLocation(7, 162);
 		addAudioButton.setVisible(true);
+		addAudioButton.setSize(104, 50);
 		addAudioButton.addActionListener(new ActionListener() {
 
 			@Override
@@ -99,8 +99,8 @@ public class ScenarioCreator extends JPanel {
 		addItem = new JButton("Add item");
 		addItem.getAccessibleContext().setAccessibleDescription("Add question");
 		addItem.setVisible(true);
-		addItem.setLocation(50, 50);
-		addItem.setSize(50, 50);
+		addItem.setLocation(7, 336);
+		addItem.setSize(104, 49);
 		addItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -114,7 +114,8 @@ public class ScenarioCreator extends JPanel {
 		addquestion = new JButton("Add Question");
 		addquestion.getAccessibleContext().setAccessibleDescription("Add question");
 		addquestion.setVisible(true);
-		addquestion.setLocation(50, 50);
+		addquestion.setLocation(7, 222);
+		addquestion.setSize(107, 43);
 		addquestion.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -130,24 +131,49 @@ public class ScenarioCreator extends JPanel {
 
 			}
 		});
+		performAction = new JButton("perform action ");
+		performAction.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			}
+		});
+		performAction.setLocation(275, 397);
+		performAction.setVisible(true);
+		performAction.getAccessibleContext().setAccessibleDescription("click on that buttom to performe the action choesed from the drop down menu");
+		performAction.setSize(155, 57);
+		// pause
+		pause=new JButton("pause");
+		pause.setVisible(true);
+		pause.getAccessibleContext().setAccessibleDescription("pause");
+		pause.setLocation(7, 283);
+		pause.setSize(104,43);
 		
 		
-		moveup= new JButton("move up");
-		moveup.setVisible(true);
-		moveup.getAccessibleContext().setAccessibleDescription("move up ");
-		
-		moveDown = new JButton("move down");
-		moveDown.setVisible(true);
-		moveDown.getAccessibleContext().setAccessibleDescription("move Down ");
+		JTextField pausetText = new JTextField(5);
+		pausetText.setLocation(192, 290);
+		pausetText.setSize(241, 30);
 		writer.close();
-		this.add(ta);
 		this.add(addAudioButton);
 		this.add(audioTextField);
 		this.add(addquestion);
 		this.add(questionText);
 		this.add(addItem);
-		this.add( moveup);
-		this.add( moveDown);
+		this.add(pause);
+		ta.setBounds(0, 0, 440, 140);
+		add(ta);
+		ta.setVisible(true);
+		this.add(pausetText);
+		
+		panel = new JPanel();
+		panel.setLocation(10, 0);
+		add(panel);
+		panel.setSize(490, 158);
+		this.add(performAction);
+		
+		comboBox = new JComboBox();
+		comboBox.setBounds(10, 406, 166, 38);
+		add(comboBox);
+		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Skip", "Move up", "Move down", "reset ", "ClearAll", "Repet ", "disp-string"}));
+		comboBox.getAccessibleContext().setAccessibleDescription("actions to perform on the scenario file Choese from the drop down menu ");
 	}
 
 }
