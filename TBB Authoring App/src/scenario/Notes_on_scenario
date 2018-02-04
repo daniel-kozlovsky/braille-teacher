@@ -1,0 +1,3 @@
+It is impossible to create a ScenarioCommand object!
+To make a new command to add to a Scenario use -> scenario.addCommand(scenario.createNewCommand(EnumPossibleCommands cmd, Object[] args));
+In general, use the factory method for command operations.
