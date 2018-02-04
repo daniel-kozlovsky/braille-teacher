@@ -5,12 +5,13 @@ import java.util.Iterator;
 
 /**
  * Data structure which defines a scenario. Used for storing and accessing
- * a scenario. ScenarioEvents in the Scenario are in the order that the simulation 
+ * a scenario. ScenarioCommands in the Scenario are in the order that the simulation 
  * will iterate through (chronological).
  * 
  * @author DKozlovsky
  *
  */
+//TODO : factory method for creating ScenarioCommands
 public class Scenario implements Iterable<ScenarioCommand> {
 	
 	private final int NUM_CELLS;
@@ -70,7 +71,7 @@ public class Scenario implements Iterable<ScenarioCommand> {
 		return NUM_BUTTONS;
 	}
 	
-	public ScenarioCommand getEvent(int index)
+	public ScenarioCommand getCommand(int index)
 	{
 		
 		return runningScenario.get(index);
@@ -81,7 +82,7 @@ public class Scenario implements Iterable<ScenarioCommand> {
 	 * 
 	 * @param command The event or action to be added
 	 */
-	public void addEvent(ScenarioCommand command)
+	public void addCommand(ScenarioCommand command)
 	{
 		runningScenario.add(command);
 	}
@@ -91,7 +92,7 @@ public class Scenario implements Iterable<ScenarioCommand> {
 	 * 
 	 * @param command The event to be removed
 	 */
-	public void removeEvent(ScenarioCommand command)
+	public void removeCommand(ScenarioCommand command)
 	{
 		runningScenario.remove(command);
 	}
@@ -104,7 +105,7 @@ public class Scenario implements Iterable<ScenarioCommand> {
 	 * @param newIndex The new position of the event. Cannot be outside the list
 	 * @throws IllegalArgumentException if newIndex is not in the list
 	 */
-	public void moveEvent(ScenarioCommand command, int newIndex) throws IllegalArgumentException
+	public void moveCommand(ScenarioCommand command, int newIndex) throws IllegalArgumentException
 	{
 		if(newIndex > runningScenario.size()-1 || newIndex < 0)
 		{

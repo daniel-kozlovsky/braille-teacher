@@ -91,7 +91,7 @@ public enum EnumPossibleCommands {
 	 * Displays an English letter on a braille cell
 	 */
 	DISP_CELL_CHAR("Display Character", "Displays an English character on a specified braille cell",
-			"/~disp-cell-char:", new Class<?>[] {char.class}),
+			"/~disp-cell-char:", new Class<?>[] {Integer.class, Character.class}),
 	/**
 	 * Raise a specific pin on a braille cell
 	 */

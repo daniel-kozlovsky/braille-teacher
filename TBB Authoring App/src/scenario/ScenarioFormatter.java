@@ -27,15 +27,7 @@ public class ScenarioFormatter {
 	 */
 	public void export(Scenario scenario, String filename)
 	{
-		try 
-		{
-			format(scenario);
-			
-		} catch (MissingArgumentException e)
-		{
-			
-			e.printStackTrace();
-		}
+		format(scenario);
 		//TODO: Implement
 	}
 	
@@ -46,9 +38,9 @@ public class ScenarioFormatter {
 	 * 
 	 * @param scenario The scenario to be formatted.
 	 *  Every scenario command must have its arguments satisfied
-	 * @throws MissingArgumentException if a specific command is missing arguments
+	 * 
 	 */
-	private void format(Scenario scenario) throws MissingArgumentException
+	private void format(Scenario scenario)
 	{
 		
 		scenarioText.clear();
@@ -58,16 +50,24 @@ public class ScenarioFormatter {
 		
 		for(ScenarioCommand command : scenario)
 		{
-			validateArguments(command);
+			
 			StringBuilder stringToAdd = new StringBuilder();
 			
 			//Format - Identifier
 			stringToAdd.append(command.getFormat());
-			//each argument
-			//safe because only int or String allowed
-			for(Object arg : command.getArguments())
+			
+			Object[] arguments = command.getArguments();
+			
+			//if arguments exist
+			if(arguments.length != 0)
 			{
-				stringToAdd.append((String) arg + " ");
+				//each argument
+				//safe because only int or String allowed
+				for(Object arg : command.getArguments())
+				{
+					
+						stringToAdd.append((String) arg + " ");
+				}
 			}
 			
 			scenarioText.add(stringToAdd.toString());
