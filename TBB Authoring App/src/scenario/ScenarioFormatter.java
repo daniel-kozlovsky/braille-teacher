@@ -1,5 +1,10 @@
 package scenario;
 
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 /**
@@ -9,26 +14,45 @@ import java.util.ArrayList;
  *
  */
 public class ScenarioFormatter {
+
+	public static final String SAVED_SCENARIOS_PATH = "scenarios\\";
+	
 	/**
 	 * each element will be a line in the text file
 	 */
-	private ArrayList<String> scenarioText;
+	private static ArrayList<String> scenarioText = new ArrayList<String>();
 	
-	public ScenarioFormatter()
+	
+	private ScenarioFormatter()
 	{
-		scenarioText = new ArrayList<String>();
+
 	}
 	
 	/**
-	 * Exports a scenario
+	 * Writes the formated scenario to a text file. Overwrites an existing file with the same name.
 	 * 
 	 * @param scenario the scenario to format
 	 * @param filename name of the created text file
 	 */
-	public void export(Scenario scenario, String filename)
+	public static void export(Scenario scenario, String filename)
 	{
 		format(scenario);
-		//TODO: Implement
+		try
+		{
+			File file = new File(SAVED_SCENARIOS_PATH + filename + ".txt");
+			PrintWriter printWriter = new PrintWriter(file);
+			for(String s : scenarioText)
+			{
+				printWriter.println(s);
+			}
+			
+			printWriter.flush();
+			printWriter.close();
+		}
+		catch(IOException e)
+		{
+			e.printStackTrace();
+		}
 	}
 	
 	/**
@@ -40,7 +64,7 @@ public class ScenarioFormatter {
 	 *  Every scenario command must have its arguments satisfied
 	 * 
 	 */
-	private void format(Scenario scenario)
+	private static void format(Scenario scenario)
 	{
 		
 		scenarioText.clear();
