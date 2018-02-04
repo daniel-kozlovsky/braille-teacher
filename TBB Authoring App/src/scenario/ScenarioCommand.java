@@ -8,7 +8,7 @@ import java.util.Arrays;
  * @author DKozlovsky
  *
  */
-public class ScenarioCommand{
+class ScenarioCommand{
 	
 	
 	private Object[] arguments;
