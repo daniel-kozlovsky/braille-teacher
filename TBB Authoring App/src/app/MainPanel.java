@@ -5,9 +5,14 @@ import java.awt.TextArea;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import javax.swing.*;
+
+import scenario.Scenario;
+import scenario.ScenarioCommand;
+import scenario.EnumPossibleCommands;
 
 public class MainPanel extends JPanel {
 	
@@ -19,6 +24,7 @@ public class MainPanel extends JPanel {
 	
 	JButton buttonNewScenario;
 	JButton buttonImportScenario;
+	Scenario importedScenario = new Scenario();
 	
 	public MainPanel(JFrame parent)
 	{
@@ -51,7 +57,7 @@ public class MainPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				
-				ScenarioCreator sc = new ScenarioCreator(parent);
+				ScenarioCreator sc = new ScenarioCreator(parent,importedScenario);
 				parent.getContentPane().removeAll();
 				parent.getContentPane().add(sc);
 				parent.revalidate();
@@ -65,16 +71,25 @@ public class MainPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				
-				JFileChooser fc = new JFileChooser();
-				fc.showOpenDialog(buttonNewScenario);
+				JFileChooser fileChooser = new JFileChooser();
+				fileChooser.showOpenDialog(buttonNewScenario);
 				try {
-					Scanner sc = new Scanner(fc.getSelectedFile());
+					Scanner scanner = new Scanner(fileChooser.getSelectedFile());
 					
-					StringBuffer input = new StringBuffer();
-					
-					while(sc.hasNext()){
-						ta.append(sc.nextLine()+'\n');
+					int i=0;
+					while(scanner.hasNext()){
+						importedScenario.addCommand(importedScenario.createNewCommand(EnumPossibleCommands.PAUSE, new Object[] {10}));
+						ta.append(importedScenario.getCommand(i).getName()+'\n');
+						i++;
+						scanner.next();
 					}
+					scanner.close();
+					
+					ScenarioCreator sc = new ScenarioCreator(parent, importedScenario);
+					parent.getContentPane().removeAll();
+					parent.getContentPane().add(sc);
+					parent.revalidate();
+					sc.setVisible(true);
 					
 				} catch (FileNotFoundException e) {
 					// TODO Auto-generated catch block
