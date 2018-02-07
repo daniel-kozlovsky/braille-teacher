@@ -1,0 +1,23 @@
+Interface
+1.	Create serialized routines (scenarios) for deployment on target hardware
+
+2.	Allow creation of custom hardware commands including:
+•	Audible questions, feedback and context description
+•	Display Braille characters on specialized hardware
+•	Repeat, skip and branch routine lifecycle
+•	Wait for user input and continue once received
+•	Play back local audio files
+•	Restart or reset routines
+•	Manipulate and control braille cells accessible to the user
+
+3.	Provide adequate accessibility support for visually impaired users through included support for screen readers such as NVDA, Jaws, Apply Voice Over.
+
+4.	Modify, refine and adjust existing routines through a clean and robust editor UI experience
+
+5.	Provide suitable access to prototype, test and observe created routines on fully simulated hardware. 
+
+
+Use Cases
+1.	Provide a flexible medium for educators of Braille to build intricate hardware routines that can be used to teach illiterate students through entertaining games, telltale stories and engaging experiences.
+2.	Use as a platform to enhance existing methods of teaching Braille to illiterates and younger audiences.
+3.	Use as an interactive medium for story telling and to engage in constructive discussions.

@@ -13,10 +13,15 @@ import javax.swing.JOptionPane;
 import javax.swing.*;
 
 
+
+import scenario.Scenario;
+
+
 public class ScenarioCreator extends JPanel {
 
 	// private static final long serialVersionUID = 1L;
 	private JFrame parent;
+
 	private JPanel panel = new JPanel();
 	private JButton btnAddCommand = new JButton("Add command");
 	private JButton btnRemove = new JButton("Remove");
@@ -26,7 +31,10 @@ public class ScenarioCreator extends JPanel {
 	private JButton btnRepeat = new JButton("Repeat");
 	private String cell;
 	private String buttons;
-	public ScenarioCreator(JFrame parent) {
+	private Scenario importedScenario;
+	
+	public ScenarioCreator(JFrame parent ) {
+
 		this.parent = parent;
 		this.setLayout(null);
 		this.parent.setTitle("Creat new Scenario");
@@ -40,7 +48,14 @@ public class ScenarioCreator extends JPanel {
 		buttons =	jbutton.showInputDialog(parent," How many buttons do you need ",null);
 		
 			initComponents();
-	}	
+
+
+		this.importedScenario = importedScenario;
+		initComponents();
+		this.parent.setSize(parent.getWidth(), 300);
+
+	}
+
 
 	private void initComponents()  {
 		
@@ -82,5 +97,7 @@ public class ScenarioCreator extends JPanel {
 		btnRepeat.setBounds(288, 288, 117, 29);
 		add(btnRepeat);
 		
+
+	
 	}
 }

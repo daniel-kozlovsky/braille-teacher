@@ -1,12 +1,9 @@
 package app;
 
-import java.awt.Dimension;
-import java.awt.HeadlessException;
-import java.awt.Rectangle;
 
-import javax.swing.JButton;
+import java.awt.Rectangle;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
+
 
 
 @SuppressWarnings("serial")
@@ -14,7 +11,7 @@ public class ApplicationWindow extends JFrame {
 	
 	//Size of Frame
 	private final int FRAME_WIDTH = 500;
-	private final int FRAME_HEIGHT = 500;
+	private final int FRAME_HEIGHT = 200;
 	
 	//Size of main panel
 	public final Rectangle MainPanelArea = new Rectangle(this.getX(), this.getY(),
