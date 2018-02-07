@@ -17,16 +17,13 @@ public class ScenarioCreator extends JPanel {
 	public ScenarioCreator(JFrame parent, Scenario importedScenario) {
 		this.parent = parent;
 		this.importedScenario = importedScenario;
-		BoxLayout boxLayout = new BoxLayout(this, BoxLayout.Y_AXIS);
-		this.setLayout(new FlowLayout());
 		initComponents();
+		this.parent.setSize(parent.getWidth(), 300);
 	}
 
 	private void initComponents() {
-
-		JTextField audioTextField = new JTextField(20);
+		JTextArea audioTextField = new JTextArea();
 		audioTextField.getAccessibleContext().setAccessibleDescription("Textfield for speaker audio script.");
-
 		addAudioButton = new JButton("Add Audio");
 		addAudioButton.setLocation(ImageObserver.WIDTH / 2, 0);
 		addAudioButton.setVisible(true);
