@@ -7,8 +7,23 @@ import org.junit.jupiter.api.Test;
 class ScenarioTest {
 
 	@Test
-	void test() {
+	void createNewScenario() {
 		fail("Not yet implemented");
 	}
+	
+	
+	
+	@Test
+	void moveCommandTest_01()
+	{
+		
+	}
+	
+	@Test
+	void createNewCommandTest_01()
+	{
+		
+	}
+	
 
 }
