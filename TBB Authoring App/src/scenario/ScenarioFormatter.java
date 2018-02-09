@@ -5,7 +5,11 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Scanner;
+import java.util.regex.Pattern;
 
 /**
  * Formats and exports a scenario. 
@@ -86,7 +90,7 @@ public class ScenarioFormatter {
 			if(arguments.length != 0)
 			{
 				//each argument
-				//safe because only int or String allowed
+				//safe because only integer or String allowed
 				for(Object arg : command.getArguments())
 				{
 					
@@ -98,11 +102,104 @@ public class ScenarioFormatter {
 		}
 		
 	}
-	
-	public static Scenario importParse()
+	/**Parses a text file into a Scenario object. Overwrites any existing scenarios.
+	 * 
+	 * @param path The path and name of the file to import
+	 * @return A parsed Scenario imported from a text file
+	 */
+	public static Scenario importParse(String path)
 	{
+		Scenario importedScenario;
+		File file = new File(path);
+		try
+		{
+			Scanner fileScan = new Scanner(file);
+			String numCellsString = fileScan.nextLine();
+			String numButtonsString = fileScan.nextLine();
+			
+			numButtonsString = numButtonsString.substring(6, numButtonsString.length());
+			numCellsString = numCellsString.substring(5, numCellsString.length());
+			
+			//cells and buttons first
+			int numCells = Integer.parseInt(numCellsString);
+			int numButtons = Integer.parseInt(numButtonsString);
+			
+			importedScenario = new Scenario(numCells, numButtons);
+			
+			//Actual parsing of rest of file
+			while(fileScan.hasNext())
+			{
+				String line = fileScan.nextLine();
+				
+				//READ_TEXT command check
+				if(!line.matches("^/~"))
+				{
+					importedScenario.addCommand(new ScenarioCommand(EnumPossibleCommands.READ_TEXT,
+							new Object[] {line}, numCells, numButtons));
+					
+				}
+				// /~ commands check
+				else
+				{
+					for(EnumPossibleCommands possibleCommand : EnumPossibleCommands.values())
+					{
+						//match
+						if(line.substring(0, possibleCommand.getFormat().length()).equals(possibleCommand.getFormat()))
+						{
+							//store arguments
+							ArrayList<Object> argsList = new ArrayList<Object>();
+							
+							String arguments = line.substring(possibleCommand.getFormat().length());
+							
+							//Parsing arguments
+							Class<?>[] possibleArgs = possibleCommand.getArgumentTypes();
+							
+							if(possibleArgs.length == 2)
+							{
+								String splitArgs[] = arguments.split(" ");
+								for(String s : splitArgs)
+								{
+									argsList.add(s);
+								}
+								
+							}
+							else
+							{
+								argsList.add(arguments);
+							}
+							
+							//Check argument types
+							for(int x = 0; x < argsList.size(); x++)
+							{
+								if(possibleArgs[x].equals(Integer.class))
+								{
+									argsList.set(x, argsList.get(x).toString());
+								}
+								else if(possibleArgs[x].equals(Character.class))
+								{
+									argsList.set(x, argsList.get(x).toString().charAt(0));
+								}
+							}
+							
+							Object[] args = argsList.toArray();
+							
+							importedScenario.addCommand(new ScenarioCommand(possibleCommand, args,
+									numCells, numButtons));
+						}
+					}
+				}
+			}
+			
+			fileScan.close();
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		
 		return new Scenario();
 	}
+	
 	//TODO add command validate to check command like skip are closed
 	
 

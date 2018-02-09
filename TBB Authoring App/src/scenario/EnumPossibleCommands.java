@@ -21,7 +21,7 @@ public enum EnumPossibleCommands {
 	 * Displays text on screen
 	 */
 	DISP_STRING ("Display Text", "Shows text on the screen",
-			"/~disp-sring:", new Class<?>[] {String.class}),
+			"/~disp-string:", new Class<?>[] {String.class}),
 	/**
 	 * Sets up beginning of text to be repeated
 	 */
