@@ -2,14 +2,11 @@ package scenario;
 
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Scanner;
-import java.util.regex.Pattern;
+
 
 /**
  * Formats and exports a scenario. 
@@ -102,6 +99,7 @@ public class ScenarioFormatter {
 		}
 		
 	}
+	
 	/**Parses a text file into a Scenario object. Overwrites any existing scenarios.
 	 * 
 	 * @param path The path and name of the file to import
@@ -117,8 +115,8 @@ public class ScenarioFormatter {
 			String numCellsString = fileScan.nextLine();
 			String numButtonsString = fileScan.nextLine();
 			
-			numButtonsString = numButtonsString.substring(6, numButtonsString.length());
-			numCellsString = numCellsString.substring(5, numCellsString.length());
+			numButtonsString = numButtonsString.substring(7, numButtonsString.length());
+			numCellsString = numCellsString.substring(6, numCellsString.length());
 			
 			//cells and buttons first
 			int numCells = Integer.parseInt(numCellsString);
@@ -132,7 +130,7 @@ public class ScenarioFormatter {
 				String line = fileScan.nextLine();
 				
 				//READ_TEXT command check
-				if(!line.matches("^/~"))
+				if(!line.matches("^/~.*"))
 				{
 					importedScenario.addCommand(new ScenarioCommand(EnumPossibleCommands.READ_TEXT,
 							new Object[] {line}, numCells, numButtons));
@@ -143,7 +141,13 @@ public class ScenarioFormatter {
 				{
 					for(EnumPossibleCommands possibleCommand : EnumPossibleCommands.values())
 					{
-						//match
+						//skip READ_TEXT
+						if(possibleCommand.equals(EnumPossibleCommands.READ_TEXT))
+						{
+							continue;
+						}
+						//match command to format
+						//TODO fix bug -- format length longer than line
 						if(line.substring(0, possibleCommand.getFormat().length()).equals(possibleCommand.getFormat()))
 						{
 							//store arguments
@@ -173,7 +177,7 @@ public class ScenarioFormatter {
 							{
 								if(possibleArgs[x].equals(Integer.class))
 								{
-									argsList.set(x, argsList.get(x).toString());
+									argsList.set(x, Integer.parseInt(argsList.get(x).toString()));
 								}
 								else if(possibleArgs[x].equals(Character.class))
 								{
@@ -185,22 +189,24 @@ public class ScenarioFormatter {
 							
 							importedScenario.addCommand(new ScenarioCommand(possibleCommand, args,
 									numCells, numButtons));
+							break; //found command
 						}
 					}
 				}
 			}
 			
 			fileScan.close();
+			return importedScenario;
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
+			//TODO add exception to throw instead of null return
+			return null;
 		}
-		
-		return new Scenario();
 	}
 	
-	//TODO add command validate to check command like skip are closed
+	//TODO add command validate to check commands like skip are closed
 	
 
 }

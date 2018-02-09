@@ -1,6 +1,6 @@
 package scenario;
 
-import java.util.Arrays;
+
 
 /**
  * Defines an event/command in a scenario.

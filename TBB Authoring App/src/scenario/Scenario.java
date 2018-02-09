@@ -127,6 +127,6 @@ public class Scenario implements Iterable<ScenarioCommand> {
 		
 	}
 
-	
+	//TODO implement equals for testing
 
 }
