@@ -1,1 +1,1 @@
-This is where all documention will lie.
+This is where all documentation will lie.
