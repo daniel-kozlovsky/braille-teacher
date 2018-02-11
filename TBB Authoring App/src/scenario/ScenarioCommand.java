@@ -1,6 +1,7 @@
 package scenario;
 
-
+import java.io.InvalidClassException;
+import java.util.Arrays;
 
 /**
  * Defines an event/command in a scenario.
@@ -68,8 +69,14 @@ public class ScenarioCommand{
 			}
 		}
 		//Check arguments boundaries
-		validateArguments(arguments);
-		
+		try
+		{
+			validateArguments(arguments);
+		}
+		catch(IllegalArgumentException e)
+		{
+			throw new IllegalArgumentException("Argument(s) are nonsensical: " + e.getMessage());
+		}
 		this.arguments = arguments;
 	
 		
@@ -194,7 +201,7 @@ public class ScenarioCommand{
 			case SKIP_LOCATION:
 				if(args[0].equals(""))
 				{
-					throw new IllegalArgumentException("Cannot have empty sound file name!");
+					throw new IllegalArgumentException("Cannot have an empty skip location name!");
 				}
 				break;
 			case DISP_CLEAR_CELL:
@@ -252,5 +259,34 @@ public class ScenarioCommand{
 		}
 		
 	}
-
+	
+	/**
+	 * Provides a deep equals that checks parent against parameter. Only works with other ScenarioCommand objects.
+	 *
+	 * @param cmd The ScenarioCommand to compare with
+	 * 
+	 * @return True if same object OR have same field values.
+	 * <br/> False otherwise.
+	 * 
+	 * @see java.lang.Object.equals()
+	 */
+	public boolean deepEquals(ScenarioCommand cmd) 
+	{
+		if(this.equals(cmd))
+		{
+			return true;
+		}
+		if(this.NUM_BUTTONS_IN_SCENARIO == cmd.NUM_BUTTONS_IN_SCENARIO &&
+				this.NUM_CELLS_IN_SCENARIO == cmd.NUM_CELLS_IN_SCENARIO &&
+				Arrays.deepEquals(this.arguments, cmd.getArguments()) &&
+				this.command == cmd.command)
+		{
+			return true;
+		}
+		
+		return false;
+	}
+	
+	
+	
 }
