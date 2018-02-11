@@ -1,8 +1,7 @@
 package scenario.test;
 
 import static org.junit.jupiter.api.Assertions.*;
-
-import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -13,11 +12,30 @@ import scenario.ScenarioCommand;
 class ScenarioCommandTest {
 	
 	Scenario testScenario;
+
+	final int[] TEST_NUM_BUTTONS_SET = {-1,0,1,2,3};
+	final int[] TEST_NUM_CELLS_SET = {-1,0,1,2,3};
+	final int SCENARIOS_TO_REPEAT = TEST_NUM_CELLS_SET.length * TEST_NUM_BUTTONS_SET.length;
+	
+	//Test cases for correct inputs
+	String[] correctTestStringSet = new String[] {"Test"};
+	int correctTestInt;
+	Character[] correctTestCharSet = new Character[] {'A'};
+	
+	//Test cases for incorrect inputs
+	String[] incorrectTestStringSet = {""};
+	int[] incorrectTestIntSet;
+	Character[] incorrectTestCharSet = {'*'};
+	
 	
 	@BeforeEach
-	protected void setUp() throws Exception
+	protected void setUpClass() throws Exception
 	{
+		//reset integer because of dependency on buttons/cells
 		testScenario = new Scenario();
+		correctTestInt = 0;
+		incorrectTestIntSet = null;
+		
 	}
 	
 	@Test
