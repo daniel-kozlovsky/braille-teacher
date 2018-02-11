@@ -123,11 +123,9 @@ public class ScenarioCommand{
 	 * 
 	 * @return a copy of the command
 	 */
-	public EnumPossibleCommands getEnum()
+	public EnumPossibleCommands getCommandType()
 	{
-		EnumPossibleCommands e = command;
-		return e;
-		//TODO: Test privacy
+		return this.command;
 	}
 	/**
 	 * Checks arguments to make sure they make are valid depending on the command
