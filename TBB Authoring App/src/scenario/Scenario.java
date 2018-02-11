@@ -108,6 +108,14 @@ public class Scenario implements Iterable<ScenarioCommand> {
 	}
 	
 	/**
+	 * @return Current amount of commands in scenario.
+	 */
+	public int getNumCommands()
+	{
+		return runningScenario.size();
+	}
+	
+	/**
 	 * Moves an event from its current position to a new position. Elements are shifted left 
 	 * after removal, then right after insertion.
 	 * 
@@ -123,8 +131,6 @@ public class Scenario implements Iterable<ScenarioCommand> {
 		}
 		runningScenario.remove(command);
 		runningScenario.add(newIndex, command);
-		
-		
 	}
 
 	//TODO implement equals for testing

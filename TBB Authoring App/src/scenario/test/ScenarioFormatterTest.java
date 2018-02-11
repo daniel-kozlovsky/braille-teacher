@@ -1,9 +1,12 @@
-package scenario;
+package scenario.test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
+
+import scenario.Scenario;
+import scenario.ScenarioFormatter;
 
 class ScenarioFormatterTest {
 
