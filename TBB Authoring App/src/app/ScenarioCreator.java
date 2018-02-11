@@ -53,6 +53,12 @@ public class ScenarioCreator extends JPanel {
         btnAddCommand.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 //addCommand command = new addCommand();
+
+        		AudioRecorder sc = new AudioRecorder();
+        		parent.getContentPane().removeAll();
+        		parent.getContentPane().add(sc);
+        		parent.revalidate();
+        		sc.setVisible(true);
             }
         });
 
