@@ -24,9 +24,20 @@ public class ScenarioCommand{
 	 * @param numcells number of braille cells in the scenario
 	 * @param numbuttons number of buttons in the scenario
 	 * @param arguments argument for specified command. If no arguments are required, pass in null.
+	 * 
+	 * @throws IllegalArgumentException
 	 */
 	ScenarioCommand(EnumPossibleCommands command, Object[] arguments, int numCells, int numButtons)
+			throws IllegalArgumentException, NullPointerException
 	{
+		if(command == null)
+		{
+			throw new NullPointerException("command must not be null!");
+		}
+		if(numCells < 0 || numButtons < 0)
+		{
+			throw new IllegalArgumentException("Cannot have negative amount of cells or buttons!");
+		}
 		NUM_CELLS_IN_SCENARIO = numCells;
 		NUM_BUTTONS_IN_SCENARIO =  numButtons;
 		this.command = command;
@@ -68,8 +79,14 @@ public class ScenarioCommand{
 			}
 		}
 		//Check arguments boundaries
-		validateArguments(arguments);
-		
+		try
+		{
+			validateArguments(arguments);
+		}
+		catch(IllegalArgumentException e)
+		{
+			throw new IllegalArgumentException("Argument(s) are nonsensical: " + e.getMessage());
+		}
 		this.arguments = arguments;
 	
 		
@@ -116,11 +133,9 @@ public class ScenarioCommand{
 	 * 
 	 * @return a copy of the command
 	 */
-	public EnumPossibleCommands getEnum()
+	public EnumPossibleCommands getCommandType()
 	{
-		EnumPossibleCommands e = command;
-		return e;
-		//TODO: Test privacy
+		return this.command;
 	}
 	/**
 	 * Checks arguments to make sure they make are valid depending on the command
@@ -194,7 +209,7 @@ public class ScenarioCommand{
 			case SKIP_LOCATION:
 				if(args[0].equals(""))
 				{
-					throw new IllegalArgumentException("Cannot have empty sound file name!");
+					throw new IllegalArgumentException("Cannot have an empty skip location name!");
 				}
 				break;
 			case DISP_CLEAR_CELL:
@@ -252,5 +267,34 @@ public class ScenarioCommand{
 		}
 		
 	}
-
+	
+	/**
+	 * Provides a deep equals that checks parent against parameter. Only works with other ScenarioCommand objects.
+	 *
+	 * @param cmd The ScenarioCommand to compare with
+	 * 
+	 * @return True if same object OR have same field values.
+	 * <br/> False otherwise.
+	 * 
+	 * @see java.lang.Object.equals()
+	 */
+	public boolean deepEquals(ScenarioCommand cmd) 
+	{
+		if(this.equals(cmd))
+		{
+			return true;
+		}
+		if(this.NUM_BUTTONS_IN_SCENARIO == cmd.NUM_BUTTONS_IN_SCENARIO &&
+				this.NUM_CELLS_IN_SCENARIO == cmd.NUM_CELLS_IN_SCENARIO &&
+				Arrays.deepEquals(this.arguments, cmd.getArguments()) &&
+				this.command == cmd.command)
+		{
+			return true;
+		}
+		
+		return false;
+	}
+	
+	
+	
 }
