@@ -98,6 +98,11 @@ public class ScenarioFormatter {
 		}
 		
 	}
+	
+	public static Scenario importParse()
+	{
+		return new Scenario();
+	}
 	//TODO add command validate to check command like skip are closed
 	
 

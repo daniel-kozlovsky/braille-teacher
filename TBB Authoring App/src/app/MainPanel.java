@@ -1,107 +1,92 @@
 package app;
 
-import java.awt.Dimension;
-import java.awt.TextArea;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
 import java.util.Scanner;
-
 import javax.swing.*;
-
 import scenario.Scenario;
-import scenario.ScenarioCommand;
 import scenario.EnumPossibleCommands;
 
 public class MainPanel extends JPanel {
-	
-	//common button size for styling consistency
-	public final Dimension BUTTON_SIZE = new Dimension(100, 30);
+
 	private JFrame parent;
-	
-	//check master
-	
-	JButton buttonNewScenario;
-	JButton buttonImportScenario;
+
+	JButton buttonNewScenario, buttonImportScenario;
 	Scenario importedScenario = new Scenario();
-	
-	public MainPanel(JFrame parent)
-	{
+
+	public MainPanel(JFrame parent) {
 		this.parent = parent;
 		initComponents();
 	}
-	
-	private void initComponents()
-	{
+
+	private void initComponents() {
 		
-		TextArea ta = new TextArea();
-		
-		//Import new Scenario Button
+		//mock import scenario
+		for(int i=0;i<10;i++){
+		importedScenario.addCommand(
+				importedScenario.createNewCommand(EnumPossibleCommands.PAUSE, new Object[] { i+10 }));
+			
+		}
+
+		// import
 		buttonImportScenario = new JButton("Import Scenario");
-		buttonImportScenario.setSize(BUTTON_SIZE);
-		buttonImportScenario.setLocation(30,30);
-		buttonImportScenario.getAccessibleContext().setAccessibleName("Import Scenario");
-		buttonImportScenario.getAccessibleContext().setAccessibleDescription("description test");
-		buttonImportScenario.setVisible(true);
-		buttonImportScenario.getAccessibleContext().setAccessibleDescription("Open Scenario file.");
-		
-		//Create new Scenario button
-		buttonNewScenario = new JButton("New Scenario...");
-		buttonNewScenario.setSize(BUTTON_SIZE);
-		buttonNewScenario.setLocation(30, 50);
-		buttonNewScenario.setVisible(true);
-		buttonNewScenario.getAccessibleContext().setAccessibleDescription("Create a new Scenario.");
-		buttonNewScenario.addActionListener(new ActionListener(){
+		buttonImportScenario.getAccessibleContext().setAccessibleName("Import an existing Scenario");
+		buttonImportScenario.getAccessibleContext()
+				.setAccessibleDescription("Open and edit an existing Scenario file.");
+
+		buttonImportScenario.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				
-				ScenarioCreator sc = new ScenarioCreator(parent,importedScenario);
-				parent.getContentPane().removeAll();
-				parent.getContentPane().add(sc);
-				parent.revalidate();
-				sc.setVisible(true);
-				
-			}
-		});
-		
-		buttonImportScenario.addActionListener(new ActionListener(){
 
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				
 				JFileChooser fileChooser = new JFileChooser();
-				fileChooser.showOpenDialog(buttonNewScenario);
-				try {
-					Scanner scanner = new Scanner(fileChooser.getSelectedFile());
-					
-					int i=0;
-					while(scanner.hasNext()){
-						importedScenario.addCommand(importedScenario.createNewCommand(EnumPossibleCommands.PAUSE, new Object[] {10}));
-						ta.append(importedScenario.getCommand(i).getName()+'\n');
-						i++;
-						scanner.next();
+				int result = fileChooser.showOpenDialog(buttonNewScenario);
+
+				if (result == JFileChooser.APPROVE_OPTION) {
+					try {
+
+						Scanner scanner = new Scanner(fileChooser.getSelectedFile());
+						while (scanner.hasNext()) {
+							//TODO: read and parse selected file
+							scanner.next();
+						}
+						scanner.close();
+
+						openScenarioCreator();
+
+					} catch (FileNotFoundException e) {
+						e.printStackTrace();
 					}
-					scanner.close();
-					
-					ScenarioCreator sc = new ScenarioCreator(parent, importedScenario);
-					parent.getContentPane().removeAll();
-					parent.getContentPane().add(sc);
-					parent.revalidate();
-					sc.setVisible(true);
-					
-				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
 				}
-				
 			}
 		});
-		
-		this.add(ta);
+
+		// create
+		buttonNewScenario = new JButton("New Scenario");
+		buttonNewScenario.getAccessibleContext().setAccessibleName("Create a New Scenario");
+		buttonNewScenario.getAccessibleContext()
+				.setAccessibleDescription("Create a new Scenario using the Scenario Editor.");
+
+		buttonNewScenario.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				openScenarioCreator();
+			}
+		});
 		this.add(buttonImportScenario);
 		this.add(buttonNewScenario);
+	}
+
+	private void openScenarioCreator() {
+
+		ScenarioCreator sc = new ScenarioCreator(parent, importedScenario);
+		parent.getContentPane().removeAll();
+		parent.getContentPane().add(sc);
+		parent.revalidate();
+		sc.setVisible(true);
+
 	}
 
 }
