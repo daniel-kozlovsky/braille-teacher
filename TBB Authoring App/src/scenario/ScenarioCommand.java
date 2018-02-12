@@ -1,6 +1,5 @@
 package scenario;
 
-import java.io.InvalidClassException;
 import java.util.Arrays;
 
 /**
@@ -25,9 +24,20 @@ public class ScenarioCommand{
 	 * @param numcells number of braille cells in the scenario
 	 * @param numbuttons number of buttons in the scenario
 	 * @param arguments argument for specified command. If no arguments are required, pass in null.
+	 * 
+	 * @throws IllegalArgumentException
 	 */
 	ScenarioCommand(EnumPossibleCommands command, Object[] arguments, int numCells, int numButtons)
+			throws IllegalArgumentException, NullPointerException
 	{
+		if(command == null)
+		{
+			throw new NullPointerException("command must not be null!");
+		}
+		if(numCells < 0 || numButtons < 0)
+		{
+			throw new IllegalArgumentException("Cannot have negative amount of cells or buttons!");
+		}
 		NUM_CELLS_IN_SCENARIO = numCells;
 		NUM_BUTTONS_IN_SCENARIO =  numButtons;
 		this.command = command;
