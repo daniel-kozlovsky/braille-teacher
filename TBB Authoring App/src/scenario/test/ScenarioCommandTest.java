@@ -22,17 +22,18 @@ class ScenarioCommandTest {
 	final int SCENARIOS_TO_REPEAT = TEST_NUM_CELLS_SET.length * TEST_NUM_BUTTONS_SET.length;
 	
 	//Test cases for correct inputs
+
 	String[] correctTestStringSet = new String[] {"10101010", "11111111"};
 	int correctTestInt;
 	Character[] correctTestCharSet = new Character[] {'A', 'Z'};
+
 	
 	//Test cases for incorrect inputs
 	String[] incorrectTestStringSet = {""};
 	int[] incorrectTestIntSet;
 	Character[] incorrectTestCharSet = {'*'};
-	
+
 	Random rand = new Random();
-	
 	
 	@BeforeEach
 	protected void setUpClass() throws Exception
