@@ -124,7 +124,13 @@ class ScenarioCommandTest {
 		
 		for(EnumPossibleCommands cmd : EnumPossibleCommands.values())
 		{
+			
 			Class<?>[] argTypes = cmd.getArgumentTypes();
+			
+			if(argTypes.length == 0)
+			{
+				continue;
+			}
 			Object[] args = new Object[argTypes.length];
 			Object[] args_dif = new Object[argTypes.length];
 			
@@ -151,8 +157,8 @@ class ScenarioCommandTest {
 			ScenarioCommand cmdA = sc.createNewCommand(cmd, args);
 			ScenarioCommand cmdB = sc.createNewCommand(cmd, args_dif);
 			
-			assertFalse(cmdA.deepEquals(cmdB));
-			assertFalse(cmdB.deepEquals(cmdA));
+			assertFalse(cmdA.deepEquals(cmdB), "Failed for: " + cmd.getName());
+			assertFalse(cmdB.deepEquals(cmdA), "Failed for: " + cmd.getName());
 		}
 	}
 	
