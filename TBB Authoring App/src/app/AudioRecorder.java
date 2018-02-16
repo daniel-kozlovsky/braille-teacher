@@ -14,6 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Color;
 
 public class AudioRecorder extends JPanel {
 
@@ -23,22 +24,24 @@ public class AudioRecorder extends JPanel {
 	private String saveLoc = "AudioFiles/";
 	private AudioFileFormat.Type fileType = AudioFileFormat.Type.WAVE;
 	private TargetDataLine dataLine;
+	AudioFormat format;
+	boolean stopCapture = false;
+	File audioFile;
 
 	// components
-	private JButton btnRecord;
-	private JTextField txtDuration, txtFileName;
+	private JButton btnRecord, btnStop;
+	private JTextField txtFileName;
 	private Box verticalBox;
 	private Box horizontalBox;
 	private Box horizontalBox_1;
 	private JLabel lblNewLabel;
-	private JLabel lblRecordingDuration;
 	private Component verticalStrut;
-	private Component verticalStrut_1;
 	private Box horizontalBox_2;
 	private Component horizontalStrut;
 	private Component horizontalStrut_1;
-	private Component verticalStrut_3;
 	private Component verticalStrut_4;
+	private Component horizontalStrut_2;
+	private JLabel lblRecording;
 
 	public AudioRecorder() {
 		initComponents();
@@ -54,7 +57,7 @@ public class AudioRecorder extends JPanel {
 		lblNewLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		lblNewLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		verticalBox.add(lblNewLabel);
-		
+
 		verticalStrut_4 = Box.createVerticalStrut(8);
 		verticalBox.add(verticalStrut_4);
 
@@ -67,104 +70,120 @@ public class AudioRecorder extends JPanel {
 
 		// deploy
 		txtFileName.setColumns(16);
-		
+
 		verticalStrut = Box.createVerticalStrut(20);
 		verticalBox.add(verticalStrut);
 
-		lblRecordingDuration = new JLabel("Recording Duration(sec.):");
-		lblRecordingDuration.setAlignmentX(Component.CENTER_ALIGNMENT);
-		lblRecordingDuration.setHorizontalAlignment(SwingConstants.LEFT);
-		verticalBox.add(lblRecordingDuration);
-		
-		verticalStrut_3 = Box.createVerticalStrut(8);
-		verticalBox.add(verticalStrut_3);
-		
 		horizontalBox_2 = Box.createHorizontalBox();
 		verticalBox.add(horizontalBox_2);
-		
+
 		horizontalStrut = Box.createHorizontalStrut(40);
 		horizontalBox_2.add(horizontalStrut);
-		txtDuration = new JTextField();
-		horizontalBox_2.add(txtDuration);
-		txtDuration.setHorizontalAlignment(SwingConstants.CENTER);
-		txtDuration.setColumns(3);
-		txtDuration.setText("2");
-		
+
 		horizontalStrut_1 = Box.createHorizontalStrut(40);
 		horizontalBox_2.add(horizontalStrut_1);
-		
-		verticalStrut_1 = Box.createVerticalStrut(20);
-		verticalBox.add(verticalStrut_1);
 
 		horizontalBox = Box.createHorizontalBox();
 		verticalBox.add(horizontalBox);
+
+		btnStop = new JButton("Stop");
+		horizontalBox.add(btnStop);
+
+		horizontalStrut_2 = Box.createHorizontalStrut(20);
+		horizontalBox.add(horizontalStrut_2);
 
 		// reference
 		btnRecord = new JButton("Record");
 		horizontalBox.add(btnRecord);
 
+		lblRecording = new JLabel("Recording...");
+		lblRecording.setForeground(Color.RED);
+		lblRecording.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblRecording.setAlignmentX(Component.CENTER_ALIGNMENT);
+		lblRecording.setVisible(false);
+		verticalBox.add(lblRecording);
+
 		// listeners
 		btnRecord.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
-					recordAndSave(Integer.parseInt(txtDuration.getText()), txtFileName.getText());
+					recordAndSave(txtFileName.getText());
 				} catch (NumberFormatException | IOException e) {
 					System.out.print("Record failed, Exception: " + e.getMessage() + " due to " + e.getCause());
 					e.printStackTrace();
 				}
 			}
 		});
+
+		btnStop.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				System.out.print("Stopped.");
+				lblRecording.setVisible(false);
+				dataLine.stop();
+				dataLine.close();
+				dataLine.flush();
+			}
+		});
 	}
 
-	private void recordAndSave(int duration, String fileName) throws IOException {
+	private void recordAndSave(String fileName) throws IOException {
 
-		File audioFile = new File(saveLoc + fileName + ".wav");
+		lblRecording.setVisible(true);
+
+		audioFile = new File(saveLoc + fileName + ".wav");
 
 		if (audioFile.exists() != true) {
 			audioFile.createNewFile();
 			System.out.println("Created file.");
 		}
+		// format = new AudioFormat(16000, 16, 2, true, true);
+		// DataLine.Info lineInfo = new DataLine.Info(TargetDataLine.class, format);
 
-		Thread timer = new Thread(new Runnable() {
-			public void run() {
-				try {
-					Thread.sleep(duration * 1000);
-				} catch (InterruptedException ex) {
-					ex.printStackTrace();
-				}
-				if (dataLine.isActive()) {
-					System.out.println("Recording finished.");
-					dataLine.stop();
-					dataLine.close();
-					dataLine.flush();
-				}
+		/*
+		 * Thread timer = new Thread(new Runnable() { public void run() { try {
+		 * Thread.sleep(duration * 1000); } catch (InterruptedException ex) {
+		 * ex.printStackTrace(); } if (dataLine.isActive()) {
+		 * System.out.println("Recording finished."); dataLine.stop(); dataLine.close();
+		 * //dataLine.flush(); } } });
+		 */
+
+		new timer().start();/*
+							 * 
+							 * try { format = new AudioFormat(16000, 16, 2, true, true); DataLine.Info
+							 * lineInfo = new DataLine.Info(TargetDataLine.class, format);
+							 * 
+							 * if (!AudioSystem.isLineSupported(lineInfo)) {
+							 * System.out.print("Dataline not supported."); dataLine.stop();
+							 * dataLine.close(); dataLine.flush(); }
+							 * 
+							 * dataLine = (TargetDataLine) AudioSystem.getLine(lineInfo);
+							 * dataLine.open(format); dataLine.start();
+							 * 
+							 * AudioInputStream stream = new AudioInputStream(dataLine);
+							 * AudioSystem.write(stream, fileType, audioFile);
+							 * 
+							 * } catch (LineUnavailableException ex) { ex.printStackTrace(); } catch
+							 * (IOException ioe) { ioe.printStackTrace(); }
+							 */
+	}
+
+	class timer extends Thread {
+		public void run() {
+
+			try {
+				format = new AudioFormat(16000, 16, 2, true, true);
+				DataLine.Info lineInfo = new DataLine.Info(TargetDataLine.class, format);
+				dataLine = (TargetDataLine) AudioSystem.getLine(lineInfo);
+				dataLine.open(format);
+				dataLine.start();
+				AudioInputStream stream = new AudioInputStream(dataLine);
+				AudioSystem.write(stream, fileType, audioFile);
+
+			} catch (LineUnavailableException | IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-		});
-
-		timer.start();
-
-		try {
-			AudioFormat format = new AudioFormat(16000, 16, 2, true, true);
-			DataLine.Info lineInfo = new DataLine.Info(TargetDataLine.class, format);
-
-			if (!AudioSystem.isLineSupported(lineInfo)) {
-				System.out.print("Dataline not supported.");
-				dataLine.stop();
-				dataLine.close();
-				dataLine.flush();
-			}
-
-			dataLine = (TargetDataLine) AudioSystem.getLine(lineInfo);
-			dataLine.open(format);
-			dataLine.start();
-
-			AudioInputStream stream = new AudioInputStream(dataLine);
-			AudioSystem.write(stream, fileType, audioFile);
-
-		} catch (LineUnavailableException ex) {
-			ex.printStackTrace();
-		} catch (IOException ioe) {
-			ioe.printStackTrace();
 		}
 	}
+
 }
