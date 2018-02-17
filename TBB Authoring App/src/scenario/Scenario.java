@@ -39,7 +39,7 @@ public class Scenario implements Iterable<ScenarioCommand> {
 	 */
 	public Scenario(int numcells, int numbuttons) throws IllegalArgumentException
 	{
-		if(numcells < 0 | numbuttons < 0)
+		if(numcells < 0 || numbuttons < 0)
 		{
 			throw new IllegalArgumentException("Cannot have negative number of buttons or cells!");
 		}
