@@ -40,7 +40,7 @@ public class ScenarioFormatter {
 		format(scenario);
 		try
 		{
-			File file = new File(SAVED_SCENARIOS_PATH + filename + ".txt");
+			File file = new File(SAVED_SCENARIOS_PATH + filename);
 			PrintWriter printWriter = new PrintWriter(file);
 			for(String s : scenarioText)
 			{
@@ -88,10 +88,14 @@ public class ScenarioFormatter {
 			{
 				//each argument
 				//safe because only integer or String allowed
-				for(Object arg : command.getArguments())
+				for(int i = 0; i < arguments.length; i++)
 				{
 					
-						stringToAdd.append(arg.toString() + " ");
+					stringToAdd.append(arguments[i].toString());
+					if(i != arguments.length - 1)
+					{
+						stringToAdd.append(" "); //space to separate arguments as long as not last argument
+					}
 				}
 			}
 			
@@ -103,17 +107,38 @@ public class ScenarioFormatter {
 	/**Parses a text file into a Scenario object. Overwrites any existing scenarios.
 	 * 
 	 * @param path The path and name of the file to import
-	 * @return A parsed Scenario imported from a text file
+	 * @return A parsed Scenario imported from a text file. Will return null if number of cells 
+	 * and buttons is not the first two lines in the text file.
 	 */
 	public static Scenario importParse(String path)
 	{
 		Scenario importedScenario;
-		File file = new File(path);
+		File file = new File(SAVED_SCENARIOS_PATH + path);
 		try
 		{
 			Scanner fileScan = new Scanner(file);
-			String numCellsString = fileScan.nextLine();
-			String numButtonsString = fileScan.nextLine();
+			String numButtonsString;
+			String numCellsString;
+			
+			if(fileScan.hasNext())
+			{
+				numCellsString = fileScan.nextLine();
+			}
+			else 
+			{
+				fileScan.close();
+				return null;
+			}
+			if(fileScan.hasNext())
+			{
+				numButtonsString = fileScan.nextLine();
+				
+			}
+			else
+			{
+				fileScan.close();
+				return null;
+			}
 			
 			numButtonsString = numButtonsString.substring(7, numButtonsString.length());
 			numCellsString = numCellsString.substring(6, numCellsString.length());
@@ -146,18 +171,20 @@ public class ScenarioFormatter {
 						{
 							continue;
 						}
-						//match command to format
-						//TODO fix bug -- format length longer than line
+				
 						int possibleCommandLength = possibleCommand.getFormat().length();
 						//wrong command if format length is longer than whole line
 						if(possibleCommandLength > line.length())
 						{
-							break;
+							continue;
 						}
+						//match command to format
+						//TODO: fix bug with GO_HERE format
 						if(line.substring(0, possibleCommandLength).equals(possibleCommand.getFormat()))
 						{
 							//store arguments
 							ArrayList<Object> argsList = new ArrayList<Object>();
+							
 							
 							String arguments = line.substring(possibleCommandLength);
 							
@@ -173,7 +200,7 @@ public class ScenarioFormatter {
 								}
 								
 							}
-							else
+							else if(possibleArgs.length == 1)
 							{
 								argsList.add(arguments);
 							}
