@@ -133,7 +133,34 @@ public class Scenario implements Iterable<ScenarioCommand> {
 		runningScenario.remove(command);
 		runningScenario.add(newIndex, command);
 	}
-
-	//TODO implement equals for testing
+	
+	/**
+	 * Test two scenarios for equality. Equality is defined by having same field values as well as same commands in 
+	 * the same order. Each command's equality is based on ScenarioCommand.deepEquals().
+	 * @param scenario The second scenario to compare.
+	 */
+	public boolean deepEquals(Scenario scenario)
+	{
+		if(this.equals(scenario))
+		{
+			return true;
+		}
+		if(this.NUM_BUTTONS == scenario.getNumButtons() &&
+				this.NUM_CELLS == scenario.getNumCells() &&
+				this.getNumCommands() == scenario.getNumCommands())
+		{
+			for(int i = 0; i < this.getNumCommands(); i++)
+			{
+				if(!this.getCommand(i).deepEquals(scenario.getCommand(i)))
+				{
+					return false;
+				}
+			}
+			return true;
+		}
+		return false;
+			
+	}
+	
 
 }

@@ -23,5 +23,23 @@ class ScenarioTest {
 		assertEquals(sc.getCommand(0), cmdB);
 		
 	}
+	
+	@Test
+	void testDeepEquals()
+	{
+		Scenario scA = new Scenario(1,1);
+		Scenario scB = new Scenario(1,1);
+		
+		scA.addCommand(scA.createNewCommand(EnumPossibleCommands.PAUSE, new Object[] {1}));
+		scA.addCommand(scA.createNewCommand(EnumPossibleCommands.READ_TEXT, new Object[] {"test"}));
+		scA.addCommand(scA.createNewCommand(EnumPossibleCommands.DISP_STRING, new Object[] {"test"}));
+		
+		scB.addCommand(scB.createNewCommand(EnumPossibleCommands.PAUSE, new Object[] {1}));
+		scB.addCommand(scB.createNewCommand(EnumPossibleCommands.READ_TEXT, new Object[] {"test"}));
+		scB.addCommand(scB.createNewCommand(EnumPossibleCommands.DISP_STRING, new Object[] {"test"}));
+		
+		assertTrue(scA.deepEquals(scB));
+		
+	}
 
 }

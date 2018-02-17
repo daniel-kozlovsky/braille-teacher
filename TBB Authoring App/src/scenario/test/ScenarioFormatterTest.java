@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
+import scenario.EnumPossibleCommands;
 import scenario.Scenario;
 import scenario.ScenarioFormatter;
 
@@ -17,10 +18,13 @@ class ScenarioFormatterTest {
 
 	@Test
 	void testImportParse_NO_COMMANDS() {
-		Scenario expScenario = new Scenario(1,1);
-		Scenario actualScenario = ScenarioFormatter.importParse("scenarios\\importTestScenario_01");
 		
-		assertEquals(expScenario, actualScenario);
+		Scenario expScenario = new Scenario(1,1);
+		expScenario.addCommand(expScenario.createNewCommand(EnumPossibleCommands.PAUSE, new Object[] {1}));
+		expScenario.addCommand(expScenario.createNewCommand(EnumPossibleCommands.END_REPEAT, new Object[] {}));
+		Scenario actualScenario = ScenarioFormatter.importParse("scenarios\\test_scenarios\\importTestScenario_01");
+		
+		assertTrue(expScenario.deepEquals(actualScenario));
 	}
 
 }

@@ -23,12 +23,12 @@ public enum EnumPossibleCommands {
 	DISP_STRING ("Display Text", "Shows text on the screen",
 			"/~disp-string:", new Class<?>[] {String.class}),
 	/**
-	 * Sets up beginning of text to be repeated
+	 * Sets up beginning of text to be repeated. Must be accompanied with END_REPEAT
 	 */
 	REPEAT("Repeat", "Sets the beginning of some text to be repeated",
 			"/~repeat:", new Class<?>[] {String.class}),
 	/**
-	 * Sets up end of text to be repeated. Must be accompanied with END_REPEAT
+	 * Sets up end of text to be repeated. 
 	 */
 	END_REPEAT("End Repeat", "Sets the end of some text to be repeated", 
 			"/~end-repeat", new Class<?>[] {}),

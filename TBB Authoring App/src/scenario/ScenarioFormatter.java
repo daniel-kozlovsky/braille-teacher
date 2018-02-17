@@ -148,12 +148,18 @@ public class ScenarioFormatter {
 						}
 						//match command to format
 						//TODO fix bug -- format length longer than line
-						if(line.substring(0, possibleCommand.getFormat().length()).equals(possibleCommand.getFormat()))
+						int possibleCommandLength = possibleCommand.getFormat().length();
+						//wrong command if format length is longer than whole line
+						if(possibleCommandLength > line.length())
+						{
+							break;
+						}
+						if(line.substring(0, possibleCommandLength).equals(possibleCommand.getFormat()))
 						{
 							//store arguments
 							ArrayList<Object> argsList = new ArrayList<Object>();
 							
-							String arguments = line.substring(possibleCommand.getFormat().length());
+							String arguments = line.substring(possibleCommandLength);
 							
 							//Parsing arguments
 							Class<?>[] possibleArgs = possibleCommand.getArgumentTypes();
