@@ -155,7 +155,7 @@ public class ScenarioCommand{
 				}
 				break;
 			case PAUSE:
-				if((int)args[0] < 1)
+				if((int)args[0] <= 0)
 				{
 					throw new IllegalArgumentException("Cannot pause for negative or zero time!");
 				}
@@ -172,13 +172,13 @@ public class ScenarioCommand{
 					throw new IllegalArgumentException("Must have some string to repeat!");
 				}break;
 			case REPEAT_BUTTON:
-				if((int)args[0] < 0 || (int)args[0] > NUM_BUTTONS_IN_SCENARIO)
+				if((int)args[0] < 1 || (int)args[0] > NUM_BUTTONS_IN_SCENARIO)
 				{
 					throw new IllegalArgumentException("Buttons index must correspond to existing button!");
 				}
 				break;
 			case SKIP_BUTTON:
-				if((int)args[0] < 0 || (int)args[0] > NUM_BUTTONS_IN_SCENARIO)
+				if((int)args[0] < 1 || (int)args[0] > NUM_BUTTONS_IN_SCENARIO)
 				{
 					throw new IllegalArgumentException("Buttons index must correspond to existing button!");
 				}
@@ -213,13 +213,13 @@ public class ScenarioCommand{
 				}
 				break;
 			case DISP_CLEAR_CELL:
-				if((int)args[0] < 0 || (int)args[0] > NUM_CELLS_IN_SCENARIO)
+				if((int)args[0] < 1 || (int)args[0] > NUM_CELLS_IN_SCENARIO)
 				{
 					throw new IllegalArgumentException("Cell index must correspond to existing cell");
 				}
 				break;
 			case DISP_CELL_PINS:
-				if((int)args[0] < 0 || (int)args[0] > NUM_CELLS_IN_SCENARIO)
+				if((int)args[0] < 1 || (int)args[0] > NUM_CELLS_IN_SCENARIO)
 				{
 					throw new IllegalArgumentException("Cell index must correspond to existing cell");
 				}
@@ -233,7 +233,7 @@ public class ScenarioCommand{
 				}
 				break;
 			case DISP_CELL_CHAR:
-				if((int)args[0] < 0 || (int)args[0] > NUM_CELLS_IN_SCENARIO)
+				if((int)args[0] < 1 || (int)args[0] > NUM_CELLS_IN_SCENARIO)
 				{
 					throw new IllegalArgumentException("Cell index must correspond to existing cell");
 				}
@@ -243,7 +243,7 @@ public class ScenarioCommand{
 				}
 				break;
 			case DISP_CELL_RAISE:
-				if((int)args[0] < 0 || (int)args[0] > NUM_CELLS_IN_SCENARIO)
+				if((int)args[0] < 1 || (int)args[0] > NUM_CELLS_IN_SCENARIO)
 				{
 					throw new IllegalArgumentException("Cell index must correspond to existing cell");
 				}
@@ -253,7 +253,7 @@ public class ScenarioCommand{
 				}
 				break;
 			case DISP_CELL_LOWER:
-				if((int)args[0] < 0 || (int)args[0] > NUM_CELLS_IN_SCENARIO)
+				if((int)args[0] < 1 || (int)args[0] > NUM_CELLS_IN_SCENARIO)
 				{
 					throw new IllegalArgumentException("Cell index must correspond to existing cell");
 				}

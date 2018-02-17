@@ -334,11 +334,17 @@ class ScenarioCommandTest {
 	void testSetArguments_wrongArgsAllCommands()
 	{
 		Scenario sc = new Scenario(2,2);
-		incorrectTestIntSet = new int[]{0,3};
+		incorrectTestIntSet = new int[]{0};
 		
 		for(EnumPossibleCommands cmd : EnumPossibleCommands.values())
 		{
+			
 			Class<?>[] argTypes = cmd.getArgumentTypes();
+			
+			if(argTypes.length == 0)//skip no argument commands
+			{
+				continue;
+			}
 			Object[] args = new Object[argTypes.length];
 			
 			//set correct and same arguments
