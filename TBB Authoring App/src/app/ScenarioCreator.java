@@ -274,10 +274,6 @@ public class ScenarioCreator extends JPanel {
 					EnumPossibleCommands cmd = EnumPossibleCommands.DISP_CELL_PINS;
 					sc.addCommand(sc.createNewCommand(cmd, new Object [] {cell,pin}));
 					}
-                
-                
-                
-				
             }
         });
     }
