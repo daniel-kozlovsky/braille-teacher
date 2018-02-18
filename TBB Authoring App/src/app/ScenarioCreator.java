@@ -135,7 +135,7 @@ public class ScenarioCreator extends JPanel {
         
     }
     private void comboxdescription() {
-        // combo box choice change class and method 
+        // combo box state  change 
         class ItemChangeListener implements ItemListener{
             @Override
             public void itemStateChanged(ItemEvent event) {
