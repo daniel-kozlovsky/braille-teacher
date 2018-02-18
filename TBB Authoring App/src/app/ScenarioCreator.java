@@ -324,7 +324,7 @@ public class ScenarioCreator extends JPanel {
 			input.append("Command: "+importedScenario.getCommand(i).getName()+" Args: "+importedScenario.getCommand(i).getArguments()+'\n');
 		}
 		
-		//set mock scenario to textfield
+		
 		//TextField.setText(input.toString());
         
         
