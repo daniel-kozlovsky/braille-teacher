@@ -4,6 +4,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.util.ArrayList;
+import java.util.Random;
+
 import javax.swing.*;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
@@ -26,11 +29,12 @@ public class ScenarioCreator extends JPanel {
     private JButton btnRe = new JButton("Repeat");
     private final JPanel panel_1 = new JPanel();
     private final JLabel lblNewLabel = new JLabel("Please choose a command from the top down menu ");
-    private final JComboBox comboBox = new JComboBox();
+    private final JComboBox<String> comboBox = new JComboBox<String>();
     private int state;
     private String qst;
     private int secpause;
  	private Scenario sc;
+ 	private final JList<String> list = new JList<String>();
  	public ScenarioCreator(JFrame parent, Scenario importedScenario) {
 		//customize the jframe 
 		
@@ -63,16 +67,33 @@ public class ScenarioCreator extends JPanel {
                         .addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 390, Short.MAX_VALUE))
                     .addContainerGap())
         );
-        GroupLayout gl_panel = new GroupLayout(panel);
-        gl_panel.setHorizontalGroup(
-        	gl_panel.createParallelGroup(Alignment.LEADING)
-        		.addGap(0, 206, Short.MAX_VALUE)
-        );
-        gl_panel.setVerticalGroup(
-        	gl_panel.createParallelGroup(Alignment.LEADING)
-        		.addGap(0, 496, Short.MAX_VALUE)
-        );
-        panel.setLayout(gl_panel);
+        panel.setLayout(new BorderLayout(0, 0));
+        /*list.setModel(new AbstractListModel() {
+        	String[] values = new String[] {"Item - 1: Name (Description)", "Item - 2: Name (Description)", "Item - 3: Name (Description)", "Item - 4: Name (Description)", "Item - 5: Name (Description)", "Item - 6: Name (Description)", "Item - 7: Name (Description)", "Item - 8: Name (Description)", "Item - 9: Name (Description)"};
+        	public int getSize() {
+        		return values.length;
+        	}
+        	public Object getElementAt(int index) {
+        		return values[index];
+        	}
+        });*/
+        
+        //mock JList Data
+        DefaultListModel<String> model = new DefaultListModel<>();
+        
+        Scenario scenario = new Scenario();
+        
+        for(int i=0;i<10;i++) {
+        	scenario.addCommand(scenario.createNewCommand(EnumPossibleCommands.PAUSE, new Object[] {i+ (new Random()).nextInt(10)}));
+        }
+        
+        for(int i=0;i<10;i++) {
+        	model.addElement(scenario.getCommand(i).getName() + ": " +scenario.getCommand(i).getArguments()[0]);
+        }
+        
+        list.setModel(model);
+        
+        panel.add(list);
         
        
        // calling buttons method 
