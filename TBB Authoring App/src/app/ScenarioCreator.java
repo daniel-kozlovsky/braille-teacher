@@ -256,6 +256,7 @@ public class ScenarioCreator extends JPanel {
 					EnumPossibleCommands cmd = EnumPossibleCommands.DISP_CLEAR_CELL ;
 					sc.addCommand(sc.createNewCommand(cmd, new Object [] {cells}));
 				}	
+				// disp cell pin
 				else if(state==11)
 				{
 					int cell;
