@@ -418,22 +418,43 @@ public class ScenarioCreator extends JPanel {
     	{
     		case SOUND:
 	    		//Add sound command with arguments 
-	        	//TODO whatever happens here must update args so it can be returned
+	        	//TODO whatever happens here must create a new command
 	    		addAudio audio = new addAudio(parent);
 	    		parent.revalidate();
 	    		audio.setVisible(true);
 	    		
-	    		//CHANGE**********************
-	    		args = null;
-	    		//CHANGE**********************
+	    		//**********
+	    		//workingScenario.addCommand(newCommand);
+	    		//**********
 	    		break;
-    		
+	    		
+    		case REPEAT:
+    			args = getArgumentsThroughDialog(cmdType);
+    	    	workingScenario.addCommand(workingScenario.createNewCommand(cmdType, args));
+    	    	workingScenario.addCommand(workingScenario.createNewCommand(EnumPossibleCommands.END_REPEAT,
+    	    			new Object[] {}));
+    			break;
+    			
+    		case SKIP_BUTTON:
+    			args = getArgumentsThroughDialog(cmdType);
+    	    	workingScenario.addCommand(workingScenario.createNewCommand(cmdType, args));
+    	    	workingScenario.addCommand(workingScenario.createNewCommand(EnumPossibleCommands.SKIP_LOCATION,
+    	    			new Object[] {args[1]}));
+    			break;
+    			
+    		case SKIP:
+    			args = getArgumentsThroughDialog(cmdType);
+    	    	workingScenario.addCommand(workingScenario.createNewCommand(cmdType, args));
+    	    	workingScenario.addCommand(workingScenario.createNewCommand(EnumPossibleCommands.SKIP_LOCATION, 
+    	    			new Object[] {args[1]}));
+    			break;
+    			
+    		//All other commands are fine	
     		default:
     			args = getArgumentsThroughDialog(cmdType);
+    			workingScenario.addCommand(workingScenario.createNewCommand(cmdType, args));
     	}
     	
-    	ScenarioCommand newCommand = workingScenario.createNewCommand(cmdType, args);
-    	workingScenario.addCommand(newCommand);
     	updateSessionModel();
     }
     /**
@@ -449,8 +470,10 @@ public class ScenarioCreator extends JPanel {
      * Handles the click event for the Move Up button
      */
     private void btnMoveUpClickHandler()
-    {
-    	swapCommands(sessionScenarioList.getSelectedIndex(),sessionScenarioList.getSelectedIndex()-1);
+    {	
+    	//doesnt work anymore
+    	//swapCommands(sessionScenarioList.getSelectedIndex(),sessionScenarioList.getSelectedIndex()-1);
+    	workingScenario.moveCommand(workingScenario.getCommand(listBoxIndex), listBoxIndex - 1);
     	updateSessionModel();
     }
     
@@ -459,7 +482,9 @@ public class ScenarioCreator extends JPanel {
      */
     private void btnMoveDownClickHandler()
     {
-    	swapCommands(sessionScenarioList.getSelectedIndex(),sessionScenarioList.getSelectedIndex()+1);
+    	//doesnt work anymore
+    	//swapCommands(sessionScenarioList.getSelectedIndex(),sessionScenarioList.getSelectedIndex()+1);
+    	workingScenario.moveCommand(workingScenario.getCommand(listBoxIndex), listBoxIndex + 1);
     	updateSessionModel();
     }
     
