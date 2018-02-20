@@ -15,15 +15,24 @@ import scenario.EnumPossibleCommands;
 import scenario.Scenario;
 import scenario.ScenarioCommand;
 public class ScenarioCreator extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	protected static final EnumPossibleCommands EnimPossibleCommands = null;
 	private JFrame parent;
-	private Scenario importedScenario;
+	
+	//list management
+	private Scenario sessionScenario;
+	private DefaultListModel<String> sessionModel = new DefaultListModel<>();
+ 	private final JList<String> sessionScenarioList = new JList<String>();
+	
     private String cell;
     private String buttons;
     private final JPanel panel = new JPanel();
     private final JButton btnAddCommand = new JButton("Add Command");
     private JButton btnRemove = new JButton("Remove");
-    private JButton btnmoveUP = new JButton("Move Up");
+    private JButton btnMoveUp = new JButton("Move Up");
     private JButton btnMoveDown = new JButton("Move down");
     private JButton btnEdit = new JButton("Edit");
     private JButton btnRe = new JButton("Repeat");
@@ -34,16 +43,14 @@ public class ScenarioCreator extends JPanel {
     private String qst;
     private int secpause;
  	private Scenario sc;
- 	private final JList<String> list = new JList<String>();
- 	public ScenarioCreator(JFrame parent, Scenario importedScenario) {
-		//customize the jframe 
-		
+ 	
+ 	public ScenarioCreator(JFrame parent, Scenario sessionScenario) {
+		this.sessionScenario=sessionScenario;
 		this.parent = parent;
-        
-		this.importedScenario = importedScenario;
+		
         this.parent.setTitle("Creat new Scenario");
         this.parent.setSize(700, 700);
-        // calling the joptiopn method 
+        // calling the joption method 
         Jopttion();
         sc = new Scenario((Integer.parseInt(cell)),(Integer.parseInt(buttons)));
 
@@ -68,33 +75,25 @@ public class ScenarioCreator extends JPanel {
                     .addContainerGap())
         );
         panel.setLayout(new BorderLayout(0, 0));
-        /*list.setModel(new AbstractListModel() {
-        	String[] values = new String[] {"Item - 1: Name (Description)", "Item - 2: Name (Description)", "Item - 3: Name (Description)", "Item - 4: Name (Description)", "Item - 5: Name (Description)", "Item - 6: Name (Description)", "Item - 7: Name (Description)", "Item - 8: Name (Description)", "Item - 9: Name (Description)"};
-        	public int getSize() {
-        		return values.length;
+        
+        //list setup
+        panel.add(sessionScenarioList);
+        
+        sessionScenarioList.setModel(sessionModel);
+        
+        if(sessionScenario!=null) {
+        updateModel();
+        }else {
+        	
+        	// mock sessionModel
+        	sessionModel = new DefaultListModel();
+        	
+        	for(int i=0;i<10;i++) {
+        		sessionModel.addElement("Item - "+ (i+1) +": Name (Description)");
         	}
-        	public Object getElementAt(int index) {
-        		return values[index];
-        	}
-        });*/
-        
-        //mock JList Data
-        DefaultListModel<String> model = new DefaultListModel<>();
-        
-        Scenario scenario = new Scenario();
-        
-        for(int i=0;i<10;i++) {
-        	scenario.addCommand(scenario.createNewCommand(EnumPossibleCommands.PAUSE, new Object[] {i+ (new Random()).nextInt(10)}));
+        	
+        	sessionScenarioList.setModel(sessionModel);
         }
-        
-        for(int i=0;i<10;i++) {
-        	model.addElement(scenario.getCommand(i).getName() + ": " +scenario.getCommand(i).getArguments()[0]);
-        }
-        
-        list.setModel(model);
-        
-        panel.add(list);
-        
        
        // calling buttons method 
         comboxdescription();
@@ -120,7 +119,7 @@ public class ScenarioCreator extends JPanel {
                             .addGap(47))
                         .addGroup(Alignment.TRAILING, gl_panel_1.createSequentialGroup()
                             .addGroup(gl_panel_1.createParallelGroup(Alignment.TRAILING)
-                                .addComponent(btnmoveUP, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 382, Short.MAX_VALUE)
+                                .addComponent(btnMoveUp, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 382, Short.MAX_VALUE)
                                 .addComponent(btnRe, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 382, Short.MAX_VALUE)
                                 .addComponent(btnEdit, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 382, Short.MAX_VALUE)
                                 .addComponent(btnMoveDown, GroupLayout.DEFAULT_SIZE, 382, Short.MAX_VALUE))
@@ -142,7 +141,7 @@ public class ScenarioCreator extends JPanel {
                     .addGap(18)
                     .addComponent(btnRemove, GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
                     .addGap(27)
-                    .addComponent(btnmoveUP, GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
+                    .addComponent(btnMoveUp, GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
                     .addGap(18)
                     .addComponent(btnMoveDown, GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
                     .addGap(18)
@@ -308,14 +307,20 @@ public class ScenarioCreator extends JPanel {
     }
     public void moveUpBtn()
     {
-        btnmoveUP.setFont(new Font("Tahoma", Font.PLAIN, 14));
-        btnmoveUP.addActionListener(new ActionListener() {
+    	btnMoveUp.setFont(new Font("Tahoma", Font.PLAIN, 14));
+    	btnMoveUp.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
+            	swapCommands(sessionScenarioList.getSelectedIndex(),sessionScenarioList.getSelectedIndex()-1);
             }
         });
     }
     public void moveDownBtn() {
         btnMoveDown.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        btnMoveDown.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+            	swapCommands(sessionScenarioList.getSelectedIndex(),sessionScenarioList.getSelectedIndex()+1);
+            }
+        });
     }
     public void editBtn() {
         btnEdit.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -342,7 +347,7 @@ public class ScenarioCreator extends JPanel {
         //mock scenario
         StringBuffer input = new StringBuffer();
 		for (int i=0;i<10;i++) {
-			input.append("Command: "+importedScenario.getCommand(i).getName()+" Args: "+importedScenario.getCommand(i).getArguments()+'\n');
+			//input.append("Command: "+importedScenario.getCommand(i).getName()+" Args: "+importedScenario.getCommand(i).getArguments()+'\n');
 		}
 		
 		//set mock scenario to textfield
@@ -350,13 +355,23 @@ public class ScenarioCreator extends JPanel {
         
         
     }
+    
+    private void updateModel(){
+    	//TODO get Scenario Size
+    		sessionModel.clear();
+    	for(int i=0;i<10;i++) {
+    		ScenarioCommand command = sessionScenario.getCommand(i);
+    		String element = command.getName()+" "+command.getArguments();
+    		sessionModel.addElement(element);
+    	}
+    }
+    
+    private void swapCommands(int first, int second) {
+    	if(second<0 || second>sessionModel.size()-1) {
+    		return;
+    	}
+        String tmp = (String) sessionModel.get(first);
+        sessionModel.set(first, sessionModel.get(second));
+        sessionModel.set(second, tmp);
+    }
 }
-
-
-
-
-
-
-
-
-
