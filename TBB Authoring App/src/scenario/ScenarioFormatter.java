@@ -171,21 +171,18 @@ public class ScenarioFormatter {
 						{
 							continue;
 						}
-				
 						int possibleCommandLength = possibleCommand.getFormat().length();
 						//wrong command if format length is longer than whole line
 						if(possibleCommandLength > line.length())
 						{
 							continue;
 						}
+						
 						//match command to format
-						//TODO: fix bug with GO_HERE format
 						if(line.substring(0, possibleCommandLength).equals(possibleCommand.getFormat()))
 						{
 							//store arguments
 							ArrayList<Object> argsList = new ArrayList<Object>();
-							
-							
 							String arguments = line.substring(possibleCommandLength);
 							
 							//Parsing arguments

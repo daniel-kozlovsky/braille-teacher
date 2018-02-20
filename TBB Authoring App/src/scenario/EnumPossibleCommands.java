@@ -9,6 +9,7 @@ package scenario;
  *
  */
 public enum EnumPossibleCommands {
+	//NOTE SKIP_LOCATION must be last in the enumerator.
 	
 	READ_TEXT ("Read Text", "Reads text outloud",
 			"", new Class<?>[] {String.class}),
@@ -63,11 +64,7 @@ public enum EnumPossibleCommands {
 	 */
 	SKIP("Skip", "Skips to specified location in scenario",
 			"/~skip:", new Class<?>[] {String.class}),
-	/**
-	 * Location to skip to. 
-	 */
-	SKIP_LOCATION("Skip Location", "Location to skip to", 
-			"/~", new Class<?>[] {String.class}),
+	
 	/**
 	 * Clears all braille cells in the simulator
 	 */
@@ -97,7 +94,12 @@ public enum EnumPossibleCommands {
 	 * Lower a specific pin on a braille cell
 	 */
 	DISP_CELL_LOWER("Lower Pin", "Lowers a specific pin on the specified braille cell",
-			"/~disp-cell-lower:", new Class<?>[] {Integer.class, Integer.class});
+			"/~disp-cell-lower:", new Class<?>[] {Integer.class, Integer.class}),
+	/**
+	 * Location to skip to. 
+	 */
+	SKIP_LOCATION("Skip Location", "Location to skip to", 
+			"/~", new Class<?>[] {String.class});
 	
 	
 	

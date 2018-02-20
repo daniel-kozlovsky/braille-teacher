@@ -7,15 +7,14 @@ Button 1
 /~end-repeat
 /~repeat-button:1
 /~skip-button:1 11110000
-/~11110000
 /~user-input
 /~sound:11110000
 /~reset-buttons
 /~skip:11110000
-/~11110000
 /~disp-clearAll
 /~disp-clear-cell:1
 /~disp-cell-pins:1 11110000
 /~disp-cell-char:1 A
 /~disp-cell-raise:1 1
 /~disp-cell-lower:1 1
+/~11110000
