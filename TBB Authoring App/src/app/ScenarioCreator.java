@@ -1,5 +1,6 @@
 package app;
 import java.awt.*;
+import java.awt.TrayIcon.MessageType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -156,7 +157,17 @@ public class ScenarioCreator extends JPanel {
         
         //combo-boxes
         comboBox = new JComboBox<String>();
-        //items in the combo box 
+        //Populate comboBox with all possible commands
+        for(EnumPossibleCommands cmd : EnumPossibleCommands.values())
+        {
+        	comboBox.addItem(cmd.getName());
+        }
+        
+        /*OLD: 
+         * If you prefer this way, remove my 'for loop' above 
+         * 
+         * -DKozlovsky 
+         * 
         comboBox.addItem("Add Audio");
 		comboBox.addItem("Add a Question");
 		comboBox.addItem("Pause");
@@ -168,11 +179,13 @@ public class ScenarioCreator extends JPanel {
 		comboBox.addItem("disp clearAll");
 		comboBox.addItem("disp clear cell");
 		comboBox.addItem("disp cell lower");
-		comboBox.addItem("disp cell pins");
+		comboBox.addItem("disp cell pins");*/
         comboBox.addActionListener( new ActionListener () {
         	public void actionPerformed(ActionEvent arg0)
         	{
         		comboBoxSelectionChangedHandler();
+        		//comboBoxSelectionChangedHandler_OLD();
+        		
         	}
         });
  	}
@@ -262,8 +275,9 @@ public class ScenarioCreator extends JPanel {
     /**
      * Handles the click event for the add command button
      */
-    //TODO BUG: some commands throw exceptions
-    private void btnAddClickHandler()
+    //Keep this if you prefer your method
+    //-DKozlovsky
+    private void btnAddClickHandler_OLD()
     {
     	// add audio add command 
 		if(comboIndex==0)
@@ -374,6 +388,18 @@ public class ScenarioCreator extends JPanel {
     }
     
     /**
+     * Handles the click event for the add command button
+     */
+    private void btnAddClickHandler()
+    {
+    	EnumPossibleCommands cmdType = EnumPossibleCommands.values()[comboIndex];
+    	Object[] args = getArgumentsThroughDialog(cmdType);
+    	
+    	ScenarioCommand newCommand = workingScenario.createNewCommand(cmdType, args);
+    	workingScenario.addCommand(newCommand);
+    	updateSessionModel();
+    }
+    /**
      * Handles the click event for the remove command button
      */
     private void btnRemoveClickHandler()
@@ -416,7 +442,7 @@ public class ScenarioCreator extends JPanel {
     /**
      * Displays a new dialog box that prompts the user for braille cell and button amounts 
      */
-    public void newScenarioSetUpDialog()
+    private void newScenarioSetUpDialog()
     {
         JOptionPane jcell  = new JOptionPane();
         jcell.getAccessibleContext().setAccessibleDescription("How many braille cells do you need?");
@@ -438,6 +464,37 @@ public class ScenarioCreator extends JPanel {
     }
     
     /**
+     * Prompts user for arguments to a command. Should be used when adding or editing a command.
+     * @param cmd The command type from EnumPossibleCommands
+     * @return an array of arguments for the command
+     */
+    private Object[] getArgumentsThroughDialog(EnumPossibleCommands cmd)
+    {
+    	//TODO add input checks 
+    	Class<?>[]  argTypes = cmd.getArgumentTypes();
+    	Object[] args = new Object[argTypes.length];
+    	
+    	for(int i = 0; i <  args.length; i++)
+    	{
+    		String input = JOptionPane.showInputDialog(this, "Input argument " + (i+1) + " for " + cmd.getName());
+    		
+    		if(argTypes[i].equals(Integer.class))
+    		{
+    			args[i] = Integer.parseInt(input);
+    		}
+    		else if(argTypes[i].equals(Character.class))
+    		{
+    			args[i] = input.charAt(0);
+    		}
+    		else
+    		{
+    			args[i] = input;
+    		}
+    	}
+    	
+    	return args;
+    }
+    /**
      * Updates the list box to current state. Should be done when changes are meant to be seen by the user
      */
     private void updateSessionModel(){
@@ -453,7 +510,7 @@ public class ScenarioCreator extends JPanel {
     }
     
     private void swapCommands(int first, int second) {
-    	//TODO: Use Scenario.moveCommand(). Has been tested and includes error checking
+    	//TODO: Please use Scenario.moveCommand(). This method has been tested and includes error checking.
     	if(second<0 || second>sessionModel.size()-1) {
     		return;
     	}
