@@ -12,6 +12,8 @@ import java.util.Random;
 import javax.swing.*;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import scenario.EnumPossibleCommands;
 import scenario.Scenario;
@@ -25,6 +27,7 @@ public class ScenarioCreator extends JPanel {
 	private final int preferredButtonWidth = 200;
 	//misc
     private int comboIndex;
+    private int listBoxIndex;
     private String qst;
     private int secpause;
  	private Scenario workingScenario;
@@ -88,6 +91,8 @@ public class ScenarioCreator extends JPanel {
  		btnAdd.setFont(mainButtonFont);
         btnAdd.setForeground(mainButtonColour);
         btnAdd.addActionListener( new ActionListener () {
+        	
+        	@Override
         	public void actionPerformed(ActionEvent arg0) 
         	{
         		btnAddClickHandler();
@@ -98,6 +103,8 @@ public class ScenarioCreator extends JPanel {
         btnRemove.setFont(mainButtonFont);
         btnRemove.setForeground(mainButtonColour);
         btnRemove.addActionListener( new ActionListener () {
+
+        	@Override
         	public void actionPerformed(ActionEvent arg0) 
         	{
         		btnRemoveClickHandler();
@@ -108,6 +115,8 @@ public class ScenarioCreator extends JPanel {
         btnMoveUp.setFont(mainButtonFont);
         btnMoveUp.setForeground(mainButtonColour);
         btnMoveUp.addActionListener( new ActionListener () {
+
+        	@Override
         	public void actionPerformed(ActionEvent arg0) 
         	{
         		btnMoveUpClickHandler();
@@ -118,6 +127,8 @@ public class ScenarioCreator extends JPanel {
         btnMoveDown.setFont(mainButtonFont);
         btnMoveDown.setForeground(mainButtonColour);
         btnMoveDown.addActionListener( new ActionListener () {
+
+        	@Override
         	public void actionPerformed(ActionEvent arg0) 
         	{
         		btnMoveDownClickHandler();
@@ -128,6 +139,8 @@ public class ScenarioCreator extends JPanel {
         btnEdit.setFont(mainButtonFont);
         btnEdit.setForeground(mainButtonColour);
         btnEdit.addActionListener( new ActionListener () {
+
+        	@Override
         	public void actionPerformed(ActionEvent arg0) 
         	{
         		btnMoveDownClickHandler();
@@ -138,6 +151,8 @@ public class ScenarioCreator extends JPanel {
         btnRepeat.setFont(mainButtonFont);
         btnRepeat.setForeground(mainButtonColour);
         btnRepeat.addActionListener( new ActionListener () {
+        	
+        	@Override
         	public void actionPerformed(ActionEvent arg0) 
         	{
         		btnRepeatClickHandler();
@@ -148,6 +163,15 @@ public class ScenarioCreator extends JPanel {
         sessionModel = new DefaultListModel<>();
         sessionScenarioList = new JList<String>();
  		sessionScenarioList.setModel(sessionModel);
+ 		sessionScenarioList.addListSelectionListener( new ListSelectionListener () 
+ 			{
+				@Override
+				public void valueChanged(ListSelectionEvent arg0)
+				{
+					listBoxIndex = sessionScenarioList.getSelectedIndex();
+				}
+ 				
+ 			});
      
         //Panels
         scenarioProgressPanel = new JPanel();
@@ -165,6 +189,7 @@ public class ScenarioCreator extends JPanel {
         
         /*OLD: 
          * If you prefer this way, remove my 'for loop' above 
+         * and use btnAddClickHandler_OLD()
          * 
          * -DKozlovsky 
          * 
@@ -181,11 +206,11 @@ public class ScenarioCreator extends JPanel {
 		comboBox.addItem("disp cell lower");
 		comboBox.addItem("disp cell pins");*/
         comboBox.addActionListener( new ActionListener () {
+        	
+        	@Override
         	public void actionPerformed(ActionEvent arg0)
         	{
         		comboBoxSelectionChangedHandler();
-        		//comboBoxSelectionChangedHandler_OLD();
-        		
         	}
         });
  	}
@@ -393,7 +418,25 @@ public class ScenarioCreator extends JPanel {
     private void btnAddClickHandler()
     {
     	EnumPossibleCommands cmdType = EnumPossibleCommands.values()[comboIndex];
-    	Object[] args = getArgumentsThroughDialog(cmdType);
+    	Object[] args;
+    	
+    	switch (cmdType)
+    	{
+    		case SOUND:
+	    		//Add sound command with arguments 
+	        	//TODO whatever happens here must update args so it can be returned
+	    		addAudio audio = new addAudio(parent);
+	    		parent.revalidate();
+	    		audio.setVisible(true);
+	    		
+	    		//CHANGE**********************
+	    		args = null;
+	    		//CHANGE**********************
+	    		break;
+    		
+    		default:
+    			args = getArgumentsThroughDialog(cmdType);
+    	}
     	
     	ScenarioCommand newCommand = workingScenario.createNewCommand(cmdType, args);
     	workingScenario.addCommand(newCommand);
@@ -404,7 +447,8 @@ public class ScenarioCreator extends JPanel {
      */
     private void btnRemoveClickHandler()
     {
-    	
+    	workingScenario.removeCommand(workingScenario.getCommand(listBoxIndex));
+    	updateSessionModel();
     }
     
     /**
@@ -413,6 +457,7 @@ public class ScenarioCreator extends JPanel {
     private void btnMoveUpClickHandler()
     {
     	swapCommands(sessionScenarioList.getSelectedIndex(),sessionScenarioList.getSelectedIndex()-1);
+    	updateSessionModel();
     }
     
     /**
@@ -421,6 +466,7 @@ public class ScenarioCreator extends JPanel {
     private void btnMoveDownClickHandler()
     {
     	swapCommands(sessionScenarioList.getSelectedIndex(),sessionScenarioList.getSelectedIndex()+1);
+    	updateSessionModel();
     }
     
     /**
@@ -428,7 +474,7 @@ public class ScenarioCreator extends JPanel {
      */
     private void btnEditClickHandler()
     {
-    	
+    	updateSessionModel();
     }
     
     /**
@@ -436,7 +482,7 @@ public class ScenarioCreator extends JPanel {
      */
     private void btnRepeatClickHandler()
     {
-    	
+    	updateSessionModel();
     }
     
     /**
@@ -450,17 +496,6 @@ public class ScenarioCreator extends JPanel {
         JOptionPane jbutton = new JOptionPane();
         jbutton.getAccessibleContext().setAccessibleDescription("How many buttons do you need?");
         numButtons = Integer.parseInt(jbutton.showInputDialog(parent, "How many buttons do you need?", null));
-        
-        //mock scenario
-        StringBuffer input = new StringBuffer();
-		for (int i=0;i<10;i++) {
-			//input.append("Command: "+importedScenario.getCommand(i).getName()+" Args: "+importedScenario.getCommand(i).getArguments()+'\n');
-		}
-		
-		//set mock scenario to textfield
-		//TextField.setText(input.toString());
-        
-        
     }
     
     /**
@@ -475,21 +510,22 @@ public class ScenarioCreator extends JPanel {
     	Object[] args = new Object[argTypes.length];
     	
     	for(int i = 0; i <  args.length; i++)
-    	{
-    		String input = JOptionPane.showInputDialog(this, "Input argument " + (i+1) + " for " + cmd.getName());
+       	{
+       		String input = JOptionPane.showInputDialog(this, "Input argument " + (i+1) + " for " + cmd.getName());
+       		
+       		if(argTypes[i].equals(Integer.class))
+       		{
+       			args[i] = Integer.parseInt(input);
+       		}
+       		else if(argTypes[i].equals(Character.class))
+        	{
+        			args[i] = input.charAt(0);
+        	}
+       		else
+       		{
+        			args[i] = input;
+       		}
     		
-    		if(argTypes[i].equals(Integer.class))
-    		{
-    			args[i] = Integer.parseInt(input);
-    		}
-    		else if(argTypes[i].equals(Character.class))
-    		{
-    			args[i] = input.charAt(0);
-    		}
-    		else
-    		{
-    			args[i] = input;
-    		}
     	}
     	
     	return args;
