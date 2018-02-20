@@ -1,5 +1,6 @@
 package app;
 
+import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Rectangle;
 import javax.swing.JFrame;
@@ -27,6 +28,7 @@ public class ApplicationWindow extends JFrame {
 		
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setMinimumSize(new Dimension(300,300));
 		setVisible(true);
 		
 	}
