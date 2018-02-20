@@ -150,7 +150,7 @@ public class ScenarioCommand{
 		returnString.append(this.command.getName());
 		returnString.append(" - ");
 		returnString.append(this.command.getDescription());
-		returnString.append(": ");
+		returnString.append(". ");
 		returnString.append(argsToString());
 		
 		
@@ -171,7 +171,7 @@ public class ScenarioCommand{
 				break;
 				
 			case PAUSE:
-				returnString = "Pauses for: " + arguments[0].toString();
+				returnString = "Pauses for: " + arguments[0].toString() + " seconds";
 				break;
 				
 			case DISP_STRING:

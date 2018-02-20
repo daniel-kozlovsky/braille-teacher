@@ -532,9 +532,7 @@ public class ScenarioCreator extends JPanel {
     	sessionModel.clear();
     	for(ScenarioCommand cmd : workingScenario)
     	{
-    		String element = cmd.getName() + " - " + cmd.getDescription() + " - " + 
-    				Arrays.toString(cmd.getArguments());
-    		sessionModel.addElement(element);
+    		sessionModel.addElement(cmd.toString());
     	}
     		
     }
