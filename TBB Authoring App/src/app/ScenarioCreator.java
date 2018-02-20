@@ -19,8 +19,11 @@ public class ScenarioCreator extends JPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	protected static final EnumPossibleCommands EnimPossibleCommands = null;
 	private JFrame parent;
+	
+	//Sizes
+	private Rectangle scenarioCreatorBounds;
+	private final int preferredButtonWidth = 200;
 	
 	//list management
 	private Scenario sessionScenario;
@@ -29,55 +32,57 @@ public class ScenarioCreator extends JPanel {
 	
     private String cell;
     private String buttons;
-    private final JPanel panel = new JPanel();
+    private final JPanel scenarioProgressPanel = new JPanel();
     private final JButton btnAddCommand = new JButton("Add Command");
     private JButton btnRemove = new JButton("Remove");
     private JButton btnMoveUp = new JButton("Move Up");
     private JButton btnMoveDown = new JButton("Move down");
     private JButton btnEdit = new JButton("Edit");
     private JButton btnRe = new JButton("Repeat");
-    private final JPanel panel_1 = new JPanel();
+    private final JPanel componentsPanel = new JPanel();
     private final JLabel lblNewLabel = new JLabel("Please choose a command from the top down menu ");
     private final JComboBox<String> comboBox = new JComboBox<String>();
     private int state;
     private String qst;
     private int secpause;
- 	private Scenario sc;
+ 	private Scenario workingScenario;
  	
  	public ScenarioCreator(JFrame parent, Scenario sessionScenario) {
-		this.sessionScenario=sessionScenario;
-		this.parent = parent;
-		
-        this.parent.setTitle("Creat new Scenario");
-        this.parent.setSize(700, 700);
+ 		
+ 		this.parent = parent;
+ 		scenarioCreatorBounds = parent.getBounds();
+ 		this.setBounds(scenarioCreatorBounds);
+		this.sessionScenario = sessionScenario;
+        this.parent.setTitle("Create new Scenario");
+        
         // calling the joption method 
-        Jopttion();
-        sc = new Scenario((Integer.parseInt(cell)),(Integer.parseInt(buttons)));
+        jOption();
+        workingScenario = new Scenario((Integer.parseInt(cell)),(Integer.parseInt(buttons)));
 
         // group layout customizations 
-        GroupLayout groupLayout = new GroupLayout(this);
-        groupLayout.setHorizontalGroup(
-            groupLayout.createParallelGroup(Alignment.LEADING)
-                .addGroup(groupLayout.createSequentialGroup()
+        GroupLayout mainGroupLayout = new GroupLayout(this);
+        mainGroupLayout.setHorizontalGroup(
+            mainGroupLayout.createParallelGroup(Alignment.LEADING)
+                .addGroup(mainGroupLayout.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(panel, GroupLayout.PREFERRED_SIZE, 206, GroupLayout.PREFERRED_SIZE)
+                    .addComponent(scenarioProgressPanel, 0, 200, Short.MAX_VALUE)
                     .addPreferredGap(ComponentPlacement.UNRELATED)
-                    .addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 252, Short.MAX_VALUE)
+                    .addComponent(componentsPanel, 0, 200, Short.MAX_VALUE)
                     .addContainerGap())
         );
-        groupLayout.setVerticalGroup(
-            groupLayout.createParallelGroup(Alignment.LEADING)
-                .addGroup(groupLayout.createSequentialGroup()
+        mainGroupLayout.setVerticalGroup(
+            mainGroupLayout.createParallelGroup(Alignment.LEADING)
+                .addGroup(mainGroupLayout.createSequentialGroup()
                     .addContainerGap()
-                    .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-                        .addComponent(panel, GroupLayout.PREFERRED_SIZE, 496, GroupLayout.PREFERRED_SIZE)
-                        .addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 390, Short.MAX_VALUE))
+                    .addGroup(mainGroupLayout.createParallelGroup(Alignment.LEADING)
+                        .addComponent(scenarioProgressPanel, GroupLayout.PREFERRED_SIZE, 496, GroupLayout.PREFERRED_SIZE)
+                        .addComponent(componentsPanel, GroupLayout.PREFERRED_SIZE, 390, Short.MAX_VALUE))
                     .addContainerGap())
         );
-        panel.setLayout(new BorderLayout(0, 0));
+        scenarioProgressPanel.setLayout(new BorderLayout(0, 0));
         
         //list setup
-        panel.add(sessionScenarioList);
+        scenarioProgressPanel.add(sessionScenarioList);
         
         sessionScenarioList.setModel(sessionModel);
         
@@ -103,36 +108,36 @@ public class ScenarioCreator extends JPanel {
         moveDownBtn();
         editBtn();
         reBtn();
-        // panel_1 customizations 
-        GroupLayout gl_panel_1 = new GroupLayout(panel_1);
-        gl_panel_1.setHorizontalGroup(
-            gl_panel_1.createParallelGroup(Alignment.LEADING)
-                .addGroup(gl_panel_1.createSequentialGroup()
+        // componentsPanel customizations 
+        GroupLayout gl_componentsPanel = new GroupLayout(componentsPanel);
+        gl_componentsPanel.setHorizontalGroup(
+            gl_componentsPanel.createParallelGroup(Alignment.LEADING)
+                .addGroup(gl_componentsPanel.createSequentialGroup()
                     .addContainerGap()
-                    .addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
-                        .addGroup(gl_panel_1.createSequentialGroup()
+                    .addGroup(gl_componentsPanel.createParallelGroup(Alignment.LEADING)
+                        .addGroup(gl_componentsPanel.createSequentialGroup()
                             .addGap(10)
-                            .addComponent(comboBox, 0, 390, Short.MAX_VALUE)
+                            .addComponent(comboBox, 0, preferredButtonWidth, preferredButtonWidth)
                             .addContainerGap())
-                        .addGroup(Alignment.TRAILING, gl_panel_1.createSequentialGroup()
-                            .addComponent(lblNewLabel, GroupLayout.DEFAULT_SIZE, 363, Short.MAX_VALUE)
+                        .addGroup(Alignment.LEADING, gl_componentsPanel.createSequentialGroup()
+                            .addComponent(lblNewLabel,  0, 200, Short.MAX_VALUE)
                             .addGap(47))
-                        .addGroup(Alignment.TRAILING, gl_panel_1.createSequentialGroup()
-                            .addGroup(gl_panel_1.createParallelGroup(Alignment.TRAILING)
-                                .addComponent(btnMoveUp, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 382, Short.MAX_VALUE)
-                                .addComponent(btnRe, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 382, Short.MAX_VALUE)
-                                .addComponent(btnEdit, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 382, Short.MAX_VALUE)
-                                .addComponent(btnMoveDown, GroupLayout.DEFAULT_SIZE, 382, Short.MAX_VALUE))
+                        .addGroup(Alignment.LEADING, gl_componentsPanel.createSequentialGroup()
+                            .addGroup(gl_componentsPanel.createParallelGroup(Alignment.LEADING)
+                                .addComponent(btnMoveUp, Alignment.LEADING,  0, preferredButtonWidth, preferredButtonWidth)
+                                .addComponent(btnRe, Alignment.LEADING, 0, preferredButtonWidth, preferredButtonWidth)
+                                .addComponent(btnEdit, Alignment.LEADING, 0, preferredButtonWidth, preferredButtonWidth)
+                                .addComponent(btnMoveDown, 0, preferredButtonWidth, preferredButtonWidth))
                             .addGap(28))
-                        .addGroup(Alignment.TRAILING, gl_panel_1.createSequentialGroup()
-                            .addGroup(gl_panel_1.createParallelGroup(Alignment.TRAILING)
-                                .addComponent(btnRemove, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 382, Short.MAX_VALUE)
-                                .addComponent(btnAddCommand, GroupLayout.DEFAULT_SIZE, 382, Short.MAX_VALUE))
+                        .addGroup(Alignment.LEADING, gl_componentsPanel.createSequentialGroup()
+                            .addGroup(gl_componentsPanel.createParallelGroup(Alignment.LEADING)
+                                .addComponent(btnRemove, Alignment.LEADING, 0, preferredButtonWidth, preferredButtonWidth)
+                                .addComponent(btnAddCommand, 0, preferredButtonWidth, preferredButtonWidth))
                             .addGap(28))))
         );
-        gl_panel_1.setVerticalGroup(
-            gl_panel_1.createParallelGroup(Alignment.LEADING)
-                .addGroup(gl_panel_1.createSequentialGroup()
+        gl_componentsPanel.setVerticalGroup(
+            gl_componentsPanel.createParallelGroup(Alignment.LEADING)
+                .addGroup(gl_componentsPanel.createSequentialGroup()
                     .addComponent(lblNewLabel, GroupLayout.DEFAULT_SIZE, 63, Short.MAX_VALUE)
                     .addPreferredGap(ComponentPlacement.UNRELATED)
                     .addComponent(comboBox, GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
@@ -150,8 +155,8 @@ public class ScenarioCreator extends JPanel {
                     .addComponent(btnRe, GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE)
                     .addGap(8))
         );
-        panel_1.setLayout(gl_panel_1);
-        setLayout(groupLayout);
+        componentsPanel.setLayout(gl_componentsPanel);
+        setLayout(mainGroupLayout);
         
     }
     private void comboxdescription() {
@@ -159,13 +164,13 @@ public class ScenarioCreator extends JPanel {
         class ItemChangeListener implements ItemListener{
             @Override
             public void itemStateChanged(ItemEvent event) {
-              state=event.getStateChange(); 
+              state = event.getStateChange(); 
             }       
         }
         // items in the combo box 
-        comboBox.addItem("Add Auido");
+        comboBox.addItem("Add Audio");
 		comboBox.addItem("Add a Question");
-		comboBox.addItem("Pasue");
+		comboBox.addItem("Pause");
 		comboBox.addItem("disp-string");
 		comboBox.addItem("Skip");
 		comboBox.addItem("Skip Button");
@@ -175,7 +180,7 @@ public class ScenarioCreator extends JPanel {
 		comboBox.addItem("disp clear cell");
 		comboBox.addItem("disp cell lower");
 		comboBox.addItem("disp cell pins");
-		state =comboBox.getSelectedIndex();
+		state = comboBox.getSelectedIndex();
         comboBox.addItemListener(new ItemChangeListener());
         
         
@@ -201,10 +206,10 @@ public class ScenarioCreator extends JPanel {
 				else if(state==1)
 				{
 					 JOptionPane question  = new JOptionPane();
-					 question.getAccessibleContext().setAccessibleDescription(" please enter the question here ");
-					 qst=question.showInputDialog(parent, "please enter the Question here  ", null);
+					 question.getAccessibleContext().setAccessibleDescription(" Enter the question below ");
+					 qst=question.showInputDialog(parent, "Enter the question below  ", null);
 					 EnumPossibleCommands cmd = EnumPossibleCommands.DISP_STRING ;
-					sc.addCommand(sc.createNewCommand(cmd,  new String[] {qst}));
+					workingScenario.addCommand(workingScenario.createNewCommand(cmd,  new String[] {qst}));
 				}
 				// pause command 
 				else if (state == 2)
@@ -213,7 +218,7 @@ public class ScenarioCreator extends JPanel {
 					pause.getAccessibleContext().setAccessibleDescription(" please enter the number of seconds you want to pause ");
 					secpause= Integer.parseInt(JOptionPane.showInputDialog(parent, "please enter the number of seconds you want to pause  ", null));
 					Object[] obj = new Object[] {secpause};
-					sc.addCommand(sc.createNewCommand(EnumPossibleCommands.PAUSE, obj ));
+					workingScenario.addCommand(workingScenario.createNewCommand(EnumPossibleCommands.PAUSE, obj ));
 				}
 				// disp-string
 				else if(state==3)
@@ -223,7 +228,7 @@ public class ScenarioCreator extends JPanel {
 					disp.getAccessibleContext().setAccessibleDescription("Please write the string disp ");
 					dispstring= disp.showInputDialog(parent,"please write the String here ",null);
 					EnumPossibleCommands cmd = EnumPossibleCommands.DISP_STRING ;
-					sc.addCommand(sc.createNewCommand(cmd,  new String[] {dispstring}));
+					workingScenario.addCommand(workingScenario.createNewCommand(cmd,  new String[] {dispstring}));
 				}
 				
 				//Skip
@@ -234,7 +239,7 @@ public class ScenarioCreator extends JPanel {
 					skipp.getAccessibleContext().setAccessibleDescription("Please write the string you want to skip ");
 					skip= skipp.showInputDialog(parent,"please write the String you want to skip ",null);
 					EnumPossibleCommands cmd = EnumPossibleCommands.SKIP ;
-					sc.addCommand(sc.createNewCommand(cmd,  new String[] {skip}));
+					workingScenario.addCommand(workingScenario.createNewCommand(cmd,  new String[] {skip}));
 				}
 				// skip button
 				else if(state ==5)
@@ -252,7 +257,7 @@ public class ScenarioCreator extends JPanel {
 					str=(JOptionPane.showInputDialog(null, obj,"skip button",JOptionPane.OK_CANCEL_OPTION));
 					bnts=Integer.parseInt(btn.getText());
 					EnumPossibleCommands cmd = EnumPossibleCommands.SKIP_BUTTON;
-					sc.addCommand(sc.createNewCommand(cmd, new Object [] {bnts,str}));
+					workingScenario.addCommand(workingScenario.createNewCommand(cmd, new Object [] {bnts,str}));
 					}
 				
 				//Repeat Button
@@ -264,7 +269,7 @@ public class ScenarioCreator extends JPanel {
 					int btns;
 					btns = Integer.parseInt(rebnt.showInputDialog(parent, "please enter the button number you want to repeat ", null));
 					EnumPossibleCommands cmd = EnumPossibleCommands.REPEAT_BUTTON ;
-					sc.addCommand(sc.createNewCommand(cmd, new Object [] {btns}));
+					workingScenario.addCommand(workingScenario.createNewCommand(cmd, new Object [] {btns}));
 				}
 				// disp clear cell
 				else if( state == 9)
@@ -274,7 +279,7 @@ public class ScenarioCreator extends JPanel {
 					clrcell.getAccessibleContext().setAccessibleDescription(" please enter the cell number you want to clear ");
 					cells = Integer.parseInt(clrcell.showInputDialog(parent, "please enter the cell number you want to clear ", null));
 					EnumPossibleCommands cmd = EnumPossibleCommands.DISP_CLEAR_CELL ;
-					sc.addCommand(sc.createNewCommand(cmd, new Object [] {cells}));
+					workingScenario.addCommand(workingScenario.createNewCommand(cmd, new Object [] {cells}));
 				}	
 				// disp cell pin
 				else if(state==11)
@@ -292,7 +297,7 @@ public class ScenarioCreator extends JPanel {
 					pin=Integer.parseInt(JOptionPane.showInputDialog(null, obj,"skip button",JOptionPane.OK_CANCEL_OPTION));
 					cell=Integer.parseInt(pins.getText());
 					EnumPossibleCommands cmd = EnumPossibleCommands.DISP_CELL_PINS;
-					sc.addCommand(sc.createNewCommand(cmd, new Object [] {cell,pin}));
+					workingScenario.addCommand(workingScenario.createNewCommand(cmd, new Object [] {cell,pin}));
 					}
             }
         });
@@ -335,7 +340,7 @@ public class ScenarioCreator extends JPanel {
         btnRe.setFont(new Font("Tahoma", Font.PLAIN, 14));
     }
     
-    public void Jopttion()
+    public void jOption()
     {
          JOptionPane jcell  = new JOptionPane();
         jcell.getAccessibleContext().setAccessibleDescription(" How many cells do you need ");
@@ -359,7 +364,7 @@ public class ScenarioCreator extends JPanel {
     private void updateModel(){
     	//TODO get Scenario Size
     		sessionModel.clear();
-    	for(int i=0;i<10;i++) {
+    	for(int i = 0; i < 10; i++) {
     		ScenarioCommand command = sessionScenario.getCommand(i);
     		String element = command.getName()+" "+command.getArguments();
     		sessionModel.addElement(element);

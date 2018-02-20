@@ -1,21 +1,14 @@
 package app;
 
-
+import java.awt.Frame;
 import java.awt.Rectangle;
 import javax.swing.JFrame;
-
-
 
 @SuppressWarnings("serial")
 public class ApplicationWindow extends JFrame {
 	
-	//Size of Frame
-	private final int FRAME_WIDTH = 500;
-	private final int FRAME_HEIGHT = 160;
-	
 	//Size of main panel
-	public final Rectangle MainPanelArea = new Rectangle(this.getX(), this.getY(),
-													this.getWidth(), this.getHeight());
+	public Rectangle MainPanelArea;
 	MainPanel PanelComponentField;
 	
 	public ApplicationWindow()
@@ -28,8 +21,9 @@ public class ApplicationWindow extends JFrame {
 	
 	private void initFrame()
 	{
-		setTitle("Authoring App");
-		setSize(FRAME_WIDTH, FRAME_HEIGHT);
+		setTitle("TBB Scenario Creator");
+		//Set to maximum window size
+		this.setExtendedState(this.getExtendedState() | Frame.MAXIMIZED_BOTH);
 		
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -41,6 +35,7 @@ public class ApplicationWindow extends JFrame {
 	{
 		//Panel
 		PanelComponentField = new MainPanel(this);
+		MainPanelArea = new Rectangle(this.getX(), this.getY(), this.getWidth(), this.getHeight());
 		PanelComponentField.setBounds(MainPanelArea);
 		this.add(PanelComponentField);
 		

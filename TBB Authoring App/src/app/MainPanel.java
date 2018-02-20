@@ -3,12 +3,11 @@ package app;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
-import java.util.Scanner;
 import javax.swing.*;
 import scenario.Scenario;
 import scenario.ScenarioFormatter;
-import scenario.EnumPossibleCommands;
 import java.awt.FlowLayout;
+import java.awt.Rectangle;
 
 public class MainPanel extends JPanel {
 
@@ -24,10 +23,10 @@ public class MainPanel extends JPanel {
 	private void initComponents() {
 
 		// create
-		buttonNewScenario = new JButton("New Scenario");
-		buttonNewScenario.getAccessibleContext().setAccessibleName("Create a New Scenario");
+		buttonNewScenario = new JButton("New scenario");
+		buttonNewScenario.getAccessibleContext().setAccessibleName("Create a new scenario");
 		buttonNewScenario.getAccessibleContext()
-				.setAccessibleDescription("Create a new Scenario using the Scenario Editor.");
+				.setAccessibleDescription("Create a new scenario using the scenario editor.");
 
 		buttonNewScenario.addActionListener(new ActionListener() {
 
@@ -38,10 +37,10 @@ public class MainPanel extends JPanel {
 		});
 
 		// import
-		buttonImportScenario = new JButton("Import Scenario");
-		buttonImportScenario.getAccessibleContext().setAccessibleName("Import an existing Scenario");
+		buttonImportScenario = new JButton("Import scenario");
+		buttonImportScenario.getAccessibleContext().setAccessibleName("Import an existing scenario");
 		buttonImportScenario.getAccessibleContext()
-				.setAccessibleDescription("Open and edit an existing Scenario file.");
+				.setAccessibleDescription("Open and edit an existing scenario file.");
 
 		buttonImportScenario.addActionListener(new ActionListener() {
 

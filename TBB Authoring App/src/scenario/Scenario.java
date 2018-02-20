@@ -32,9 +32,10 @@ public class Scenario implements Iterable<ScenarioCommand> {
 	}
 	
 	/**
-	 * Set number of braille cells and buttons
-	 * @param numcells
-	 * @param numbuttons
+	 * Create a new Scenario with specified number of braille cells and buttons. These parameters remain
+	 * consistent throughout the scenario due to formatting requirements.
+	 * @param number of cells in the scenario
+	 * @param number of buttons in the scenario
 	 * @throws IllegalArgumentException if any parameter is negative
 	 */
 	public Scenario(int numcells, int numbuttons) throws IllegalArgumentException
