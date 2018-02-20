@@ -446,7 +446,7 @@ public class ScenarioCreator extends JPanel {
     }
     
     /**
-     * Handles the click event for the add command button
+     * Handles the click event for the Move Up button
      */
     private void btnMoveUpClickHandler()
     {
@@ -455,7 +455,7 @@ public class ScenarioCreator extends JPanel {
     }
     
     /**
-     * Handles the click event for the add command button
+     * Handles the click event for the Move Down button
      */
     private void btnMoveDownClickHandler()
     {
@@ -464,7 +464,7 @@ public class ScenarioCreator extends JPanel {
     }
     
     /**
-     * Handles the click event for the add command button
+     * Handles the click event for the edit command button
      */
     private void btnEditClickHandler()
     {
@@ -472,7 +472,7 @@ public class ScenarioCreator extends JPanel {
     }
     
     /**
-     * Handles the click event for the add command button
+     * Handles the click event for the Repeat command button
      */
     private void btnRepeatClickHandler()
     {

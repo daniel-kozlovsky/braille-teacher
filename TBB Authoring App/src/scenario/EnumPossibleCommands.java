@@ -36,12 +36,12 @@ public enum EnumPossibleCommands {
 	/**
 	 * Sets a button to repeat most recent set up 'repeat' text
 	 */
-	REPEAT_BUTTON("Repeat Button", "Makes specified button repeat most recent repeat text",
+	REPEAT_BUTTON("Repeat Button", "Makes a specified button repeat most recent repeat text",
 			"/~repeat-button:", new Class<?>[] {Integer.class}),
 	/**
 	 * Sets a button to skip to specified point in the scenario
 	 */
-	SKIP_BUTTON("Skip Button", "Makes button skip to a different point in scenario",
+	SKIP_BUTTON("Skip Button", "Makes a specified button skip to a different point in scenario",
 			"/~skip-button:", new Class<?>[] {Integer.class, String.class}),
 	
 	/**

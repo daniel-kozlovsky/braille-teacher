@@ -137,6 +137,98 @@ public class ScenarioCommand{
 	{
 		return this.command;
 	}
+	
+	/**
+	 * Turns details of a command into a string so a user could see what it does.
+	 * Includes arguments and what they do.
+	 * @return The string representation of a commands function
+	 */
+	@Override
+	public String toString()
+	{
+		StringBuilder returnString = new StringBuilder();
+		returnString.append(this.command.getName());
+		returnString.append(" - ");
+		returnString.append(this.command.getDescription());
+		returnString.append(": ");
+		returnString.append(argsToString());
+		
+		
+		return returnString.toString();
+	}
+	
+	/**
+	 * Text representation of what arguments of the scenario do.
+	 * @return The arguments and what they do
+	 */
+	public String argsToString()
+	{
+		String returnString;
+		switch (this.command) 
+		{
+			case READ_TEXT:
+				returnString = "Reads: " + arguments[0].toString();
+				break;
+				
+			case PAUSE:
+				returnString = "Pauses for: " + arguments[0].toString();
+				break;
+				
+			case DISP_STRING:
+				returnString = "Displays the text: " + arguments[0].toString();
+				break;
+				
+			case REPEAT:
+				returnString = "Repeats the following text: " + arguments[0].toString();
+				break;
+				
+			case END_REPEAT:
+				returnString = "End of text to be repeated";
+				break;
+				
+			case REPEAT_BUTTON:
+				returnString = "Button: " + arguments[0].toString();
+				break;
+				
+			case SKIP_BUTTON:
+				returnString = "Button: " + arguments[0].toString() + " will skip to: " + arguments[1].toString();
+				break;
+					
+			case SOUND:
+				returnString = "Will play file: " + arguments[0].toString();
+				break;
+				
+			case SKIP:
+				returnString = "Will skip to: " + arguments[0].toString();
+				break;
+				
+			case SKIP_LOCATION:
+				returnString = "Location: " + arguments[0].toString();
+				break;
+				
+			case DISP_CLEAR_CELL:
+				returnString = "Clears display: " + arguments[0].toString();
+				break;
+				
+			case DISP_CELL_PINS:
+				returnString = "Will display pins: " + arguments[1].toString() + " on cell: " + arguments[0].toString();
+				break;
+			case DISP_CELL_CHAR:
+				returnString = "Will display: " + arguments[1].toString() + " on cell: " + arguments[0].toString();
+				break;
+			case DISP_CELL_RAISE:
+				returnString = "Raises pin: "+ arguments[1].toString() + " on cell: " + arguments[0].toString();
+				break;
+			case DISP_CELL_LOWER:
+				returnString = "Lowers pin: "+ arguments[1].toString() + " on cell: " + arguments[0].toString();
+				break;
+			
+			default:
+				returnString = "";
+		}
+		return returnString;
+	}
+	
 	/**
 	 * Checks arguments to make sure they make are valid depending on the command
 	 * 
