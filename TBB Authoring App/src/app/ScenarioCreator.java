@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 import javax.swing.*;
@@ -26,8 +27,8 @@ public class ScenarioCreator extends JPanel {
     private String qst;
     private int secpause;
  	private Scenario workingScenario;
-    private String cell;
-    private String buttons;
+    private int numCells;
+    private int numButtons;
     private JFrame parent;
 	//list
 	private DefaultListModel<String> sessionModel;
@@ -70,9 +71,11 @@ public class ScenarioCreator extends JPanel {
         
         //Dialog for number of cells and buttons
         newScenarioSetUpDialog();
-        workingScenario = new Scenario((Integer.parseInt(cell)),(Integer.parseInt(buttons)));
         
-        //TODO populate listbox based on scenario 
+        workingScenario = new Scenario(numCells, numButtons);
+        
+        //populates list box
+        updateSessionModel(); 
     }
  	
  	private void initComponents()
@@ -86,7 +89,7 @@ public class ScenarioCreator extends JPanel {
         btnAdd.addActionListener( new ActionListener () {
         	public void actionPerformed(ActionEvent arg0) 
         	{
-        		//handler
+        		btnAddClickHandler();
         	}
         	});
         
@@ -96,7 +99,7 @@ public class ScenarioCreator extends JPanel {
         btnRemove.addActionListener( new ActionListener () {
         	public void actionPerformed(ActionEvent arg0) 
         	{
-        		//handler
+        		btnRemoveClickHandler();
         	}
         	});
         
@@ -106,7 +109,7 @@ public class ScenarioCreator extends JPanel {
         btnMoveUp.addActionListener( new ActionListener () {
         	public void actionPerformed(ActionEvent arg0) 
         	{
-        		//handler
+        		btnMoveUpClickHandler();
         	}
         	});
         
@@ -116,7 +119,7 @@ public class ScenarioCreator extends JPanel {
         btnMoveDown.addActionListener( new ActionListener () {
         	public void actionPerformed(ActionEvent arg0) 
         	{
-        		//handler
+        		btnMoveDownClickHandler();
         	}
         	});
         
@@ -126,7 +129,7 @@ public class ScenarioCreator extends JPanel {
         btnEdit.addActionListener( new ActionListener () {
         	public void actionPerformed(ActionEvent arg0) 
         	{
-        		//handler
+        		btnMoveDownClickHandler();
         	}
         	});
         
@@ -136,7 +139,7 @@ public class ScenarioCreator extends JPanel {
         btnRepeat.addActionListener( new ActionListener () {
         	public void actionPerformed(ActionEvent arg0) 
         	{
-        		//handler
+        		btnRepeatClickHandler();
         	}
         	});
         
@@ -174,6 +177,7 @@ public class ScenarioCreator extends JPanel {
         });
  	}
  	
+ 	//TODO change component layout to have two columns if enough space after resizing window.
  	private void initLayout()
  	{
  		//group layout customizations 
@@ -258,6 +262,7 @@ public class ScenarioCreator extends JPanel {
     /**
      * Handles the click event for the add command button
      */
+    //TODO BUG: some commands throw exceptions
     private void btnAddClickHandler()
     {
     	// add audio add command 
@@ -364,6 +369,8 @@ public class ScenarioCreator extends JPanel {
 			EnumPossibleCommands cmd = EnumPossibleCommands.DISP_CELL_PINS;
 			workingScenario.addCommand(workingScenario.createNewCommand(cmd, new Object [] {cell,pin}));
 			}
+		
+		updateSessionModel();
     }
     
     /**
@@ -413,10 +420,10 @@ public class ScenarioCreator extends JPanel {
     {
         JOptionPane jcell  = new JOptionPane();
         jcell.getAccessibleContext().setAccessibleDescription("How many braille cells do you need?");
-        cell = jcell.showInputDialog(parent, "How many braille cells do you need?", null);
+        numCells = Integer.parseInt(jcell.showInputDialog(parent, "How many braille cells do you need?", null));
         JOptionPane jbutton = new JOptionPane();
         jbutton.getAccessibleContext().setAccessibleDescription("How many buttons do you need?");
-        buttons = jbutton.showInputDialog(parent, "How many buttons do you need?", null);
+        numButtons = Integer.parseInt(jbutton.showInputDialog(parent, "How many buttons do you need?", null));
         
         //mock scenario
         StringBuffer input = new StringBuffer();
@@ -438,7 +445,8 @@ public class ScenarioCreator extends JPanel {
     	sessionModel.clear();
     	for(ScenarioCommand cmd : workingScenario)
     	{
-    		String element = cmd.getName() + " - " + cmd.getDescription() + " - " + cmd.getArguments().toString();
+    		String element = cmd.getName() + " - " + cmd.getDescription() + " - " + 
+    				Arrays.toString(cmd.getArguments());
     		sessionModel.addElement(element);
     	}
     		
