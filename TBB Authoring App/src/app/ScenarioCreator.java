@@ -26,7 +26,6 @@ public class ScenarioCreator extends JPanel {
 	private final int preferredButtonWidth = 200;
 	
 	//list management
-	private Scenario sessionScenario;
 	private DefaultListModel<String> sessionModel = new DefaultListModel<>();
  	private final JList<String> sessionScenarioList = new JList<String>();
 	
@@ -52,7 +51,7 @@ public class ScenarioCreator extends JPanel {
  		this.parent = parent;
  		scenarioCreatorBounds = parent.getBounds();
  		this.setBounds(scenarioCreatorBounds);
-		this.sessionScenario = sessionScenario;
+		this.workingScenario = sessionScenario;
         this.parent.setTitle("Create new Scenario");
         
         // calling the joption method 
@@ -87,7 +86,7 @@ public class ScenarioCreator extends JPanel {
         sessionScenarioList.setModel(sessionModel);
         
         if(sessionScenario!=null) {
-        updateModel();
+        updateSessionModel();
         }else {
         	
         	// mock sessionModel
@@ -191,7 +190,8 @@ public class ScenarioCreator extends JPanel {
         btnAddCommand.setFont(new Font("Tahoma", Font.PLAIN, 14));
         btnAddCommand.setForeground(new Color(0, 0, 0));
         btnAddCommand.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent arg0) {
+            
+        	public void actionPerformed(ActionEvent arg0) {
                 comboxdescription();
                 
                
@@ -207,7 +207,7 @@ public class ScenarioCreator extends JPanel {
 				{
 					 JOptionPane question  = new JOptionPane();
 					 question.getAccessibleContext().setAccessibleDescription(" Enter the question below ");
-					 qst=question.showInputDialog(parent, "Enter the question below  ", null);
+					 qst = question.showInputDialog(parent, "Enter the question below  ", null);
 					 EnumPossibleCommands cmd = EnumPossibleCommands.DISP_STRING ;
 					workingScenario.addCommand(workingScenario.createNewCommand(cmd,  new String[] {qst}));
 				}
@@ -361,17 +361,22 @@ public class ScenarioCreator extends JPanel {
         
     }
     
-    private void updateModel(){
-    	//TODO get Scenario Size
-    		sessionModel.clear();
-    	for(int i = 0; i < 10; i++) {
-    		ScenarioCommand command = sessionScenario.getCommand(i);
-    		String element = command.getName()+" "+command.getArguments();
+    /**
+     * Updates the list box to current state. Should be done when changes are meant to be seen by the user
+     */
+    private void updateSessionModel(){
+    	
+    	sessionModel.clear();
+    	for(ScenarioCommand cmd : workingScenario)
+    	{
+    		String element = cmd.getName() + " - " + cmd.getDescription() + " - " + cmd.getArguments().toString();
     		sessionModel.addElement(element);
     	}
+    		
     }
     
     private void swapCommands(int first, int second) {
+    	//TODO: Use Scenario.moveCommand(). Has been tested and includes error checking
     	if(second<0 || second>sessionModel.size()-1) {
     		return;
     	}
