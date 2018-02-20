@@ -187,12 +187,6 @@ public class ScenarioCommand{
 					throw new IllegalArgumentException("Must specify a location to skip to!");
 				}
 				break;
-			case GO_HERE:
-				if(args[0].equals(""))
-				{
-					throw new IllegalArgumentException("Cannot have an empty skip location name!");
-				}
-				break;
 				//TODO : check for sound file existence and format
 			case SOUND:
 				if(args[0].equals(""))

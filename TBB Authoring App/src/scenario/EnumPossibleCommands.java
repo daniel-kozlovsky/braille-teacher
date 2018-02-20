@@ -42,11 +42,7 @@ public enum EnumPossibleCommands {
 	 */
 	SKIP_BUTTON("Skip Button", "Makes button skip to a different point in scenario",
 			"/~skip-button:", new Class<?>[] {Integer.class, String.class}),
-	/**
-	 * Location to skip to. Must be accompanied with GO_HERE
-	 */
-	GO_HERE("Skip Here", "Skips to this location in the scenario",
-			"/~", new Class<?>[] {String.class}),
+	
 	/**
 	 * Pauses the scenario to allow for button presses
 	 */
@@ -63,12 +59,12 @@ public enum EnumPossibleCommands {
 	RESET_BUTTONS("Reset Buttons", "Makes all buttons inoperative",
 			"/~reset-buttons", new Class<?>[] {}),
 	/**
-	 * Skips to specified location
+	 * Skips to specified location. Must be accompanied with SKIP_LOCATION
 	 */
 	SKIP("Skip", "Skips to specified location in scenario",
 			"/~skip:", new Class<?>[] {String.class}),
 	/**
-	 * Location to skip to. Must be accompanied with SKIP_LOCATION
+	 * Location to skip to. 
 	 */
 	SKIP_LOCATION("Skip Location", "Location to skip to", 
 			"/~", new Class<?>[] {String.class}),
