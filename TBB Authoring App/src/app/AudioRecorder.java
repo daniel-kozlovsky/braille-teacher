@@ -12,9 +12,12 @@ import javax.swing.Box;
 import java.awt.Component;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Color;
+
+/*Audio recording creator class
+ * Open this as a new panel for the user to record
+ */
 
 public class AudioRecorder extends JPanel {
 
@@ -126,7 +129,7 @@ public class AudioRecorder extends JPanel {
 		});
 	}
 
-	private void recordAndSave(String fileName) throws IOException {
+	public void recordAndSave(String fileName) throws IOException {
 
 		lblRecording.setVisible(true);
 
@@ -134,37 +137,9 @@ public class AudioRecorder extends JPanel {
 
 		if (audioFile.exists() != true) {
 			audioFile.createNewFile();
-			System.out.println("Created file.");
+			System.out.println("Created the file.");
 		}
-		// format = new AudioFormat(16000, 16, 2, true, true);
-		// DataLine.Info lineInfo = new DataLine.Info(TargetDataLine.class, format);
-
-		/*
-		 * Thread timer = new Thread(new Runnable() { public void run() { try {
-		 * Thread.sleep(duration * 1000); } catch (InterruptedException ex) {
-		 * ex.printStackTrace(); } if (dataLine.isActive()) {
-		 * System.out.println("Recording finished."); dataLine.stop(); dataLine.close();
-		 * //dataLine.flush(); } } });
-		 */
-
-		new timer().start();/*
-							 * 
-							 * try { format = new AudioFormat(16000, 16, 2, true, true); DataLine.Info
-							 * lineInfo = new DataLine.Info(TargetDataLine.class, format);
-							 * 
-							 * if (!AudioSystem.isLineSupported(lineInfo)) {
-							 * System.out.print("Dataline not supported."); dataLine.stop();
-							 * dataLine.close(); dataLine.flush(); }
-							 * 
-							 * dataLine = (TargetDataLine) AudioSystem.getLine(lineInfo);
-							 * dataLine.open(format); dataLine.start();
-							 * 
-							 * AudioInputStream stream = new AudioInputStream(dataLine);
-							 * AudioSystem.write(stream, fileType, audioFile);
-							 * 
-							 * } catch (LineUnavailableException ex) { ex.printStackTrace(); } catch
-							 * (IOException ioe) { ioe.printStackTrace(); }
-							 */
+		new timer().start();
 	}
 
 	class timer extends Thread {
@@ -180,7 +155,12 @@ public class AudioRecorder extends JPanel {
 				AudioSystem.write(stream, fileType, audioFile);
 
 			} catch (LineUnavailableException | IOException e) {
-				// TODO Auto-generated catch block
+				if(e instanceof LineUnavailableException) {
+					System.out.println("Line input not accessible.");
+				}
+				else if(e instanceof IOException) {
+					System.out.println("Unable to access audio file.");
+				}
 				e.printStackTrace();
 			}
 		}

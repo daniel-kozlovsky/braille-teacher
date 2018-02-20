@@ -6,14 +6,15 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 import javax.swing.*;
 import scenario.Scenario;
+import scenario.ScenarioFormatter;
 import scenario.EnumPossibleCommands;
+import java.awt.FlowLayout;
 
 public class MainPanel extends JPanel {
 
 	private JFrame parent;
 
 	JButton buttonNewScenario, buttonImportScenario;
-	Scenario importedScenario = new Scenario();
 
 	public MainPanel(JFrame parent) {
 		this.parent = parent;
@@ -21,13 +22,20 @@ public class MainPanel extends JPanel {
 	}
 
 	private void initComponents() {
-		
-		//mock import scenario
-		for(int i=0;i<10;i++){
-		importedScenario.addCommand(
-				importedScenario.createNewCommand(EnumPossibleCommands.PAUSE, new Object[] { i+10 }));
-			
-		}
+
+		// create
+		buttonNewScenario = new JButton("New Scenario");
+		buttonNewScenario.getAccessibleContext().setAccessibleName("Create a New Scenario");
+		buttonNewScenario.getAccessibleContext()
+				.setAccessibleDescription("Create a new Scenario using the Scenario Editor.");
+
+		buttonNewScenario.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				openScenarioCreator(null);
+			}
+		});
 
 		// import
 		buttonImportScenario = new JButton("Import Scenario");
@@ -42,13 +50,20 @@ public class MainPanel extends JPanel {
 
 				JFileChooser fileChooser = new JFileChooser();
 				int result = fileChooser.showOpenDialog(buttonNewScenario);
-
 				if (result == JFileChooser.APPROVE_OPTION) {
+				Scenario importedScenario = ScenarioFormatter.importParse(fileChooser.getCurrentDirectory().getAbsolutePath()+"\\"+fileChooser.getSelectedFile().getName());
+				
+				System.out.println(fileChooser.getCurrentDirectory().getAbsolutePath()+"\\"+fileChooser.getSelectedFile().getName());
+				
+				openScenarioCreator(importedScenario);
+				}
+				
+				/*if (result == JFileChooser.APPROVE_OPTION) {
 					try {
 
 						Scanner scanner = new Scanner(fileChooser.getSelectedFile());
 						while (scanner.hasNext()) {
-							//TODO: read and parse selected file
+							// TODO: read and parse selected file
 							scanner.next();
 						}
 						scanner.close();
@@ -58,28 +73,15 @@ public class MainPanel extends JPanel {
 					} catch (FileNotFoundException e) {
 						e.printStackTrace();
 					}
-				}
+				}*/
 			}
 		});
-
-		// create
-		buttonNewScenario = new JButton("New Scenario");
-		buttonNewScenario.getAccessibleContext().setAccessibleName("Create a New Scenario");
-		buttonNewScenario.getAccessibleContext()
-				.setAccessibleDescription("Create a new Scenario using the Scenario Editor.");
-
-		buttonNewScenario.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				openScenarioCreator();
-			}
-		});
+		setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		this.add(buttonImportScenario);
 		this.add(buttonNewScenario);
 	}
 
-	private void openScenarioCreator() {
+	private void openScenarioCreator(Scenario importedScenario) {
 
 		ScenarioCreator sc = new ScenarioCreator(parent, importedScenario);
 		parent.getContentPane().removeAll();

@@ -4,38 +4,57 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.util.ArrayList;
+import java.util.Random;
+
 import javax.swing.*;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
+import scenario.EnumPossibleCommands;
 import scenario.Scenario;
+import scenario.ScenarioCommand;
 public class ScenarioCreator extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	protected static final EnumPossibleCommands EnimPossibleCommands = null;
 	private JFrame parent;
-	private Scenario importedScenario;
+	
+	//list management
+	private Scenario sessionScenario;
+	private DefaultListModel<String> sessionModel = new DefaultListModel<>();
+ 	private final JList<String> sessionScenarioList = new JList<String>();
+	
     private String cell;
     private String buttons;
     private final JPanel panel = new JPanel();
     private final JButton btnAddCommand = new JButton("Add Command");
     private JButton btnRemove = new JButton("Remove");
-    private JButton btnmoveUP = new JButton("Move Up");
+    private JButton btnMoveUp = new JButton("Move Up");
     private JButton btnMoveDown = new JButton("Move down");
     private JButton btnEdit = new JButton("Edit");
     private JButton btnRe = new JButton("Repeat");
     private final JPanel panel_1 = new JPanel();
     private final JLabel lblNewLabel = new JLabel("Please choose a command from the top down menu ");
-    private final JComboBox comboBox = new JComboBox();
+    private final JComboBox<String> comboBox = new JComboBox<String>();
     private int state;
     private String qst;
     private int secpause;
-    private String dispstring;
-	public ScenarioCreator(JFrame parent, Scenario importedScenario) {
-        this.parent = parent;
-		this.importedScenario = importedScenario;
+ 	private Scenario sc;
+ 	
+ 	public ScenarioCreator(JFrame parent, Scenario sessionScenario) {
+		this.sessionScenario=sessionScenario;
+		this.parent = parent;
+		
         this.parent.setTitle("Creat new Scenario");
-        
-        Jopttion();
-        
         this.parent.setSize(700, 700);
+        // calling the joption method 
+        Jopttion();
+        sc = new Scenario((Integer.parseInt(cell)),(Integer.parseInt(buttons)));
+
+        // group layout customizations 
         GroupLayout groupLayout = new GroupLayout(this);
         groupLayout.setHorizontalGroup(
             groupLayout.createParallelGroup(Alignment.LEADING)
@@ -55,6 +74,28 @@ public class ScenarioCreator extends JPanel {
                         .addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 390, Short.MAX_VALUE))
                     .addContainerGap())
         );
+        panel.setLayout(new BorderLayout(0, 0));
+        
+        //list setup
+        panel.add(sessionScenarioList);
+        
+        sessionScenarioList.setModel(sessionModel);
+        
+        if(sessionScenario!=null) {
+        updateModel();
+        }else {
+        	
+        	// mock sessionModel
+        	sessionModel = new DefaultListModel();
+        	
+        	for(int i=0;i<10;i++) {
+        		sessionModel.addElement("Item - "+ (i+1) +": Name (Description)");
+        	}
+        	
+        	sessionScenarioList.setModel(sessionModel);
+        }
+       
+       // calling buttons method 
         comboxdescription();
         addcommandBtn();
         removeBtn();
@@ -62,7 +103,7 @@ public class ScenarioCreator extends JPanel {
         moveDownBtn();
         editBtn();
         reBtn();
-        
+        // panel_1 customizations 
         GroupLayout gl_panel_1 = new GroupLayout(panel_1);
         gl_panel_1.setHorizontalGroup(
             gl_panel_1.createParallelGroup(Alignment.LEADING)
@@ -78,7 +119,7 @@ public class ScenarioCreator extends JPanel {
                             .addGap(47))
                         .addGroup(Alignment.TRAILING, gl_panel_1.createSequentialGroup()
                             .addGroup(gl_panel_1.createParallelGroup(Alignment.TRAILING)
-                                .addComponent(btnmoveUP, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 382, Short.MAX_VALUE)
+                                .addComponent(btnMoveUp, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 382, Short.MAX_VALUE)
                                 .addComponent(btnRe, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 382, Short.MAX_VALUE)
                                 .addComponent(btnEdit, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 382, Short.MAX_VALUE)
                                 .addComponent(btnMoveDown, GroupLayout.DEFAULT_SIZE, 382, Short.MAX_VALUE))
@@ -100,7 +141,7 @@ public class ScenarioCreator extends JPanel {
                     .addGap(18)
                     .addComponent(btnRemove, GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
                     .addGap(27)
-                    .addComponent(btnmoveUP, GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
+                    .addComponent(btnMoveUp, GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
                     .addGap(18)
                     .addComponent(btnMoveDown, GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
                     .addGap(18)
@@ -114,30 +155,32 @@ public class ScenarioCreator extends JPanel {
         
     }
     private void comboxdescription() {
-        
+        // combo box state  change 
         class ItemChangeListener implements ItemListener{
             @Override
             public void itemStateChanged(ItemEvent event) {
-              state=event.getStateChange();
-                
-               
+              state=event.getStateChange(); 
             }       
         }
-        
+        // items in the combo box 
         comboBox.addItem("Add Auido");
-        comboBox.addItem("Add a Question");
-        comboBox.addItem("Pasue");
-        comboBox.addItem("disp-string");
-        comboBox.addItem("Skip");
-        comboBox.addItem("User input");
-        comboBox.addItem("disp clearAll");
-        comboBox.addItem("disp clear cell");
-        comboBox.addItem("disp cell lower");
-        state =comboBox.getSelectedIndex();
+		comboBox.addItem("Add a Question");
+		comboBox.addItem("Pasue");
+		comboBox.addItem("disp-string");
+		comboBox.addItem("Skip");
+		comboBox.addItem("Skip Button");
+		comboBox.addItem("Repeat Button");
+		comboBox.addItem("User input");
+		comboBox.addItem("disp clearAll");
+		comboBox.addItem("disp clear cell");
+		comboBox.addItem("disp cell lower");
+		comboBox.addItem("disp cell pins");
+		state =comboBox.getSelectedIndex();
         comboBox.addItemListener(new ItemChangeListener());
         
         
     }
+    
     public void addcommandBtn()
     {
         btnAddCommand.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -145,34 +188,112 @@ public class ScenarioCreator extends JPanel {
         btnAddCommand.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
                 comboxdescription();
-                if(state==0)
-                {
-            		AudioRecorder sc = new AudioRecorder();
-            		parent.getContentPane().removeAll();
-            		parent.getContentPane().add(sc);
-            		parent.revalidate();
-            		sc.setVisible(true);
-                }
-                else if(state==1)
-                {
-                     JOptionPane question  = new JOptionPane();
-                     question.getAccessibleContext().setAccessibleDescription(" please enter the question here ");
-                     qst=question.showInputDialog(parent, "please enter the Question here  ", null);
-                }else if (state ==2)
-                {
-                    JOptionPane pause  = new JOptionPane();
-                    pause.getAccessibleContext().setAccessibleDescription(" please enter the number of seconds you want to pause ");
-                    secpause= Integer.parseInt(pause.showInputDialog(parent, "please enter the number of seconds you want to pause  ", null));
-                }
-                else if(state==3)
-                {
-                    JOptionPane disp = new JOptionPane();
-                    disp.getAccessibleContext().setAccessibleDescription("Please write the string disp ");
-                    dispstring= disp.showInputDialog(parent,"please write the String here ",null);
-                }
                 
-                
-                
+               
+               // add audio add command 
+				if(state==0)
+				{
+				addAudio audio = new addAudio(parent);
+				parent.revalidate();
+				audio.setVisible(true);
+				}
+				// add question add command 
+				else if(state==1)
+				{
+					 JOptionPane question  = new JOptionPane();
+					 question.getAccessibleContext().setAccessibleDescription(" please enter the question here ");
+					 qst=question.showInputDialog(parent, "please enter the Question here  ", null);
+					 EnumPossibleCommands cmd = EnumPossibleCommands.DISP_STRING ;
+					sc.addCommand(sc.createNewCommand(cmd,  new String[] {qst}));
+				}
+				// pause command 
+				else if (state == 2)
+				{
+					JOptionPane pause  = new JOptionPane();
+					pause.getAccessibleContext().setAccessibleDescription(" please enter the number of seconds you want to pause ");
+					secpause= Integer.parseInt(JOptionPane.showInputDialog(parent, "please enter the number of seconds you want to pause  ", null));
+					Object[] obj = new Object[] {secpause};
+					sc.addCommand(sc.createNewCommand(EnumPossibleCommands.PAUSE, obj ));
+				}
+				// disp-string
+				else if(state==3)
+				{
+					String dispstring; 
+					JOptionPane disp = new JOptionPane();
+					disp.getAccessibleContext().setAccessibleDescription("Please write the string disp ");
+					dispstring= disp.showInputDialog(parent,"please write the String here ",null);
+					EnumPossibleCommands cmd = EnumPossibleCommands.DISP_STRING ;
+					sc.addCommand(sc.createNewCommand(cmd,  new String[] {dispstring}));
+				}
+				
+				//Skip
+				else if (state==4)
+				{ 
+					String skip;
+					JOptionPane skipp = new JOptionPane();
+					skipp.getAccessibleContext().setAccessibleDescription("Please write the string you want to skip ");
+					skip= skipp.showInputDialog(parent,"please write the String you want to skip ",null);
+					EnumPossibleCommands cmd = EnumPossibleCommands.SKIP ;
+					sc.addCommand(sc.createNewCommand(cmd,  new String[] {skip}));
+				}
+				// skip button
+				else if(state ==5)
+				{
+					String str;
+					int bnts;
+					JTextField btn = new JTextField();
+					
+					Object [] obj= {
+							"please enter the button number:",btn,
+							"please enter the string here:",
+					};
+					
+					JOptionPane skipp  = new JOptionPane();	
+					str=(JOptionPane.showInputDialog(null, obj,"skip button",JOptionPane.OK_CANCEL_OPTION));
+					bnts=Integer.parseInt(btn.getText());
+					EnumPossibleCommands cmd = EnumPossibleCommands.SKIP_BUTTON;
+					sc.addCommand(sc.createNewCommand(cmd, new Object [] {bnts,str}));
+					}
+				
+				//Repeat Button
+				else if(state ==6 )
+				{
+
+					JOptionPane rebnt  = new JOptionPane();
+					rebnt.getAccessibleContext().setAccessibleDescription(" please enter the button number you want to repeat ");
+					int btns;
+					btns = Integer.parseInt(rebnt.showInputDialog(parent, "please enter the button number you want to repeat ", null));
+					EnumPossibleCommands cmd = EnumPossibleCommands.REPEAT_BUTTON ;
+					sc.addCommand(sc.createNewCommand(cmd, new Object [] {btns}));
+				}
+				// disp clear cell
+				else if( state == 9)
+				{
+					int cells;
+					JOptionPane clrcell  = new JOptionPane();
+					clrcell.getAccessibleContext().setAccessibleDescription(" please enter the cell number you want to clear ");
+					cells = Integer.parseInt(clrcell.showInputDialog(parent, "please enter the cell number you want to clear ", null));
+					EnumPossibleCommands cmd = EnumPossibleCommands.DISP_CLEAR_CELL ;
+					sc.addCommand(sc.createNewCommand(cmd, new Object [] {cells}));
+				}	
+				// disp cell pin
+				else if(state==11)
+				{
+					int cell;
+					int pin;
+					JTextField pins = new JTextField();
+					
+					Object [] obj= {
+							"please enter the cell number:",pins,
+							"please enter the pin number :",
+					};
+					
+					JOptionPane skipp  = new JOptionPane();	
+					pin=Integer.parseInt(JOptionPane.showInputDialog(null, obj,"skip button",JOptionPane.OK_CANCEL_OPTION));
+					cell=Integer.parseInt(pins.getText());
+					EnumPossibleCommands cmd = EnumPossibleCommands.DISP_CELL_PINS;
+					sc.addCommand(sc.createNewCommand(cmd, new Object [] {cell,pin}));
+					}
             }
         });
     }
@@ -186,14 +307,20 @@ public class ScenarioCreator extends JPanel {
     }
     public void moveUpBtn()
     {
-        btnmoveUP.setFont(new Font("Tahoma", Font.PLAIN, 14));
-        btnmoveUP.addActionListener(new ActionListener() {
+    	btnMoveUp.setFont(new Font("Tahoma", Font.PLAIN, 14));
+    	btnMoveUp.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
+            	swapCommands(sessionScenarioList.getSelectedIndex(),sessionScenarioList.getSelectedIndex()-1);
             }
         });
     }
     public void moveDownBtn() {
         btnMoveDown.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        btnMoveDown.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+            	swapCommands(sessionScenarioList.getSelectedIndex(),sessionScenarioList.getSelectedIndex()+1);
+            }
+        });
     }
     public void editBtn() {
         btnEdit.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -220,7 +347,7 @@ public class ScenarioCreator extends JPanel {
         //mock scenario
         StringBuffer input = new StringBuffer();
 		for (int i=0;i<10;i++) {
-			input.append("Command: "+importedScenario.getCommand(i).getName()+" Args: "+importedScenario.getCommand(i).getArguments()+'\n');
+			//input.append("Command: "+importedScenario.getCommand(i).getName()+" Args: "+importedScenario.getCommand(i).getArguments()+'\n');
 		}
 		
 		//set mock scenario to textfield
@@ -228,13 +355,23 @@ public class ScenarioCreator extends JPanel {
         
         
     }
+    
+    private void updateModel(){
+    	//TODO get Scenario Size
+    		sessionModel.clear();
+    	for(int i=0;i<10;i++) {
+    		ScenarioCommand command = sessionScenario.getCommand(i);
+    		String element = command.getName()+" "+command.getArguments();
+    		sessionModel.addElement(element);
+    	}
+    }
+    
+    private void swapCommands(int first, int second) {
+    	if(second<0 || second>sessionModel.size()-1) {
+    		return;
+    	}
+        String tmp = (String) sessionModel.get(first);
+        sessionModel.set(first, sessionModel.get(second));
+        sessionModel.set(second, tmp);
+    }
 }
-
-
-
-
-
-
-
-
-
