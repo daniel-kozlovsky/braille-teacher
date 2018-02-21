@@ -52,15 +52,17 @@ public class ScenarioCreator extends JPanel {
     //Layouts
     GroupLayout mainGroupLayout;
     GroupLayout gl_componentsPanel;
+    private JButton btnExxportScenario;
  	
  	public ScenarioCreator(JFrame parent, Scenario sessionScenario) {
  		
  		this.parent = parent;
+ 		
  		scenarioCreatorBounds = parent.getBounds();
  		this.setBounds(scenarioCreatorBounds);
 		this.workingScenario = sessionScenario;
         this.parent.setTitle("Create new Scenario");
-        
+        this.parent.setSize(700, 700);
         initComponents();
         initLayout();
         
@@ -80,6 +82,7 @@ public class ScenarioCreator extends JPanel {
  	{
  		//Labels
  	    lblNewLabel = new JLabel("Please choose a command from the top down menu ");
+ 	    lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 12));
  		//Buttons
  		btnAdd = new JButton("Add Command");
  		btnAdd.setFont(mainButtonFont);
@@ -209,76 +212,93 @@ public class ScenarioCreator extends JPanel {
         });
  	}
  	
+ 	
+ 	
  	//TODO change component layout to have two columns if enough space after resizing window.
  	private void initLayout()
  	{
  		//group layout customizations 
         mainGroupLayout = new GroupLayout(this);
         mainGroupLayout.setHorizontalGroup(
-            mainGroupLayout.createParallelGroup(Alignment.LEADING)
-                .addGroup(mainGroupLayout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(scenarioProgressPanel, 0, 200, Short.MAX_VALUE)
-                    .addPreferredGap(ComponentPlacement.UNRELATED)
-                    .addComponent(componentsPanel, 0, 200, Short.MAX_VALUE)
-                    .addContainerGap())
+        	mainGroupLayout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(mainGroupLayout.createSequentialGroup()
+        			.addContainerGap()
+        			.addComponent(scenarioProgressPanel, 0, 313, Short.MAX_VALUE)
+        			.addPreferredGap(ComponentPlacement.UNRELATED)
+        			.addComponent(componentsPanel, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        			.addContainerGap())
         );
         mainGroupLayout.setVerticalGroup(
-            mainGroupLayout.createParallelGroup(Alignment.LEADING)
-                .addGroup(mainGroupLayout.createSequentialGroup()
-                    .addContainerGap()
-                    .addGroup(mainGroupLayout.createParallelGroup(Alignment.LEADING)
-                        .addComponent(scenarioProgressPanel, GroupLayout.PREFERRED_SIZE, 496, GroupLayout.PREFERRED_SIZE)
-                        .addComponent(componentsPanel, GroupLayout.PREFERRED_SIZE, 390, Short.MAX_VALUE))
-                    .addContainerGap())
+        	mainGroupLayout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(Alignment.TRAILING, mainGroupLayout.createSequentialGroup()
+        			.addContainerGap()
+        			.addGroup(mainGroupLayout.createParallelGroup(Alignment.TRAILING)
+        				.addComponent(componentsPanel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 513, Short.MAX_VALUE)
+        				.addComponent(scenarioProgressPanel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 513, Short.MAX_VALUE))
+        			.addContainerGap())
         );
+        
+        btnExxportScenario = new JButton("Export Scenario");
+        btnExxportScenario.setForeground(Color.BLACK);
+        btnExxportScenario.setFont(new Font("Tahoma", Font.PLAIN, 14));
         
         // componentsPanel customizations 
         gl_componentsPanel = new GroupLayout(componentsPanel);
         gl_componentsPanel.setHorizontalGroup(
-            gl_componentsPanel.createParallelGroup(Alignment.LEADING)
-                .addGroup(gl_componentsPanel.createSequentialGroup()
-                    .addContainerGap()
-                    .addGroup(gl_componentsPanel.createParallelGroup(Alignment.LEADING)
-                        .addGroup(gl_componentsPanel.createSequentialGroup()
-                            .addGap(10)
-                            .addComponent(comboBox, 0, preferredButtonWidth, preferredButtonWidth)
-                            .addContainerGap())
-                        .addGroup(Alignment.LEADING, gl_componentsPanel.createSequentialGroup()
-                            .addComponent(lblNewLabel,  0, 200, Short.MAX_VALUE)
-                            .addGap(47))
-                        .addGroup(Alignment.LEADING, gl_componentsPanel.createSequentialGroup()
-                            .addGroup(gl_componentsPanel.createParallelGroup(Alignment.LEADING)
-                                .addComponent(btnMoveUp, Alignment.LEADING,  0, preferredButtonWidth, preferredButtonWidth)
-                                .addComponent(btnRepeat, Alignment.LEADING, 0, preferredButtonWidth, preferredButtonWidth)
-                                .addComponent(btnEdit, Alignment.LEADING, 0, preferredButtonWidth, preferredButtonWidth)
-                                .addComponent(btnMoveDown, 0, preferredButtonWidth, preferredButtonWidth))
-                            .addGap(28))
-                        .addGroup(Alignment.LEADING, gl_componentsPanel.createSequentialGroup()
-                            .addGroup(gl_componentsPanel.createParallelGroup(Alignment.LEADING)
-                                .addComponent(btnRemove, Alignment.LEADING, 0, preferredButtonWidth, preferredButtonWidth)
-                                .addComponent(btnAdd, 0, preferredButtonWidth, preferredButtonWidth))
-                            .addGap(28))))
+        	gl_componentsPanel.createParallelGroup(Alignment.TRAILING)
+        		.addGroup(gl_componentsPanel.createSequentialGroup()
+        			.addGroup(gl_componentsPanel.createParallelGroup(Alignment.LEADING)
+        				.addGroup(gl_componentsPanel.createSequentialGroup()
+        					.addContainerGap()
+        					.addComponent(lblNewLabel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        				.addGroup(gl_componentsPanel.createSequentialGroup()
+        					.addContainerGap()
+        					.addComponent(comboBox, 0, 293, Short.MAX_VALUE))
+        				.addGroup(gl_componentsPanel.createSequentialGroup()
+        					.addGap(33)
+        					.addComponent(btnAdd, GroupLayout.PREFERRED_SIZE, 243, GroupLayout.PREFERRED_SIZE))
+        				.addGroup(gl_componentsPanel.createSequentialGroup()
+        					.addContainerGap()
+        					.addGroup(gl_componentsPanel.createParallelGroup(Alignment.LEADING)
+        						.addGroup(gl_componentsPanel.createSequentialGroup()
+        							.addComponent(btnRemove, GroupLayout.PREFERRED_SIZE, 135, GroupLayout.PREFERRED_SIZE)
+        							.addGap(39)
+        							.addComponent(btnMoveUp, GroupLayout.DEFAULT_SIZE, 119, Short.MAX_VALUE))
+        						.addGroup(gl_componentsPanel.createSequentialGroup()
+        							.addComponent(btnEdit, GroupLayout.PREFERRED_SIZE, 135, GroupLayout.PREFERRED_SIZE)
+        							.addGap(39)
+        							.addComponent(btnMoveDown, GroupLayout.DEFAULT_SIZE, 119, Short.MAX_VALUE)))))
+        			.addContainerGap())
+        		.addGroup(gl_componentsPanel.createSequentialGroup()
+        			.addContainerGap(84, Short.MAX_VALUE)
+        			.addComponent(btnRepeat, GroupLayout.PREFERRED_SIZE, 147, GroupLayout.PREFERRED_SIZE)
+        			.addGap(82))
+        		.addGroup(gl_componentsPanel.createSequentialGroup()
+        			.addContainerGap(36, Short.MAX_VALUE)
+        			.addComponent(btnExxportScenario, GroupLayout.PREFERRED_SIZE, 243, GroupLayout.PREFERRED_SIZE)
+        			.addGap(34))
         );
         gl_componentsPanel.setVerticalGroup(
-            gl_componentsPanel.createParallelGroup(Alignment.LEADING)
-                .addGroup(gl_componentsPanel.createSequentialGroup()
-                    .addComponent(lblNewLabel, GroupLayout.DEFAULT_SIZE, 63, Short.MAX_VALUE)
-                    .addPreferredGap(ComponentPlacement.UNRELATED)
-                    .addComponent(comboBox, GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
-                    .addGap(38)
-                    .addComponent(btnAdd, GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
-                    .addGap(18)
-                    .addComponent(btnRemove, GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
-                    .addGap(27)
-                    .addComponent(btnMoveUp, GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
-                    .addGap(18)
-                    .addComponent(btnMoveDown, GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
-                    .addGap(18)
-                    .addComponent(btnEdit, GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
-                    .addGap(20)
-                    .addComponent(btnRepeat, GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE)
-                    .addGap(8))
+        	gl_componentsPanel.createParallelGroup(Alignment.LEADING)
+        		.addGroup(gl_componentsPanel.createSequentialGroup()
+        			.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 82, GroupLayout.PREFERRED_SIZE)
+        			.addGap(18)
+        			.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE)
+        			.addGap(18)
+        			.addComponent(btnAdd, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
+        			.addGap(41)
+        			.addGroup(gl_componentsPanel.createParallelGroup(Alignment.BASELINE)
+        				.addComponent(btnRemove, GroupLayout.PREFERRED_SIZE, 41, GroupLayout.PREFERRED_SIZE)
+        				.addComponent(btnMoveUp, GroupLayout.DEFAULT_SIZE, 41, Short.MAX_VALUE))
+        			.addGap(18)
+        			.addGroup(gl_componentsPanel.createParallelGroup(Alignment.BASELINE)
+        				.addComponent(btnEdit, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
+        				.addComponent(btnMoveDown, GroupLayout.PREFERRED_SIZE, 39, GroupLayout.PREFERRED_SIZE))
+        			.addGap(29)
+        			.addComponent(btnRepeat, GroupLayout.PREFERRED_SIZE, 44, GroupLayout.PREFERRED_SIZE)
+        			.addGap(30)
+        			.addComponent(btnExxportScenario, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
+        			.addContainerGap())
         );
         
  	}
@@ -301,9 +321,10 @@ public class ScenarioCreator extends JPanel {
     	// add audio add command 
 		if(comboIndex==0)
 		{
-		addAudio audio = new addAudio(parent);
-		parent.revalidate();
+			addAudio audio = new addAudio();
+		audio.revalidate();
 		audio.setVisible(true);
+	//	audio.setSize(300, 500);
 		}
 		// add question add command 
 		else if(comboIndex==1)
@@ -419,9 +440,11 @@ public class ScenarioCreator extends JPanel {
     		case SOUND:
 	    		//Add sound command with arguments 
 	        	//TODO whatever happens here must create a new command
-	    		addAudio audio = new addAudio(parent);
+	    		addAudio audio = new addAudio();
 	    		parent.revalidate();
 	    		audio.setVisible(true);
+	    		audio.setSize(400, 600);
+	    		audio.setResizable(false);
 	    		
 	    		//**********
 	    		//workingScenario.addCommand(newCommand);
