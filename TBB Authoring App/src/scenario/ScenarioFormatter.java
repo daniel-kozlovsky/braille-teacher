@@ -15,8 +15,6 @@ import java.util.Scanner;
  *
  */
 public class ScenarioFormatter {
-
-	public static final String SAVED_SCENARIOS_PATH = "scenarios\\";
 	
 	/**
 	 * each element will be a line in the text file
@@ -35,12 +33,12 @@ public class ScenarioFormatter {
 	 * @param scenario the scenario to format
 	 * @param filename name of the created text file
 	 */
-	public static void export(Scenario scenario, String filename)
+	public static void export(Scenario scenario, String filepath)
 	{
 		format(scenario);
 		try
 		{
-			File file = new File(SAVED_SCENARIOS_PATH + filename);
+			File file = new File(filepath);
 			PrintWriter printWriter = new PrintWriter(file);
 			for(String s : scenarioText)
 			{
@@ -55,6 +53,7 @@ public class ScenarioFormatter {
 			e.printStackTrace();
 		}
 	}
+	
 	
 	/**
 	 * Formats a scenario for exporting. Overwrites existing formatting. The format is text and is outlined 

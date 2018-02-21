@@ -511,8 +511,7 @@ public class ScenarioCreator extends JPanel {
      * Handles the click event for the Move Up button
      */
     private void btnMoveUpClickHandler()
-    {	
-    	//doesnt work anymore
+    {
     	//swapCommands(sessionScenarioList.getSelectedIndex(),sessionScenarioList.getSelectedIndex()-1);
     	if(listBoxIndex!=0) {
     	workingScenario.moveCommand(workingScenario.getCommand(listBoxIndex), listBoxIndex - 1);
@@ -525,7 +524,6 @@ public class ScenarioCreator extends JPanel {
      */
     private void btnMoveDownClickHandler()
     {
-    	//doesnt work anymore
     	//swapCommands(sessionScenarioList.getSelectedIndex(),sessionScenarioList.getSelectedIndex()+1);
     	if(listBoxIndex!=sessionListModel.size()-1) {
     	workingScenario.moveCommand(workingScenario.getCommand(listBoxIndex), listBoxIndex + 1);
@@ -607,18 +605,15 @@ public class ScenarioCreator extends JPanel {
     		
     }
     
-    private void swapCommands(int first, int second) {
-    	//TODO: Please use Scenario.moveCommand(). This method has been tested and includes error checking.
-    	if(second<0 || second>sessionListModel.size()-1) {
-    		return;
-    	}
-        String tmp = (String) sessionListModel.get(first);
-        sessionListModel.set(first, sessionListModel.get(second));
-        sessionListModel.set(second, tmp);
-    }
     public void btnExportClickHandler()
     {
-    	ScenarioFormatter.export(workingScenario, ("Scenario_"+number+".txt"));
-    	number++;
+    	//open save prompt
+    	JFileChooser saveFilePrompt = new JFileChooser();
+    	int result = saveFilePrompt.showSaveDialog(ScenarioCreator.this);
+        
+    	if(result == JFileChooser.APPROVE_OPTION) {
+    		//parse export scenario
+        	ScenarioFormatter.export(workingScenario, saveFilePrompt.getSelectedFile().getAbsolutePath());
+    	}
     }
 }
