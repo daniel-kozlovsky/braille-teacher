@@ -12,6 +12,7 @@ import javax.swing.event.ListSelectionListener;
 import scenario.EnumPossibleCommands;
 import scenario.Scenario;
 import scenario.ScenarioCommand;
+import scenario.ScenarioFormatter;
 public class ScenarioCreator extends JPanel {
 	
 	private static final long serialVersionUID = 1L;
@@ -53,6 +54,7 @@ public class ScenarioCreator extends JPanel {
     GroupLayout mainGroupLayout;
     GroupLayout gl_componentsPanel;
     private JButton btnExxportScenario;
+    private static int number=1;
  	
  	public ScenarioCreator(JFrame parent, Scenario sessionScenario) {
  		
@@ -241,6 +243,16 @@ public class ScenarioCreator extends JPanel {
         btnExxportScenario = new JButton("Export Scenario");
         btnExxportScenario.setForeground(Color.BLACK);
         btnExxportScenario.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        btnExxportScenario.addActionListener( new ActionListener () {
+        	
+        	@Override
+        	public void actionPerformed(ActionEvent arg0) 
+        	{
+        		btnExportClickHandler();
+        	}
+        	});
+        
+        
         
         // componentsPanel customizations 
         gl_componentsPanel = new GroupLayout(componentsPanel);
@@ -593,5 +605,10 @@ public class ScenarioCreator extends JPanel {
         String tmp = (String) sessionModel.get(first);
         sessionModel.set(first, sessionModel.get(second));
         sessionModel.set(second, tmp);
+    }
+    public void btnExportClickHandler()
+    {
+    	ScenarioFormatter.export(workingScenario, ("Scenario_"+number+".txt"));
+    	number++;
     }
 }
