@@ -113,7 +113,9 @@ public class ScenarioFormatter {
 	public static Scenario importParse(String path)
 	{
 		Scenario importedScenario;
-		File file = new File(SAVED_SCENARIOS_PATH + path);
+		
+		//removed hard-coded path
+		File file = new File(path);
 		try
 		{
 			Scanner fileScan = new Scanner(file);

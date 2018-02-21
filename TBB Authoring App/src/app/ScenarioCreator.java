@@ -30,7 +30,7 @@ public class ScenarioCreator extends JPanel {
     private int numButtons;
     private JFrame parent;
 	//list
-	private DefaultListModel<String> sessionModel;
+	private DefaultListModel<String> sessionListModel;
  	private JList<String> sessionScenarioList;
     //panels
     private JPanel scenarioProgressPanel;
@@ -56,13 +56,24 @@ public class ScenarioCreator extends JPanel {
     private JButton btnExxportScenario;
     private static int number=1;
  	
- 	public ScenarioCreator(JFrame parent, Scenario sessionScenario) {
+ 	public ScenarioCreator(JFrame parent, Scenario importedScenario) {
  		
  		this.parent = parent;
  		
  		scenarioCreatorBounds = parent.getBounds();
  		this.setBounds(scenarioCreatorBounds);
-		this.workingScenario = sessionScenario;
+ 		
+ 		//import OR initialize scenario
+ 		if(importedScenario!=null) {
+		this.workingScenario = importedScenario;
+ 		}
+ 		else {
+        
+        //Dialog for number of cells and buttons
+        newScenarioSetUpDialog();
+ 	        workingScenario = new Scenario(numCells, numButtons);
+ 		}
+ 		
         this.parent.setTitle("Create new Scenario");
         this.parent.setSize(700, 700);
         initComponents();
@@ -70,11 +81,6 @@ public class ScenarioCreator extends JPanel {
         
         this.setLayout(mainGroupLayout);
         componentsPanel.setLayout(gl_componentsPanel);
-        
-        //Dialog for number of cells and buttons
-        newScenarioSetUpDialog();
-        
-        workingScenario = new Scenario(numCells, numButtons);
         
         //populates list box
         updateSessionModel(); 
@@ -159,9 +165,9 @@ public class ScenarioCreator extends JPanel {
         	});
         
         //ListBox
-        sessionModel = new DefaultListModel<>();
+        sessionListModel = new DefaultListModel<>();
         sessionScenarioList = new JList<String>();
- 		sessionScenarioList.setModel(sessionModel);
+ 		sessionScenarioList.setModel(sessionListModel);
  		sessionScenarioList.addListSelectionListener( new ListSelectionListener () 
  			{
 				@Override
@@ -508,7 +514,9 @@ public class ScenarioCreator extends JPanel {
     {	
     	//doesnt work anymore
     	//swapCommands(sessionScenarioList.getSelectedIndex(),sessionScenarioList.getSelectedIndex()-1);
+    	if(listBoxIndex!=0) {
     	workingScenario.moveCommand(workingScenario.getCommand(listBoxIndex), listBoxIndex - 1);
+    	}
     	updateSessionModel();
     }
     
@@ -519,7 +527,9 @@ public class ScenarioCreator extends JPanel {
     {
     	//doesnt work anymore
     	//swapCommands(sessionScenarioList.getSelectedIndex(),sessionScenarioList.getSelectedIndex()+1);
+    	if(listBoxIndex!=sessionListModel.size()-1) {
     	workingScenario.moveCommand(workingScenario.getCommand(listBoxIndex), listBoxIndex + 1);
+    	}
     	updateSessionModel();
     }
     
@@ -589,22 +599,22 @@ public class ScenarioCreator extends JPanel {
      */
     private void updateSessionModel(){
     	
-    	sessionModel.clear();
+    	sessionListModel.clear();
     	for(ScenarioCommand cmd : workingScenario)
     	{
-    		sessionModel.addElement(cmd.toString());
+    		sessionListModel.addElement(cmd.toString());
     	}
     		
     }
     
     private void swapCommands(int first, int second) {
     	//TODO: Please use Scenario.moveCommand(). This method has been tested and includes error checking.
-    	if(second<0 || second>sessionModel.size()-1) {
+    	if(second<0 || second>sessionListModel.size()-1) {
     		return;
     	}
-        String tmp = (String) sessionModel.get(first);
-        sessionModel.set(first, sessionModel.get(second));
-        sessionModel.set(second, tmp);
+        String tmp = (String) sessionListModel.get(first);
+        sessionListModel.set(first, sessionListModel.get(second));
+        sessionListModel.set(second, tmp);
     }
     public void btnExportClickHandler()
     {

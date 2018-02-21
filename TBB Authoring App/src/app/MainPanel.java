@@ -47,32 +47,13 @@ public class MainPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 
+				//choose a file to import as a scenario
 				JFileChooser fileChooser = new JFileChooser();
 				int result = fileChooser.showOpenDialog(buttonNewScenario);
 				if (result == JFileChooser.APPROVE_OPTION) {
 				Scenario importedScenario = ScenarioFormatter.importParse(fileChooser.getCurrentDirectory().getAbsolutePath()+"\\"+fileChooser.getSelectedFile().getName());
-				
-				System.out.println(fileChooser.getCurrentDirectory().getAbsolutePath()+"\\"+fileChooser.getSelectedFile().getName());
-				
 				openScenarioCreator(importedScenario);
 				}
-				
-				/*if (result == JFileChooser.APPROVE_OPTION) {
-					try {
-
-						Scanner scanner = new Scanner(fileChooser.getSelectedFile());
-						while (scanner.hasNext()) {
-							// TODO: read and parse selected file
-							scanner.next();
-						}
-						scanner.close();
-
-						openScenarioCreator();
-
-					} catch (FileNotFoundException e) {
-						e.printStackTrace();
-					}
-				}*/
 			}
 		});
 		setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
