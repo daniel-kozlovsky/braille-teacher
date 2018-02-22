@@ -23,12 +23,9 @@ public class ScenarioCreator extends JPanel {
 
 	// Sizes
 	private Rectangle scenarioCreatorBounds;
-	private final int preferredButtonWidth = 200;
 	// misc
 	private int comboIndex;
 	private int listBoxIndex;
-	private String qst;
-	private int secpause;
 	private Scenario workingScenario;
 	private int numCells;
 	private int numButtons;
@@ -47,7 +44,7 @@ public class ScenarioCreator extends JPanel {
 	// labels
 	private JLabel lblNewLabel;
 	// combo-boxes
-	private JComboBox<String> comboBox;
+	private JComboBox<String> commandsComboBox;
 	// fonts
 	Font mainButtonFont = new Font("Tahoma", Font.PLAIN, 14);
 	// colours
@@ -55,8 +52,7 @@ public class ScenarioCreator extends JPanel {
 	// Layouts
 	GroupLayout mainGroupLayout;
 	GroupLayout gl_componentsPanel;
-	private JButton btnExxportScenario;
-	private static int number = 1;
+	private JButton btnExport;
 
 	public ScenarioCreator(JFrame parent, Scenario importedScenario) {
 
@@ -76,7 +72,7 @@ public class ScenarioCreator extends JPanel {
 		}
 
 		this.parent.setTitle("Create new Scenario");
-		this.parent.setSize(700, 700);
+		// this.parent.setSize(700, 700);
 		initComponents();
 		initLayout();
 
@@ -89,8 +85,9 @@ public class ScenarioCreator extends JPanel {
 
 	private void initComponents() {
 		// Labels
-		lblNewLabel = new JLabel("Please choose a command from the top down menu ");
-		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		lblNewLabel = new JLabel("Choose a command from the menu below ");
+		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 14));
 		// Buttons
 		btnAdd = new JButton("Add Command");
 		btnAdd.setFont(mainButtonFont);
@@ -155,10 +152,11 @@ public class ScenarioCreator extends JPanel {
 		componentsPanel = new JPanel();
 
 		// combo-boxes
-		comboBox = new JComboBox<String>();
+		commandsComboBox = new JComboBox<String>();
+		commandsComboBox.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		// Populate comboBox with all possible commands
 		for (EnumPossibleCommands cmd : EnumPossibleCommands.values()) {
-			comboBox.addItem(cmd.getName());
+			commandsComboBox.addItem(cmd.getName());
 		}
 
 		/*
@@ -174,7 +172,7 @@ public class ScenarioCreator extends JPanel {
 		 * comboBox.addItem("disp clearAll"); comboBox.addItem("disp clear cell");
 		 * comboBox.addItem("disp cell lower"); comboBox.addItem("disp cell pins");
 		 */
-		comboBox.addActionListener(new ActionListener() {
+		commandsComboBox.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -188,29 +186,25 @@ public class ScenarioCreator extends JPanel {
 	private void initLayout() {
 		// group layout customizations
 		mainGroupLayout = new GroupLayout(this);
-		mainGroupLayout.setHorizontalGroup(
-			mainGroupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(mainGroupLayout.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(scenarioProgressPanel, 0, 319, Short.MAX_VALUE)
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(componentsPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addGap(5))
-		);
-		mainGroupLayout.setVerticalGroup(
-			mainGroupLayout.createParallelGroup(Alignment.TRAILING)
-				.addGroup(mainGroupLayout.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(mainGroupLayout.createParallelGroup(Alignment.TRAILING)
-						.addComponent(componentsPanel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 641, Short.MAX_VALUE)
-						.addComponent(scenarioProgressPanel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 641, Short.MAX_VALUE))
-					.addContainerGap())
-		);
+		mainGroupLayout.setHorizontalGroup(mainGroupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(mainGroupLayout.createSequentialGroup().addContainerGap()
+						.addComponent(scenarioProgressPanel, 0, 319, Short.MAX_VALUE)
+						.addPreferredGap(ComponentPlacement.UNRELATED).addComponent(componentsPanel,
+								GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addGap(5)));
+		mainGroupLayout.setVerticalGroup(mainGroupLayout.createParallelGroup(Alignment.TRAILING)
+				.addGroup(mainGroupLayout.createSequentialGroup().addContainerGap()
+						.addGroup(mainGroupLayout.createParallelGroup(Alignment.TRAILING)
+								.addComponent(componentsPanel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 641,
+										Short.MAX_VALUE)
+								.addComponent(scenarioProgressPanel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 641,
+										Short.MAX_VALUE))
+						.addContainerGap()));
 
-		btnExxportScenario = new JButton("Export Scenario");
-		btnExxportScenario.setForeground(Color.BLACK);
-		btnExxportScenario.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		btnExxportScenario.addActionListener(new ActionListener() {
+		btnExport = new JButton("Export Scenario");
+		btnExport.setForeground(Color.BLACK);
+		btnExport.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		btnExport.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -221,35 +215,31 @@ public class ScenarioCreator extends JPanel {
 		// componentsPanel customizations
 		gl_componentsPanel = new GroupLayout(componentsPanel);
 		gl_componentsPanel.setHorizontalGroup(
-			gl_componentsPanel.createParallelGroup(Alignment.TRAILING)
-				.addGroup(Alignment.LEADING, gl_componentsPanel.createSequentialGroup()
-					.addGap(92)
-					.addGroup(gl_componentsPanel.createParallelGroup(Alignment.TRAILING, false)
-						.addComponent(btnMoveDown, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(btnRemove, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(btnMoveUp, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE))
-					.addContainerGap(92, Short.MAX_VALUE))
+			gl_componentsPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_componentsPanel.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 299, Short.MAX_VALUE)
+					.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 315, Short.MAX_VALUE)
 					.addContainerGap())
-				.addGroup(gl_componentsPanel.createSequentialGroup()
+				.addGroup(Alignment.TRAILING, gl_componentsPanel.createSequentialGroup()
 					.addGap(42)
 					.addGroup(gl_componentsPanel.createParallelGroup(Alignment.TRAILING)
-						.addComponent(btnExxportScenario, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 243, Short.MAX_VALUE)
+						.addComponent(btnRemove, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 243, Short.MAX_VALUE)
+						.addComponent(btnMoveDown, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 243, Short.MAX_VALUE)
+						.addComponent(btnMoveUp, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 243, Short.MAX_VALUE)
+						.addComponent(btnExport, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 243, Short.MAX_VALUE)
 						.addComponent(btnAdd, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 243, Short.MAX_VALUE))
 					.addGap(50))
-				.addGroup(Alignment.LEADING, gl_componentsPanel.createSequentialGroup()
+				.addGroup(gl_componentsPanel.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, 295, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(25, Short.MAX_VALUE))
+					.addComponent(commandsComboBox, 0, 315, Short.MAX_VALUE)
+					.addContainerGap())
 		);
 		gl_componentsPanel.setVerticalGroup(
 			gl_componentsPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_componentsPanel.createSequentialGroup()
 					.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 82, GroupLayout.PREFERRED_SIZE)
 					.addGap(18)
-					.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE)
+					.addComponent(commandsComboBox, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE)
 					.addGap(31)
 					.addComponent(btnAdd, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
 					.addGap(39)
@@ -258,10 +248,35 @@ public class ScenarioCreator extends JPanel {
 					.addComponent(btnMoveDown, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
 					.addGap(44)
 					.addComponent(btnRemove, GroupLayout.PREFERRED_SIZE, 44, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED, 68, Short.MAX_VALUE)
-					.addComponent(btnExxportScenario, GroupLayout.PREFERRED_SIZE, 52, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED, 206, Short.MAX_VALUE)
+					.addComponent(btnExport, GroupLayout.PREFERRED_SIZE, 52, GroupLayout.PREFERRED_SIZE)
 					.addGap(34))
 		);
+
+		// accessibility
+
+		sessionScenarioList.getAccessibleContext().setAccessibleName("Sceanrio commands");
+		sessionScenarioList.getAccessibleContext().setAccessibleDescription("Scenario commands shown as a queue");
+		
+		commandsComboBox.getAccessibleContext().setAccessibleName("Commands drop-down");
+		commandsComboBox.getAccessibleContext().setAccessibleDescription("Select a command to add in the scenaio queue");
+
+		btnAdd.getAccessibleContext().setAccessibleName("Add command");
+		btnAdd.getAccessibleContext()
+				.setAccessibleDescription("Create and add the selected command in the drop-down to the scenario");
+
+		btnMoveUp.getAccessibleContext().setAccessibleName("Move command up");
+		btnMoveUp.getAccessibleContext().setAccessibleDescription("Move the selected command up the scenario queue");
+
+		btnMoveDown.getAccessibleContext().setAccessibleName("Move command down");
+		btnMoveDown.getAccessibleContext()
+				.setAccessibleDescription("Move the selected command down the scenario queue");
+
+		btnRemove.getAccessibleContext().setAccessibleName("Remove command");
+		btnRemove.getAccessibleContext().setAccessibleDescription("Remove the selected command from the scenario");
+
+		btnExport.getAccessibleContext().setAccessibleName("Exprot scenario");
+		btnExport.getAccessibleContext().setAccessibleDescription("Save the scenario as a file");
 
 	}
 
@@ -269,113 +284,91 @@ public class ScenarioCreator extends JPanel {
 	 * Handles the event when a selection is made in the combo box.
 	 */
 	private void comboBoxSelectionChangedHandler() {
-		comboIndex = comboBox.getSelectedIndex();
+		comboIndex = commandsComboBox.getSelectedIndex();
 	}
 
 	/**
 	 * Handles the click event for the add command button
 	 */
 	// Keep this if you prefer your method
-	// -DKozlovsky
-	private void btnAddClickHandler_OLD() {
-		// add audio add command
-		if (comboIndex == 0) {
-			addAudio audio = new addAudio();
-			audio.revalidate();
-			audio.setVisible(true);
-			// audio.setSize(300, 500);
-		}
-		// add question add command
-		else if (comboIndex == 1) {
-			JOptionPane question = new JOptionPane();
-			question.getAccessibleContext().setAccessibleDescription(" Enter the question below ");
-			qst = question.showInputDialog(parent, "Enter the question below  ", null);
-			EnumPossibleCommands cmd = EnumPossibleCommands.DISP_STRING;
-			workingScenario.addCommand(workingScenario.createNewCommand(cmd, new String[] { qst }));
-		}
-		// pause command
-		else if (comboIndex == 2) {
-			JOptionPane pause = new JOptionPane();
-			pause.getAccessibleContext()
-					.setAccessibleDescription(" please enter the number of seconds you want to pause ");
-			secpause = Integer.parseInt(JOptionPane.showInputDialog(parent,
-					"please enter the number of seconds you want to pause  ", null));
-			Object[] obj = new Object[] { secpause };
-			workingScenario.addCommand(workingScenario.createNewCommand(EnumPossibleCommands.PAUSE, obj));
-		}
-		// disp-string
-		else if (comboIndex == 3) {
-			String dispstring;
-			JOptionPane disp = new JOptionPane();
-			disp.getAccessibleContext().setAccessibleDescription("Please write the string disp ");
-			dispstring = disp.showInputDialog(parent, "please write the String here ", null);
-			EnumPossibleCommands cmd = EnumPossibleCommands.DISP_STRING;
-			workingScenario.addCommand(workingScenario.createNewCommand(cmd, new String[] { dispstring }));
-		}
-
-		// Skip
-		else if (comboIndex == 4) {
-			String skip;
-			JOptionPane skipp = new JOptionPane();
-			skipp.getAccessibleContext().setAccessibleDescription("Please write the string you want to skip ");
-			skip = skipp.showInputDialog(parent, "please write the String you want to skip ", null);
-			EnumPossibleCommands cmd = EnumPossibleCommands.SKIP;
-			workingScenario.addCommand(workingScenario.createNewCommand(cmd, new String[] { skip }));
-		}
-		// skip button
-		else if (comboIndex == 5) {
-			String str;
-			int bnts;
-			JTextField btn = new JTextField();
-
-			Object[] obj = { "please enter the button number:", btn, "please enter the string here:", };
-
-			JOptionPane skipp = new JOptionPane();
-			str = (JOptionPane.showInputDialog(null, obj, "skip button", JOptionPane.OK_CANCEL_OPTION));
-			bnts = Integer.parseInt(btn.getText());
-			EnumPossibleCommands cmd = EnumPossibleCommands.SKIP_BUTTON;
-			workingScenario.addCommand(workingScenario.createNewCommand(cmd, new Object[] { bnts, str }));
-		}
-
-		// Repeat Button
-		else if (comboIndex == 6) {
-
-			JOptionPane rebnt = new JOptionPane();
-			rebnt.getAccessibleContext()
-					.setAccessibleDescription(" please enter the button number you want to repeat ");
-			int btns;
-			btns = Integer.parseInt(
-					rebnt.showInputDialog(parent, "please enter the button number you want to repeat ", null));
-			EnumPossibleCommands cmd = EnumPossibleCommands.REPEAT_BUTTON;
-			workingScenario.addCommand(workingScenario.createNewCommand(cmd, new Object[] { btns }));
-		}
-		// disp clear cell
-		else if (comboIndex == 9) {
-			int cells;
-			JOptionPane clrcell = new JOptionPane();
-			clrcell.getAccessibleContext().setAccessibleDescription(" please enter the cell number you want to clear ");
-			cells = Integer
-					.parseInt(clrcell.showInputDialog(parent, "please enter the cell number you want to clear ", null));
-			EnumPossibleCommands cmd = EnumPossibleCommands.DISP_CLEAR_CELL;
-			workingScenario.addCommand(workingScenario.createNewCommand(cmd, new Object[] { cells }));
-		}
-		// disp cell pin
-		else if (comboIndex == 11) {
-			int cell;
-			int pin;
-			JTextField pins = new JTextField();
-
-			Object[] obj = { "please enter the cell number:", pins, "please enter the pin number :", };
-
-			JOptionPane skipp = new JOptionPane();
-			pin = Integer.parseInt(JOptionPane.showInputDialog(null, obj, "skip button", JOptionPane.OK_CANCEL_OPTION));
-			cell = Integer.parseInt(pins.getText());
-			EnumPossibleCommands cmd = EnumPossibleCommands.DISP_CELL_PINS;
-			workingScenario.addCommand(workingScenario.createNewCommand(cmd, new Object[] { cell, pin }));
-		}
-
-		updateSessionModel();
-	}
+	/*
+	 * // -DKozlovsky
+	 * 
+	 * private void btnAddClickHandler_OLD() { // add audio add command if
+	 * (comboIndex == 0) { addAudio audio = new addAudio(); audio.revalidate();
+	 * audio.setVisible(true); // audio.setSize(300, 500); } // add question add
+	 * command else if (comboIndex == 1) { JOptionPane question = new JOptionPane();
+	 * question.getAccessibleContext().
+	 * setAccessibleDescription(" Enter the question below "); qst =
+	 * JOptionPane.showInputDialog(parent, "Enter the question below  ", null);
+	 * EnumPossibleCommands cmd = EnumPossibleCommands.DISP_STRING;
+	 * workingScenario.addCommand(workingScenario.createNewCommand(cmd, new String[]
+	 * { qst })); } // pause command else if (comboIndex == 2) { JOptionPane pause =
+	 * new JOptionPane(); pause.getAccessibleContext()
+	 * .setAccessibleDescription(" please enter the number of seconds you want to pause "
+	 * ); secpause = Integer.parseInt(JOptionPane.showInputDialog(parent,
+	 * "please enter the number of seconds you want to pause  ", null)); Object[]
+	 * obj = new Object[] { secpause };
+	 * workingScenario.addCommand(workingScenario.createNewCommand(
+	 * EnumPossibleCommands.PAUSE, obj)); } // disp-string else if (comboIndex == 3)
+	 * { String dispstring; JOptionPane disp = new JOptionPane();
+	 * disp.getAccessibleContext().
+	 * setAccessibleDescription("Please write the string disp "); dispstring =
+	 * JOptionPane.showInputDialog(parent, "please write the String here ", null);
+	 * EnumPossibleCommands cmd = EnumPossibleCommands.DISP_STRING;
+	 * workingScenario.addCommand(workingScenario.createNewCommand(cmd, new String[]
+	 * { dispstring })); }
+	 * 
+	 * // Skip else if (comboIndex == 4) { String skip; JOptionPane skipp = new
+	 * JOptionPane(); skipp.getAccessibleContext().
+	 * setAccessibleDescription("Please write the string you want to skip "); skip =
+	 * JOptionPane.showInputDialog(parent,
+	 * "please write the String you want to skip ", null); EnumPossibleCommands cmd
+	 * = EnumPossibleCommands.SKIP;
+	 * workingScenario.addCommand(workingScenario.createNewCommand(cmd, new String[]
+	 * { skip })); } // skip button else if (comboIndex == 5) { String str; int
+	 * bnts; JTextField btn = new JTextField();
+	 * 
+	 * Object[] obj = { "please enter the button number:", btn,
+	 * "please enter the string here:", };
+	 * 
+	 * JOptionPane skipp = new JOptionPane(); str =
+	 * (JOptionPane.showInputDialog(null, obj, "skip button",
+	 * JOptionPane.OK_CANCEL_OPTION)); bnts = Integer.parseInt(btn.getText());
+	 * EnumPossibleCommands cmd = EnumPossibleCommands.SKIP_BUTTON;
+	 * workingScenario.addCommand(workingScenario.createNewCommand(cmd, new Object[]
+	 * { bnts, str })); }
+	 * 
+	 * // Repeat Button else if (comboIndex == 6) {
+	 * 
+	 * JOptionPane rebnt = new JOptionPane(); rebnt.getAccessibleContext()
+	 * .setAccessibleDescription(" please enter the button number you want to repeat "
+	 * ); int btns; btns = Integer.parseInt( JOptionPane.showInputDialog(parent,
+	 * "please enter the button number you want to repeat ", null));
+	 * EnumPossibleCommands cmd = EnumPossibleCommands.REPEAT_BUTTON;
+	 * workingScenario.addCommand(workingScenario.createNewCommand(cmd, new Object[]
+	 * { btns })); } // disp clear cell else if (comboIndex == 9) { int cells;
+	 * JOptionPane clrcell = new JOptionPane(); clrcell.getAccessibleContext().
+	 * setAccessibleDescription(" please enter the cell number you want to clear ");
+	 * cells = Integer.parseInt( JOptionPane.showInputDialog(parent,
+	 * "please enter the cell number you want to clear ", null));
+	 * EnumPossibleCommands cmd = EnumPossibleCommands.DISP_CLEAR_CELL;
+	 * workingScenario.addCommand(workingScenario.createNewCommand(cmd, new Object[]
+	 * { cells })); } // disp cell pin else if (comboIndex == 11) { int cell; int
+	 * pin; JTextField pins = new JTextField();
+	 * 
+	 * Object[] obj = { "please enter the cell number:", pins,
+	 * "please enter the pin number :", };
+	 * 
+	 * JOptionPane skipp = new JOptionPane(); pin =
+	 * Integer.parseInt(JOptionPane.showInputDialog(null, obj, "skip button",
+	 * JOptionPane.OK_CANCEL_OPTION)); cell = Integer.parseInt(pins.getText());
+	 * EnumPossibleCommands cmd = EnumPossibleCommands.DISP_CELL_PINS;
+	 * workingScenario.addCommand(workingScenario.createNewCommand(cmd, new Object[]
+	 * { cell, pin })); }
+	 * 
+	 * updateSessionModel(); }
+	 */
 
 	/**
 	 * Handles the click event for the add command button
@@ -388,56 +381,46 @@ public class ScenarioCreator extends JPanel {
 		case SOUND:
 			// Add sound command with arguments
 			// TODO whatever happens here must create a new command
-			/*addAudio audio = new addAudio();
-			parent.revalidate();
-			audio.setVisible(true);
-			audio.setSize(400, 600);
-			audio.setResizable(false);*/
+			/*
+			 * addAudio audio = new addAudio(); parent.revalidate(); audio.setVisible(true);
+			 * audio.setSize(400, 600); audio.setResizable(false);
+			 */
 
 			// **********
 			// workingScenario.addCommand(newCommand);
 			// **********
 
-			
-			//opens file selection dialog (choose a file OR record new)
+			// opens file selection dialog (choose a file OR record new)
 			JLabel labelFile = new JLabel("File Chosen");
-			
+
 			JLabel labelFilePath = new JLabel("N/A");
-			labelFilePath.setPreferredSize(new Dimension(400,30));
+			labelFilePath.setPreferredSize(new Dimension(400, 30));
 			labelFilePath.setForeground(Color.BLUE);
-			
+
 			JLabel labelOR = new JLabel("--- OR ---");
 			labelOR.setHorizontalAlignment(SwingConstants.CENTER);
-			
+
 			JTextField inputFileName = new JTextField("");
 
 			JLabel labelRecording = new JLabel("Recording...");
 			labelRecording.setForeground(Color.RED);
-			
+
 			inputFileName.setText("File name...");
-			
+
 			JButton btnChooseFile = new JButton("Choose existing sound file");
-			
+
 			JButton btnRecord = new JButton("Start Recording");
-			
+
 			JButton btnStop = new JButton("Stop Recording");
-			
-			final JComponent[] inputs = new JComponent[] {
-					labelFile,
-					labelFilePath,
-			        btnChooseFile,
-			        labelOR,
-			        inputFileName,
-			        labelRecording,
-			        btnRecord,
-			        btnStop
-			};
-			
+
+			final JComponent[] inputs = new JComponent[] { labelFile, labelFilePath, btnChooseFile, labelOR,
+					inputFileName, labelRecording, btnRecord, btnStop };
+
 			btnRecord.setEnabled(true);
 			btnStop.setEnabled(false);
 			labelRecording.setVisible(false);
-			
-			//choose a file
+
+			// choose a file
 			btnChooseFile.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
@@ -450,60 +433,60 @@ public class ScenarioCreator extends JPanel {
 					}
 				}
 			});
-			
+
 			AudioRecorder audioRecorder = new AudioRecorder();
-			
-			//start recording
+
+			// start recording
 			btnRecord.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
-					
+
 					btnRecord.setEnabled(false);
 					btnStop.setEnabled(true);
 					labelRecording.setVisible(true);
-					
+
 					try {
 						audioRecorder.recordAndSave(inputFileName.getText());
 					} catch (NumberFormatException | IOException e) {
 						System.out.print("Record failed, Exception: " + e.getMessage() + " due to " + e.getCause());
 						e.printStackTrace();
 					}
-					
+
 					// open sound recorder
 
-						//labelFilePath.setText(openFilePrompt.getSelectedFile().getAbsolutePath());
+					// labelFilePath.setText(openFilePrompt.getSelectedFile().getAbsolutePath());
 
 				}
 			});
-			
-			//stop recording
+
+			// stop recording
 			btnStop.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
-					
+
 					btnRecord.setEnabled(true);
 					btnStop.setEnabled(false);
 					labelRecording.setVisible(false);
-					
+
 					audioRecorder.dataLine.stop();
 					audioRecorder.dataLine.close();
 					audioRecorder.dataLine.flush();
 					labelFilePath.setText(audioRecorder.audioFile.getAbsolutePath());
 				}
 			});
-			
+
 			int result = JOptionPane.showConfirmDialog(null, inputs, "Sound Selection", JOptionPane.PLAIN_MESSAGE);
 			if (result == JOptionPane.OK_OPTION) {
 				File tmp = new File(labelFilePath.getText());
-				if(tmp.exists()) {
-				args=new Object[] {labelFilePath.getText()};
+				if (tmp.exists()) {
+					args = new Object[] { labelFilePath.getText() };
 				}
 			}
-			
-			if(args!=null) {
-			workingScenario.addCommand(workingScenario.createNewCommand(EnumPossibleCommands.SOUND, args));
+
+			if (args != null) {
+				workingScenario.addCommand(workingScenario.createNewCommand(EnumPossibleCommands.SOUND, args));
 			}
-			
+
 			break;
 
 		case REPEAT:
@@ -530,8 +513,8 @@ public class ScenarioCreator extends JPanel {
 		// All other commands are fine
 		default:
 			args = getArgumentsThroughDialog(cmdType);
-			if(args!=null) {
-			workingScenario.addCommand(workingScenario.createNewCommand(cmdType, args));
+			if (args != null) {
+				workingScenario.addCommand(workingScenario.createNewCommand(cmdType, args));
 			}
 		}
 
@@ -553,7 +536,7 @@ public class ScenarioCreator extends JPanel {
 	 */
 	private void btnMoveUpClickHandler() {
 		// swapCommands(sessionScenarioList.getSelectedIndex(),sessionScenarioList.getSelectedIndex()-1);
-		if (listBoxIndex != 0) {
+		if (listBoxIndex > 0) {
 			workingScenario.moveCommand(workingScenario.getCommand(listBoxIndex), listBoxIndex - 1);
 		}
 		updateSessionModel();
@@ -564,7 +547,7 @@ public class ScenarioCreator extends JPanel {
 	 */
 	private void btnMoveDownClickHandler() {
 		// swapCommands(sessionScenarioList.getSelectedIndex(),sessionScenarioList.getSelectedIndex()+1);
-		if (listBoxIndex != sessionListModel.size() - 1) {
+		if (listBoxIndex >= 0 && listBoxIndex != sessionListModel.size() - 1) {
 			workingScenario.moveCommand(workingScenario.getCommand(listBoxIndex), listBoxIndex + 1);
 		}
 		updateSessionModel();
@@ -577,10 +560,10 @@ public class ScenarioCreator extends JPanel {
 	private void newScenarioSetUpDialog() {
 		JOptionPane jcell = new JOptionPane();
 		jcell.getAccessibleContext().setAccessibleDescription("How many braille cells do you need?");
-		numCells = Integer.parseInt(jcell.showInputDialog(parent, "How many braille cells do you need?", null));
+		numCells = Integer.parseInt(JOptionPane.showInputDialog(parent, "How many braille cells do you need?", null));
 		JOptionPane jbutton = new JOptionPane();
 		jbutton.getAccessibleContext().setAccessibleDescription("How many buttons do you need?");
-		numButtons = Integer.parseInt(jbutton.showInputDialog(parent, "How many buttons do you need?", null));
+		numButtons = Integer.parseInt(JOptionPane.showInputDialog(parent, "How many buttons do you need?", null));
 	}
 
 	/**
@@ -607,8 +590,7 @@ public class ScenarioCreator extends JPanel {
 				} else {
 					args[i] = input;
 				}
-			}
-			else {
+			} else {
 				return null;
 			}
 		}
@@ -638,5 +620,5 @@ public class ScenarioCreator extends JPanel {
 			ScenarioFormatter.export(workingScenario, saveFilePrompt.getSelectedFile().getAbsolutePath());
 		}
 	}
-	
+
 }

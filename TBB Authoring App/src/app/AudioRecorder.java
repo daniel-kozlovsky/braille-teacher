@@ -152,10 +152,9 @@ public class AudioRecorder extends JPanel {
 				AudioSystem.write(stream, fileType, audioFile);
 
 			} catch (LineUnavailableException | IOException e) {
-				if(e instanceof LineUnavailableException) {
+				if (e instanceof LineUnavailableException) {
 					System.out.println("Line input not accessible.");
-				}
-				else if(e instanceof IOException) {
+				} else if (e instanceof IOException) {
 					System.out.println("Unable to access audio file.");
 				}
 				e.printStackTrace();

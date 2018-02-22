@@ -10,14 +10,12 @@ public class ImproperFormatException extends Exception {
 
 	public ImproperFormatException() {
 		super();
-		
+
 	}
 
 	public ImproperFormatException(String message) {
 		super(message);
-		
-	}
 
-	
+	}
 
 }

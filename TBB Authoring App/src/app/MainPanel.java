@@ -24,9 +24,6 @@ public class MainPanel extends JPanel {
 
 		// create
 		buttonNewScenario = new JButton("New scenario");
-		buttonNewScenario.getAccessibleContext().setAccessibleName("Create a new scenario");
-		buttonNewScenario.getAccessibleContext()
-				.setAccessibleDescription("Create a new scenario using the scenario editor.");
 
 		buttonNewScenario.addActionListener(new ActionListener() {
 
@@ -38,9 +35,6 @@ public class MainPanel extends JPanel {
 
 		// import
 		buttonImportScenario = new JButton("Import scenario");
-		buttonImportScenario.getAccessibleContext().setAccessibleName("Import an existing scenario");
-		buttonImportScenario.getAccessibleContext()
-				.setAccessibleDescription("Open and edit an existing scenario file.");
 
 		buttonImportScenario.addActionListener(new ActionListener() {
 
@@ -61,6 +55,15 @@ public class MainPanel extends JPanel {
 		setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		this.add(buttonImportScenario);
 		this.add(buttonNewScenario);
+
+		// accessibility
+		buttonNewScenario.getAccessibleContext().setAccessibleName("Create a new scenario");
+		buttonNewScenario.getAccessibleContext()
+				.setAccessibleDescription("Use the scenario editor to build a scenario from scratch");
+
+		buttonImportScenario.getAccessibleContext().setAccessibleName("Import an existing scenario");
+		buttonImportScenario.getAccessibleContext().setAccessibleDescription("Open and edit an existing scenario file");
+
 	}
 
 	private void openScenarioCreator(Scenario importedScenario) {
