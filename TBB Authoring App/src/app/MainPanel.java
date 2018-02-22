@@ -47,12 +47,14 @@ public class MainPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 
-				//choose a file to import as a scenario
+				// choose a file to import as a scenario
 				JFileChooser fileChooser = new JFileChooser();
 				int result = fileChooser.showOpenDialog(buttonNewScenario);
 				if (result == JFileChooser.APPROVE_OPTION) {
-				Scenario importedScenario = ScenarioFormatter.importParse(fileChooser.getCurrentDirectory().getAbsolutePath()+"\\"+fileChooser.getSelectedFile().getName());
-				openScenarioCreator(importedScenario);
+					Scenario importedScenario = ScenarioFormatter
+							.importParse(fileChooser.getCurrentDirectory().getAbsolutePath() + "\\"
+									+ fileChooser.getSelectedFile().getName());
+					openScenarioCreator(importedScenario);
 				}
 			}
 		});

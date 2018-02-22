@@ -26,9 +26,8 @@ public class AudioRecorder extends JPanel {
 	// audio resources
 	private String saveLoc = "AudioFiles/";
 	private AudioFileFormat.Type fileType = AudioFileFormat.Type.WAVE;
-	private TargetDataLine dataLine;
-	AudioFormat format;
-	boolean stopCapture = false;
+	TargetDataLine dataLine;
+	private AudioFormat format;
 	File audioFile;
 
 	// components
@@ -120,7 +119,6 @@ public class AudioRecorder extends JPanel {
 
 		btnStop.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				System.out.print("Stopped.");
 				lblRecording.setVisible(false);
 				dataLine.stop();
 				dataLine.close();
@@ -137,7 +135,6 @@ public class AudioRecorder extends JPanel {
 
 		if (audioFile.exists() != true) {
 			audioFile.createNewFile();
-			System.out.println("Created the file.");
 		}
 		new timer().start();
 	}
