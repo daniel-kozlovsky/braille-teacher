@@ -44,8 +44,6 @@ public class ScenarioCreator extends JPanel {
 	private JButton btnRemove;
 	private JButton btnMoveUp;
 	private JButton btnMoveDown;
-	private JButton btnEdit;
-	private JButton btnRepeat;
 	// labels
 	private JLabel lblNewLabel;
 	// combo-boxes
@@ -92,7 +90,7 @@ public class ScenarioCreator extends JPanel {
 	private void initComponents() {
 		// Labels
 		lblNewLabel = new JLabel("Please choose a command from the top down menu ");
-		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		// Buttons
 		btnAdd = new JButton("Add Command");
 		btnAdd.setFont(mainButtonFont);
@@ -135,28 +133,6 @@ public class ScenarioCreator extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				btnMoveDownClickHandler();
-			}
-		});
-
-		btnEdit = new JButton("Edit");
-		btnEdit.setFont(mainButtonFont);
-		btnEdit.setForeground(mainButtonColour);
-		btnEdit.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				btnEditClickHandler();
-			}
-		});
-
-		btnRepeat = new JButton("Repeat");
-		btnRepeat.setFont(mainButtonFont);
-		btnRepeat.setForeground(mainButtonColour);
-		btnRepeat.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				btnRepeatClickHandler();
 			}
 		});
 
@@ -212,20 +188,24 @@ public class ScenarioCreator extends JPanel {
 	private void initLayout() {
 		// group layout customizations
 		mainGroupLayout = new GroupLayout(this);
-		mainGroupLayout.setHorizontalGroup(mainGroupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(mainGroupLayout.createSequentialGroup().addContainerGap()
-						.addComponent(scenarioProgressPanel, 0, 313, Short.MAX_VALUE)
-						.addPreferredGap(ComponentPlacement.UNRELATED)
-						.addComponent(componentsPanel, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addContainerGap()));
-		mainGroupLayout.setVerticalGroup(mainGroupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(Alignment.TRAILING, mainGroupLayout.createSequentialGroup().addContainerGap()
-						.addGroup(mainGroupLayout.createParallelGroup(Alignment.TRAILING)
-								.addComponent(componentsPanel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 513,
-										Short.MAX_VALUE)
-								.addComponent(scenarioProgressPanel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 513,
-										Short.MAX_VALUE))
-						.addContainerGap()));
+		mainGroupLayout.setHorizontalGroup(
+			mainGroupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(mainGroupLayout.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(scenarioProgressPanel, 0, 319, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(componentsPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addGap(5))
+		);
+		mainGroupLayout.setVerticalGroup(
+			mainGroupLayout.createParallelGroup(Alignment.TRAILING)
+				.addGroup(mainGroupLayout.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(mainGroupLayout.createParallelGroup(Alignment.TRAILING)
+						.addComponent(componentsPanel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 641, Short.MAX_VALUE)
+						.addComponent(scenarioProgressPanel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 641, Short.MAX_VALUE))
+					.addContainerGap())
+		);
 
 		btnExxportScenario = new JButton("Export Scenario");
 		btnExxportScenario.setForeground(Color.BLACK);
@@ -240,51 +220,48 @@ public class ScenarioCreator extends JPanel {
 
 		// componentsPanel customizations
 		gl_componentsPanel = new GroupLayout(componentsPanel);
-		gl_componentsPanel.setHorizontalGroup(gl_componentsPanel.createParallelGroup(Alignment.TRAILING)
-				.addGroup(gl_componentsPanel.createSequentialGroup().addGroup(gl_componentsPanel
-						.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_componentsPanel.createSequentialGroup().addContainerGap().addComponent(lblNewLabel,
-								GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-						.addGroup(gl_componentsPanel.createSequentialGroup().addContainerGap().addComponent(comboBox, 0,
-								293, Short.MAX_VALUE))
-						.addGroup(gl_componentsPanel.createSequentialGroup().addGap(33).addComponent(btnAdd,
-								GroupLayout.PREFERRED_SIZE, 243, GroupLayout.PREFERRED_SIZE))
-						.addGroup(gl_componentsPanel.createSequentialGroup().addContainerGap()
-								.addGroup(gl_componentsPanel.createParallelGroup(Alignment.LEADING)
-										.addGroup(gl_componentsPanel.createSequentialGroup()
-												.addComponent(btnRemove, GroupLayout.PREFERRED_SIZE, 135,
-														GroupLayout.PREFERRED_SIZE)
-												.addGap(39).addComponent(btnMoveUp, GroupLayout.DEFAULT_SIZE, 119,
-														Short.MAX_VALUE))
-										.addGroup(gl_componentsPanel.createSequentialGroup()
-												.addComponent(btnEdit, GroupLayout.PREFERRED_SIZE, 135,
-														GroupLayout.PREFERRED_SIZE)
-												.addGap(39).addComponent(btnMoveDown, GroupLayout.DEFAULT_SIZE, 119,
-														Short.MAX_VALUE)))))
-						.addContainerGap())
-				.addGroup(gl_componentsPanel.createSequentialGroup().addContainerGap(84, Short.MAX_VALUE)
-						.addComponent(btnRepeat, GroupLayout.PREFERRED_SIZE, 147, GroupLayout.PREFERRED_SIZE)
-						.addGap(82))
-				.addGroup(gl_componentsPanel.createSequentialGroup().addContainerGap(36, Short.MAX_VALUE)
-						.addComponent(btnExxportScenario, GroupLayout.PREFERRED_SIZE, 243, GroupLayout.PREFERRED_SIZE)
-						.addGap(34)));
-		gl_componentsPanel.setVerticalGroup(gl_componentsPanel.createParallelGroup(Alignment.LEADING)
+		gl_componentsPanel.setHorizontalGroup(
+			gl_componentsPanel.createParallelGroup(Alignment.TRAILING)
+				.addGroup(Alignment.LEADING, gl_componentsPanel.createSequentialGroup()
+					.addGap(92)
+					.addGroup(gl_componentsPanel.createParallelGroup(Alignment.TRAILING, false)
+						.addComponent(btnMoveDown, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addComponent(btnRemove, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addComponent(btnMoveUp, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE))
+					.addContainerGap(92, Short.MAX_VALUE))
 				.addGroup(gl_componentsPanel.createSequentialGroup()
-						.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 82, GroupLayout.PREFERRED_SIZE)
-						.addGap(18).addComponent(comboBox, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE)
-						.addGap(18).addComponent(btnAdd, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
-						.addGap(41)
-						.addGroup(gl_componentsPanel.createParallelGroup(Alignment.BASELINE)
-								.addComponent(btnRemove, GroupLayout.PREFERRED_SIZE, 41, GroupLayout.PREFERRED_SIZE)
-								.addComponent(btnMoveUp, GroupLayout.DEFAULT_SIZE, 41, Short.MAX_VALUE))
-						.addGap(18)
-						.addGroup(gl_componentsPanel.createParallelGroup(Alignment.BASELINE)
-								.addComponent(btnEdit, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
-								.addComponent(btnMoveDown, GroupLayout.PREFERRED_SIZE, 39, GroupLayout.PREFERRED_SIZE))
-						.addGap(29).addComponent(btnRepeat, GroupLayout.PREFERRED_SIZE, 44, GroupLayout.PREFERRED_SIZE)
-						.addGap(30)
-						.addComponent(btnExxportScenario, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
-						.addContainerGap()));
+					.addContainerGap()
+					.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 299, Short.MAX_VALUE)
+					.addContainerGap())
+				.addGroup(gl_componentsPanel.createSequentialGroup()
+					.addGap(42)
+					.addGroup(gl_componentsPanel.createParallelGroup(Alignment.TRAILING)
+						.addComponent(btnExxportScenario, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 243, Short.MAX_VALUE)
+						.addComponent(btnAdd, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 243, Short.MAX_VALUE))
+					.addGap(50))
+				.addGroup(Alignment.LEADING, gl_componentsPanel.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, 295, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(25, Short.MAX_VALUE))
+		);
+		gl_componentsPanel.setVerticalGroup(
+			gl_componentsPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_componentsPanel.createSequentialGroup()
+					.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 82, GroupLayout.PREFERRED_SIZE)
+					.addGap(18)
+					.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE)
+					.addGap(31)
+					.addComponent(btnAdd, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
+					.addGap(39)
+					.addComponent(btnMoveUp, GroupLayout.PREFERRED_SIZE, 44, GroupLayout.PREFERRED_SIZE)
+					.addGap(49)
+					.addComponent(btnMoveDown, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
+					.addGap(44)
+					.addComponent(btnRemove, GroupLayout.PREFERRED_SIZE, 44, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED, 68, Short.MAX_VALUE)
+					.addComponent(btnExxportScenario, GroupLayout.PREFERRED_SIZE, 52, GroupLayout.PREFERRED_SIZE)
+					.addGap(34))
+		);
 
 	}
 
@@ -590,20 +567,6 @@ public class ScenarioCreator extends JPanel {
 		if (listBoxIndex != sessionListModel.size() - 1) {
 			workingScenario.moveCommand(workingScenario.getCommand(listBoxIndex), listBoxIndex + 1);
 		}
-		updateSessionModel();
-	}
-
-	/**
-	 * Handles the click event for the edit command button
-	 */
-	private void btnEditClickHandler() {
-		updateSessionModel();
-	}
-
-	/**
-	 * Handles the click event for the Repeat command button
-	 */
-	private void btnRepeatClickHandler() {
 		updateSessionModel();
 	}
 
