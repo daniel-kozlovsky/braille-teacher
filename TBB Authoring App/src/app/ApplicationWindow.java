@@ -1,8 +1,9 @@
 package app;
 
 import java.awt.Dimension;
-import java.awt.Frame;
 import java.awt.Rectangle;
+import java.awt.Toolkit;
+
 import javax.swing.JFrame;
 
 @SuppressWarnings("serial")
@@ -22,21 +23,28 @@ public class ApplicationWindow extends JFrame {
 	private void initFrame() {
 		setTitle("TBB Scenario Creator");
 		// Set to maximum window size
-		this.setExtendedState(this.getExtendedState() | Frame.MAXIMIZED_BOTH);
-
+		//this.setExtendedState(this.getExtendedState() | Frame.MAXIMIZED_BOTH);
+		
+		//reposition
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+	    int height = screenSize.height;
+	    int width = screenSize.width;
+	    setSize(width/3, height/3);
+	    
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setMinimumSize(new Dimension(600, 600));
-		setSize(new Dimension(800, 700));
+		setMinimumSize(new Dimension(400, 200));
+		setSize(new Dimension(400, 200));
 		setVisible(true);
 
 	}
 
 	private void initComponents() {
 		// Panel
-		PanelComponentField = new MainPanel(this);
+		PanelComponentField = new MainPanel(ApplicationWindow.this);
 		MainPanelArea = new Rectangle(this.getX(), this.getY(), this.getWidth(), this.getHeight());
 		getContentPane().add(PanelComponentField);
+		pack();
 
 	}
 

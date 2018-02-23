@@ -47,7 +47,7 @@ public class ScenarioCreator extends JPanel {
 	private JComboBox<String> commandsComboBox;
 	// fonts
 	Font mainButtonFont = new Font("Tahoma", Font.PLAIN, 14);
-	// colours
+	// colors
 	Color mainButtonColour = new Color(0, 0, 0);
 	// Layouts
 	GroupLayout mainGroupLayout;
@@ -58,8 +58,18 @@ public class ScenarioCreator extends JPanel {
 
 		this.parent = parent;
 
-		scenarioCreatorBounds = parent.getBounds();
-		this.setBounds(scenarioCreatorBounds);
+		this.parent.setMinimumSize(new Dimension(600, 600));
+		this.parent.setSize(new Dimension(800, 600));
+
+		// reposition
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		int height = screenSize.height;
+		int width = screenSize.width;
+		this.parent.setLocation(width / 5, height / 10);
+		this.parent.setLocationRelativeTo(null);
+
+		//scenarioCreatorBounds = parent.getBounds();
+		//this.setBounds(scenarioCreatorBounds);
 
 		// import OR initialize scenario
 		if (importedScenario != null) {
@@ -72,7 +82,6 @@ public class ScenarioCreator extends JPanel {
 		}
 
 		this.parent.setTitle("Create new Scenario");
-		// this.parent.setSize(700, 700);
 		initComponents();
 		initLayout();
 
@@ -214,52 +223,39 @@ public class ScenarioCreator extends JPanel {
 
 		// componentsPanel customizations
 		gl_componentsPanel = new GroupLayout(componentsPanel);
-		gl_componentsPanel.setHorizontalGroup(
-			gl_componentsPanel.createParallelGroup(Alignment.LEADING)
+		gl_componentsPanel.setHorizontalGroup(gl_componentsPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_componentsPanel.createSequentialGroup().addContainerGap()
+						.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 315, Short.MAX_VALUE).addContainerGap())
+				.addGroup(gl_componentsPanel.createSequentialGroup().addContainerGap()
+						.addComponent(commandsComboBox, 0, 315, Short.MAX_VALUE).addContainerGap())
+				.addGroup(gl_componentsPanel.createSequentialGroup().addGap(42).addGroup(gl_componentsPanel
+						.createParallelGroup(Alignment.LEADING)
+						.addComponent(btnExport, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 243, Short.MAX_VALUE)
+						.addComponent(btnRemove, GroupLayout.DEFAULT_SIZE, 243, Short.MAX_VALUE)
+						.addComponent(btnMoveDown, GroupLayout.DEFAULT_SIZE, 243, Short.MAX_VALUE)
+						.addComponent(btnMoveUp, GroupLayout.DEFAULT_SIZE, 243, Short.MAX_VALUE)
+						.addComponent(btnAdd, GroupLayout.DEFAULT_SIZE, 243, Short.MAX_VALUE)).addGap(50)));
+		gl_componentsPanel.setVerticalGroup(gl_componentsPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_componentsPanel.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 315, Short.MAX_VALUE)
-					.addContainerGap())
-				.addGroup(Alignment.TRAILING, gl_componentsPanel.createSequentialGroup()
-					.addGap(42)
-					.addGroup(gl_componentsPanel.createParallelGroup(Alignment.TRAILING)
-						.addComponent(btnRemove, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 243, Short.MAX_VALUE)
-						.addComponent(btnMoveDown, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 243, Short.MAX_VALUE)
-						.addComponent(btnMoveUp, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 243, Short.MAX_VALUE)
-						.addComponent(btnExport, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 243, Short.MAX_VALUE)
-						.addComponent(btnAdd, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 243, Short.MAX_VALUE))
-					.addGap(50))
-				.addGroup(gl_componentsPanel.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(commandsComboBox, 0, 315, Short.MAX_VALUE)
-					.addContainerGap())
-		);
-		gl_componentsPanel.setVerticalGroup(
-			gl_componentsPanel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_componentsPanel.createSequentialGroup()
-					.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 82, GroupLayout.PREFERRED_SIZE)
-					.addGap(18)
-					.addComponent(commandsComboBox, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE)
-					.addGap(31)
-					.addComponent(btnAdd, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
-					.addGap(39)
-					.addComponent(btnMoveUp, GroupLayout.PREFERRED_SIZE, 44, GroupLayout.PREFERRED_SIZE)
-					.addGap(49)
-					.addComponent(btnMoveDown, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
-					.addGap(44)
-					.addComponent(btnRemove, GroupLayout.PREFERRED_SIZE, 44, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED, 206, Short.MAX_VALUE)
-					.addComponent(btnExport, GroupLayout.PREFERRED_SIZE, 52, GroupLayout.PREFERRED_SIZE)
-					.addGap(34))
-		);
+						.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE)
+						.addPreferredGap(ComponentPlacement.RELATED)
+						.addComponent(commandsComboBox, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE)
+						.addGap(18).addComponent(btnAdd, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
+						.addGap(18).addComponent(btnMoveUp, GroupLayout.PREFERRED_SIZE, 44, GroupLayout.PREFERRED_SIZE)
+						.addPreferredGap(ComponentPlacement.UNRELATED)
+						.addComponent(btnMoveDown, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
+						.addGap(18).addComponent(btnRemove, GroupLayout.PREFERRED_SIZE, 44, GroupLayout.PREFERRED_SIZE)
+						.addGap(35).addComponent(btnExport, GroupLayout.PREFERRED_SIZE, 48, GroupLayout.PREFERRED_SIZE)
+						.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
 
 		// accessibility
 
 		sessionScenarioList.getAccessibleContext().setAccessibleName("Sceanrio commands");
 		sessionScenarioList.getAccessibleContext().setAccessibleDescription("Scenario commands shown as a queue");
-		
+
 		commandsComboBox.getAccessibleContext().setAccessibleName("Commands drop-down");
-		commandsComboBox.getAccessibleContext().setAccessibleDescription("Select a command to add in the scenaio queue");
+		commandsComboBox.getAccessibleContext()
+				.setAccessibleDescription("Select a command to add in the scenaio queue");
 
 		btnAdd.getAccessibleContext().setAccessibleName("Add command");
 		btnAdd.getAccessibleContext()
