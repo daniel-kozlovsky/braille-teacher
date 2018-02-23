@@ -63,7 +63,7 @@ public class ScenarioFormatter {
 
 		scenarioText.clear();
 		// First two lines common for all scenarios
-		scenarioText.add("Cells " + scenario.getNumCells());
+		scenarioText.add("Cell " + scenario.getNumCells());
 		scenarioText.add("Button " + scenario.getNumButtons());
 
 		for (ScenarioCommand command : scenario) {
@@ -111,13 +111,15 @@ public class ScenarioFormatter {
 			Scanner fileScan = new Scanner(file);
 			String numButtonsString;
 			String numCellsString;
-
+			
+			//Cell first
 			if (fileScan.hasNext()) {
 				numCellsString = fileScan.nextLine();
 			} else {
 				fileScan.close();
 				return null;
 			}
+			//Button second
 			if (fileScan.hasNext()) {
 				numButtonsString = fileScan.nextLine();
 
@@ -125,9 +127,9 @@ public class ScenarioFormatter {
 				fileScan.close();
 				return null;
 			}
-
+			//TODO: change 6 and 7 to constants (num characters in "button " and "cell ")
 			numButtonsString = numButtonsString.substring(7, numButtonsString.length());
-			numCellsString = numCellsString.substring(6, numCellsString.length());
+			numCellsString = numCellsString.substring(5, numCellsString.length());
 
 			// cells and buttons first
 			int numCells = Integer.parseInt(numCellsString);
@@ -138,6 +140,12 @@ public class ScenarioFormatter {
 			// Actual parsing of rest of file
 			while (fileScan.hasNext()) {
 				String line = fileScan.nextLine();
+				
+				//skip line if empty or first token is space
+				if(line.equals("") || line.charAt(0) == ' ')
+				{
+					continue;
+				}
 
 				// READ_TEXT command check
 				if (!line.matches("^/~.*")) {

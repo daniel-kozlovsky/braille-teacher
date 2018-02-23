@@ -56,7 +56,7 @@ class ScenarioCommandTest {
 
 	@Test
 	void testDeepEquals_sameObjAllCommands() {
-		Scenario sc = new Scenario(1, 1);
+		Scenario sc = new Scenario(2, 2);
 
 		for (EnumPossibleCommands cmd : EnumPossibleCommands.values()) {
 			Class<?>[] argTypes = cmd.getArgumentTypes();
@@ -100,7 +100,7 @@ class ScenarioCommandTest {
 
 	@Test
 	void testDeepEqual_difObjAllCommands() {
-		Scenario sc = new Scenario(2, 2);
+		Scenario sc = new Scenario(3, 3);
 
 		for (EnumPossibleCommands cmd : EnumPossibleCommands.values()) {
 
@@ -244,7 +244,7 @@ class ScenarioCommandTest {
 	 */
 	@Test
 	void testValidateArguments_correctArgsAllCommands() {
-		Scenario sc = new Scenario(2, 2);
+		Scenario sc = new Scenario(3, 3);
 		correctTestInt = 2;
 
 		for (EnumPossibleCommands cmd : EnumPossibleCommands.values()) {
@@ -274,8 +274,8 @@ class ScenarioCommandTest {
 	@Test
 	@RepeatedTest(10)
 	void testSetArguments_wrongArgsAllCommands() {
-		Scenario sc = new Scenario(2, 2);
-		incorrectTestIntSet = new int[] { 0 };
+		Scenario sc = new Scenario(3, 3);
+		incorrectTestIntSet = new int[] { -1 };
 
 		for (EnumPossibleCommands cmd : EnumPossibleCommands.values()) {
 

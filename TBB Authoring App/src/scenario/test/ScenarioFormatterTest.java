@@ -17,7 +17,7 @@ class ScenarioFormatterTest {
 		Scenario testScenario = new Scenario(0, 0);
 		testScenario.addCommand(testScenario.createNewCommand(EnumPossibleCommands.PAUSE, new Object[] { 1 }));
 
-		ScenarioFormatter.export(testScenario, "\\test_scenarios\\testfile");
+		ScenarioFormatter.export(testScenario, "scenarios\\test_scenarios\\testfile");
 		File testFile = new File("scenarios\\test_scenarios\\testfile");
 
 		assertTrue(testFile.exists());
@@ -30,7 +30,7 @@ class ScenarioFormatterTest {
 		final Character correctTestChar = 'A';
 		final int correctTestInt = 1;
 
-		Scenario testScenario = new Scenario(1, 1);
+		Scenario testScenario = new Scenario(2, 2);
 
 		for (EnumPossibleCommands cmd : EnumPossibleCommands.values()) {
 			Class<?>[] argTypes = cmd.getArgumentTypes();
@@ -48,9 +48,9 @@ class ScenarioFormatterTest {
 			}
 			testScenario.addCommand(testScenario.createNewCommand(cmd, args));
 		}
-		ScenarioFormatter.export(testScenario, "\\test_scenarios\\allPossibleCommandsTest");
+		ScenarioFormatter.export(testScenario, "scenarios\\test_scenarios\\allPossibleCommandsTest");
 
-		Scenario importedScenario = ScenarioFormatter.importParse("\\test_scenarios\\allPossibleCommandsTest");
+		Scenario importedScenario = ScenarioFormatter.importParse("scenarios\\test_scenarios\\allPossibleCommandsTest");
 
 		boolean test = testScenario.deepEquals(importedScenario);
 		assertTrue(test);
@@ -62,15 +62,24 @@ class ScenarioFormatterTest {
 		Scenario expScenario = new Scenario(1, 1);
 		expScenario.addCommand(expScenario.createNewCommand(EnumPossibleCommands.PAUSE, new Object[] { 1 }));
 		expScenario.addCommand(expScenario.createNewCommand(EnumPossibleCommands.END_REPEAT, new Object[] {}));
-		Scenario actualScenario = ScenarioFormatter.importParse("\\test_scenarios\\importTestScenario_01");
+		Scenario actualScenario = ScenarioFormatter.importParse("scenarios\\test_scenarios\\importTestScenario_01");
 
 		assertTrue(expScenario.deepEquals(actualScenario));
 	}
 
 	@Test
 	void testImportParse_emptyFile() {
-		Scenario importedScenario = ScenarioFormatter.importParse("\\test_scenarios\\importTestScenario_empty");
+		Scenario importedScenario = ScenarioFormatter.importParse("scenarios\\test_scenarios\\importTestScenario_empty");
 		assertEquals(importedScenario, null, "should equal null");
+	}
+	
+	@Test
+	void testImport_manualSelect()
+	{
+		Scenario importedScenario = ScenarioFormatter.importParse("scenarios\\test_scenarios\\enamel_scenario_3");
+		
+		fail("Must manually check scenario. Debugging purposes.");
+	
 	}
 
 }

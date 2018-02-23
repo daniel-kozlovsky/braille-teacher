@@ -64,7 +64,7 @@ public enum EnumPossibleCommands {
 	/**
 	 * Clear a specific braille cell
 	 */
-	DISP_CLEAR_CELL("Clear Cell Display", "Clears a specific braille display", "/~disp-clear-cell:",
+	DISP_CELL_CLEAR("Clear Cell Display", "Clears a specific braille display", "/~disp-cell-clear:",
 			new Class<?>[] { Integer.class }),
 	/**
 	 * Sets specified pins on a braille cell

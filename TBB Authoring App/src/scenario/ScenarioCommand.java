@@ -199,7 +199,7 @@ public class ScenarioCommand {
 			returnString = "Location: " + arguments[0].toString();
 			break;
 
-		case DISP_CLEAR_CELL:
+		case DISP_CELL_CLEAR:
 			returnString = "Clears display: " + arguments[0].toString();
 			break;
 
@@ -254,12 +254,12 @@ public class ScenarioCommand {
 			}
 			break;
 		case REPEAT_BUTTON:
-			if ((int) args[0] < 1 || (int) args[0] > NUM_BUTTONS_IN_SCENARIO) {
+			if ((int) args[0] < 0 || (int) args[0] >= NUM_BUTTONS_IN_SCENARIO) {
 				throw new IllegalArgumentException("Buttons index must correspond to existing button!");
 			}
 			break;
 		case SKIP_BUTTON:
-			if ((int) args[0] < 1 || (int) args[0] > NUM_BUTTONS_IN_SCENARIO) {
+			if ((int) args[0] < 0 || (int) args[0] >= NUM_BUTTONS_IN_SCENARIO) {
 				throw new IllegalArgumentException("Buttons index must correspond to existing button!");
 			} else if (args[1].equals("")) {
 				throw new IllegalArgumentException("Must specify a location to skip to!");
@@ -281,13 +281,13 @@ public class ScenarioCommand {
 				throw new IllegalArgumentException("Cannot have an empty skip location name!");
 			}
 			break;
-		case DISP_CLEAR_CELL:
-			if ((int) args[0] < 1 || (int) args[0] > NUM_CELLS_IN_SCENARIO) {
+		case DISP_CELL_CLEAR:
+			if ((int) args[0] < 0 || (int) args[0] >= NUM_CELLS_IN_SCENARIO) {
 				throw new IllegalArgumentException("Cell index must correspond to existing cell");
 			}
 			break;
 		case DISP_CELL_PINS:
-			if ((int) args[0] < 1 || (int) args[0] > NUM_CELLS_IN_SCENARIO) {
+			if ((int) args[0] < 0 || (int) args[0] >= NUM_CELLS_IN_SCENARIO) {
 				throw new IllegalArgumentException("Cell index must correspond to existing cell");
 			} else if (args[1].toString().length() < 8) {
 				throw new IllegalArgumentException("Must have an 8 character sequence!");
@@ -296,21 +296,21 @@ public class ScenarioCommand {
 			}
 			break;
 		case DISP_CELL_CHAR:
-			if ((int) args[0] < 1 || (int) args[0] > NUM_CELLS_IN_SCENARIO) {
+			if ((int) args[0] < 0 || (int) args[0] >= NUM_CELLS_IN_SCENARIO) {
 				throw new IllegalArgumentException("Cell index must correspond to existing cell");
 			} else if (args[1].toString().matches("[^a-zA-z]")) {
 				throw new IllegalArgumentException("Must be from English alphabet!");
 			}
 			break;
 		case DISP_CELL_RAISE:
-			if ((int) args[0] < 1 || (int) args[0] > NUM_CELLS_IN_SCENARIO) {
+			if ((int) args[0] < 0 || (int) args[0] >= NUM_CELLS_IN_SCENARIO) {
 				throw new IllegalArgumentException("Cell index must correspond to existing cell");
 			} else if ((int) args[1] > 8 || (int) args[1] < 0) {
 				throw new IllegalArgumentException("Must choose one of eight pins!");
 			}
 			break;
 		case DISP_CELL_LOWER:
-			if ((int) args[0] < 1 || (int) args[0] > NUM_CELLS_IN_SCENARIO) {
+			if ((int) args[0] < 0 || (int) args[0] >= NUM_CELLS_IN_SCENARIO) {
 				throw new IllegalArgumentException("Cell index must correspond to existing cell");
 			} else if ((int) args[1] > 8 || (int) args[1] < 0) {
 				throw new IllegalArgumentException("Must choose one of eight pins!");

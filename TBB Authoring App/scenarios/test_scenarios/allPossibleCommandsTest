@@ -1,5 +1,5 @@
-Cells 1
-Button 1
+Cell 2
+Button 2
 11110000
 /~pause:1
 /~disp-string:11110000
@@ -12,7 +12,7 @@ Button 1
 /~reset-buttons
 /~skip:11110000
 /~disp-clearAll
-/~disp-clear-cell:1
+/~disp-cell-clear:1
 /~disp-cell-pins:1 11110000
 /~disp-cell-char:1 A
 /~disp-cell-raise:1 1
