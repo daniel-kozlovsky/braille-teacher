@@ -5,7 +5,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 import javax.swing.*;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
@@ -21,8 +20,6 @@ public class ScenarioCreator extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 
-	// Sizes
-	private Rectangle scenarioCreatorBounds;
 	// misc
 	private int comboIndex;
 	private int listBoxIndex;

@@ -6,8 +6,6 @@ import javax.swing.*;
 import scenario.Scenario;
 import scenario.ScenarioFormatter;
 
-import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Font;
 

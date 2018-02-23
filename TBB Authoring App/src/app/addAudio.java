@@ -2,37 +2,22 @@ package app;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
-import java.awt.BorderLayout;
-import java.awt.GridLayout;
-import java.awt.ItemSelectable;
-import java.awt.LayoutManager;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.io.File;
 import java.awt.event.ActionEvent;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SwingConstants;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import java.awt.Font;
-import java.awt.Component;
-import java.awt.Color;
-
-import java.awt.Cursor;
-import javax.swing.JList;
-import javax.sound.sampled.AudioFileFormat;
-import javax.sound.sampled.TargetDataLine;
-import javax.swing.Box;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JTextField;
-import javax.swing.JSplitPane;
 import javax.swing.JSeparator;
 
 public class addAudio extends JFrame {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JFrame parent= new JFrame ();
 	private JTextField textField;
 	private JTextField textField_1;

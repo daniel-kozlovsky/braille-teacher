@@ -8,6 +8,11 @@ package scenario;
  */
 public class ImproperFormatException extends Exception {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public ImproperFormatException() {
 		super();
 
