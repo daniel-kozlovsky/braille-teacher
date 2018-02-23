@@ -40,7 +40,7 @@ public class MainPanel extends JPanel {
 		add(panel_1);
 		panel_1.setLayout(new GridLayout(0, 1, 0, 0));
 		
-		lblHello = new JLabel("TBB Scenario Creator");
+		lblHello = new JLabel("TBB Authoring App");
 		lblHello.setHorizontalAlignment(SwingConstants.CENTER);
 		lblHello.setFont(new Font("Tahoma", Font.BOLD, 16));
 		panel_1.add(lblHello);

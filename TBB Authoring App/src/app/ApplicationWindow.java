@@ -21,7 +21,7 @@ public class ApplicationWindow extends JFrame {
 	}
 
 	private void initFrame() {
-		setTitle("TBB Scenario Creator");
+		setTitle("TBB Authoring App");
 		// Set to maximum window size
 		//this.setExtendedState(this.getExtendedState() | Frame.MAXIMIZED_BOTH);
 		
