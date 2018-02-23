@@ -53,6 +53,7 @@ public class ScenarioCreator extends JPanel {
 	GroupLayout mainGroupLayout;
 	GroupLayout gl_componentsPanel;
 	private JButton btnExport;
+	private JPanel panel;
 
 	public ScenarioCreator(JFrame parent, Scenario importedScenario) {
 
@@ -120,31 +121,10 @@ public class ScenarioCreator extends JPanel {
 			}
 		});
 
-		btnMoveUp = new JButton("Move Up");
-		btnMoveUp.setFont(mainButtonFont);
-		btnMoveUp.setForeground(mainButtonColour);
-		btnMoveUp.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				btnMoveUpClickHandler();
-			}
-		});
-
-		btnMoveDown = new JButton("Move down");
-		btnMoveDown.setFont(mainButtonFont);
-		btnMoveDown.setForeground(mainButtonColour);
-		btnMoveDown.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				btnMoveDownClickHandler();
-			}
-		});
-
 		// ListBox
 		sessionListModel = new DefaultListModel<>();
 		sessionScenarioList = new JList<String>();
+	    JScrollPane scrollableList = new JScrollPane(sessionScenarioList);
 		sessionScenarioList.setModel(sessionListModel);
 		sessionScenarioList.addListSelectionListener(new ListSelectionListener() {
 			@Override
@@ -157,7 +137,7 @@ public class ScenarioCreator extends JPanel {
 		// Panels
 		scenarioProgressPanel = new JPanel();
 		scenarioProgressPanel.setLayout(new BorderLayout(0, 0));
-		scenarioProgressPanel.add(sessionScenarioList);
+		scenarioProgressPanel.add(scrollableList, BorderLayout.CENTER);
 		componentsPanel = new JPanel();
 
 		// combo-boxes
@@ -195,20 +175,24 @@ public class ScenarioCreator extends JPanel {
 	private void initLayout() {
 		// group layout customizations
 		mainGroupLayout = new GroupLayout(this);
-		mainGroupLayout.setHorizontalGroup(mainGroupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(mainGroupLayout.createSequentialGroup().addContainerGap()
-						.addComponent(scenarioProgressPanel, 0, 319, Short.MAX_VALUE)
-						.addPreferredGap(ComponentPlacement.UNRELATED).addComponent(componentsPanel,
-								GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addGap(5)));
-		mainGroupLayout.setVerticalGroup(mainGroupLayout.createParallelGroup(Alignment.TRAILING)
-				.addGroup(mainGroupLayout.createSequentialGroup().addContainerGap()
-						.addGroup(mainGroupLayout.createParallelGroup(Alignment.TRAILING)
-								.addComponent(componentsPanel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 641,
-										Short.MAX_VALUE)
-								.addComponent(scenarioProgressPanel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 641,
-										Short.MAX_VALUE))
-						.addContainerGap()));
+		mainGroupLayout.setHorizontalGroup(
+			mainGroupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(mainGroupLayout.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(scenarioProgressPanel, 0, 795, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(componentsPanel, GroupLayout.PREFERRED_SIZE, 339, GroupLayout.PREFERRED_SIZE)
+					.addGap(5))
+		);
+		mainGroupLayout.setVerticalGroup(
+			mainGroupLayout.createParallelGroup(Alignment.TRAILING)
+				.addGroup(Alignment.LEADING, mainGroupLayout.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(mainGroupLayout.createParallelGroup(Alignment.LEADING)
+						.addComponent(componentsPanel, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 696, Short.MAX_VALUE)
+						.addComponent(scenarioProgressPanel, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 696, Short.MAX_VALUE))
+					.addContainerGap())
+		);
 
 		btnExport = new JButton("Export Scenario");
 		btnExport.setForeground(Color.BLACK);
@@ -220,33 +204,78 @@ public class ScenarioCreator extends JPanel {
 				btnExportClickHandler();
 			}
 		});
+		
+		panel = new JPanel();
+		
+		JLabel lblEditSelectedCommand = new JLabel("Edit selected command");
+		lblEditSelectedCommand.setHorizontalAlignment(SwingConstants.CENTER);
+		lblEditSelectedCommand.setFont(new Font("Tahoma", Font.BOLD, 14));
 
 		// componentsPanel customizations
 		gl_componentsPanel = new GroupLayout(componentsPanel);
-		gl_componentsPanel.setHorizontalGroup(gl_componentsPanel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_componentsPanel.createSequentialGroup().addContainerGap()
-						.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 315, Short.MAX_VALUE).addContainerGap())
-				.addGroup(gl_componentsPanel.createSequentialGroup().addContainerGap()
-						.addComponent(commandsComboBox, 0, 315, Short.MAX_VALUE).addContainerGap())
-				.addGroup(gl_componentsPanel.createSequentialGroup().addGap(42).addGroup(gl_componentsPanel
-						.createParallelGroup(Alignment.LEADING)
-						.addComponent(btnExport, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 243, Short.MAX_VALUE)
-						.addComponent(btnRemove, GroupLayout.DEFAULT_SIZE, 243, Short.MAX_VALUE)
-						.addComponent(btnMoveDown, GroupLayout.DEFAULT_SIZE, 243, Short.MAX_VALUE)
-						.addComponent(btnMoveUp, GroupLayout.DEFAULT_SIZE, 243, Short.MAX_VALUE)
-						.addComponent(btnAdd, GroupLayout.DEFAULT_SIZE, 243, Short.MAX_VALUE)).addGap(50)));
-		gl_componentsPanel.setVerticalGroup(gl_componentsPanel.createParallelGroup(Alignment.LEADING)
+		gl_componentsPanel.setHorizontalGroup(
+			gl_componentsPanel.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_componentsPanel.createSequentialGroup()
-						.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE)
-						.addPreferredGap(ComponentPlacement.RELATED)
-						.addComponent(commandsComboBox, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE)
-						.addGap(18).addComponent(btnAdd, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
-						.addGap(18).addComponent(btnMoveUp, GroupLayout.PREFERRED_SIZE, 44, GroupLayout.PREFERRED_SIZE)
-						.addPreferredGap(ComponentPlacement.UNRELATED)
-						.addComponent(btnMoveDown, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
-						.addGap(18).addComponent(btnRemove, GroupLayout.PREFERRED_SIZE, 44, GroupLayout.PREFERRED_SIZE)
-						.addGap(35).addComponent(btnExport, GroupLayout.PREFERRED_SIZE, 48, GroupLayout.PREFERRED_SIZE)
-						.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
+					.addContainerGap()
+					.addGroup(gl_componentsPanel.createParallelGroup(Alignment.LEADING)
+						.addComponent(panel, GroupLayout.DEFAULT_SIZE, 319, Short.MAX_VALUE)
+						.addComponent(commandsComboBox, 0, 319, Short.MAX_VALUE)
+						.addComponent(btnExport, GroupLayout.DEFAULT_SIZE, 319, Short.MAX_VALUE)
+						.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 319, Short.MAX_VALUE)
+						.addComponent(btnRemove, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 319, Short.MAX_VALUE)
+						.addComponent(btnAdd, GroupLayout.DEFAULT_SIZE, 319, Short.MAX_VALUE)
+						.addComponent(lblEditSelectedCommand, GroupLayout.PREFERRED_SIZE, 319, GroupLayout.PREFERRED_SIZE))
+					.addContainerGap())
+		);
+		gl_componentsPanel.setVerticalGroup(
+			gl_componentsPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_componentsPanel.createSequentialGroup()
+					.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(commandsComboBox, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(btnAdd, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
+					.addGap(7)
+					.addComponent(lblEditSelectedCommand, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 41, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(btnRemove, GroupLayout.PREFERRED_SIZE, 44, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED, 321, Short.MAX_VALUE)
+					.addComponent(btnExport, GroupLayout.PREFERRED_SIZE, 48, GroupLayout.PREFERRED_SIZE))
+		);
+				panel.setLayout(new GridLayout(0, 2, 10, 0));
+		
+				btnMoveUp = new JButton("Move Up");
+				panel.add(btnMoveUp);
+				btnMoveUp.setFont(mainButtonFont);
+				btnMoveUp.setForeground(mainButtonColour);
+				
+						btnMoveDown = new JButton("Move down");
+						panel.add(btnMoveDown);
+						btnMoveDown.setFont(mainButtonFont);
+						btnMoveDown.setForeground(mainButtonColour);
+						btnMoveDown.addActionListener(new ActionListener() {
+
+							@Override
+							public void actionPerformed(ActionEvent arg0) {
+								btnMoveDownClickHandler();
+							}
+						});
+						
+								btnMoveDown.getAccessibleContext().setAccessibleName("Move command down");
+								btnMoveDown.getAccessibleContext()
+										.setAccessibleDescription("Move the selected command down the scenario queue");
+				btnMoveUp.addActionListener(new ActionListener() {
+
+					@Override
+					public void actionPerformed(ActionEvent arg0) {
+						btnMoveUpClickHandler();
+					}
+				});
+				
+						btnMoveUp.getAccessibleContext().setAccessibleName("Move command up");
+						btnMoveUp.getAccessibleContext().setAccessibleDescription("Move the selected command up the scenario queue");
 
 		// accessibility
 
@@ -260,13 +289,6 @@ public class ScenarioCreator extends JPanel {
 		btnAdd.getAccessibleContext().setAccessibleName("Add command");
 		btnAdd.getAccessibleContext()
 				.setAccessibleDescription("Create and add the selected command in the drop-down to the scenario");
-
-		btnMoveUp.getAccessibleContext().setAccessibleName("Move command up");
-		btnMoveUp.getAccessibleContext().setAccessibleDescription("Move the selected command up the scenario queue");
-
-		btnMoveDown.getAccessibleContext().setAccessibleName("Move command down");
-		btnMoveDown.getAccessibleContext()
-				.setAccessibleDescription("Move the selected command down the scenario queue");
 
 		btnRemove.getAccessibleContext().setAccessibleName("Remove command");
 		btnRemove.getAccessibleContext().setAccessibleDescription("Remove the selected command from the scenario");
@@ -616,5 +638,4 @@ public class ScenarioCreator extends JPanel {
 			ScenarioFormatter.export(workingScenario, saveFilePrompt.getSelectedFile().getAbsolutePath());
 		}
 	}
-
 }
