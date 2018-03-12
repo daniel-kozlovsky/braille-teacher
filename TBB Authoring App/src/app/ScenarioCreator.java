@@ -540,7 +540,7 @@ public class ScenarioCreator extends JPanel {
 	 * Handles the click event for the remove command button
 	 */
 	private void btnRemoveClickHandler() {
-		if (listBoxIndex > 0) {
+		if (listBoxIndex >= 0) {
 			workingScenario.removeCommand(workingScenario.getCommand(listBoxIndex));
 		}
 		updateSessionModel();
