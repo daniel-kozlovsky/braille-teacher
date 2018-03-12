@@ -572,6 +572,8 @@ public class ScenarioCreator extends JPanel {
 	 */
 	private void btnMoveUpClickHandler() {
 		// swapCommands(sessionScenarioList.getSelectedIndex(),sessionScenarioList.getSelectedIndex()-1);
+		
+		//TODO allow multiple commands to be moved. 
 		int listIndex = sessionScenarioList.getSelectedIndex();
 		if ( listIndex > 0) {
 			workingScenario.moveCommand(workingScenario.getCommand(listIndex), listIndex - 1);
