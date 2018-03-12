@@ -22,7 +22,7 @@ public class ScenarioCreator extends JPanel {
 
 	// misc
 	private int comboIndex;
-	private int listBoxIndex;
+	private int[] listBoxSelectedIndices;
 	private Scenario workingScenario;
 	private int numCells;
 	private int numButtons;
@@ -30,6 +30,8 @@ public class ScenarioCreator extends JPanel {
 	// list
 	private DefaultListModel<String> sessionListModel;
 	private JList<String> sessionScenarioList;
+	private final int LIST_CELL_HEIGHT = 50;
+	private final int LIST_CELL_WIDTH = 100;
 	// panels
 	private JPanel scenarioProgressPanel;
 	private JPanel componentsPanel;
@@ -55,7 +57,6 @@ public class ScenarioCreator extends JPanel {
 	public ScenarioCreator(JFrame parent, Scenario importedScenario) {
 
 		this.parent = parent;
-
 		this.parent.setMinimumSize(new Dimension(600, 600));
 		this.parent.setSize(new Dimension(800, 600));
 
@@ -78,8 +79,9 @@ public class ScenarioCreator extends JPanel {
 			newScenarioSetUpDialog();
 			workingScenario = new Scenario(numCells, numButtons);
 		}
-
+		
 		this.parent.setTitle("Create new Scenario");
+		
 		initComponents();
 		initLayout();
 
@@ -123,10 +125,15 @@ public class ScenarioCreator extends JPanel {
 		sessionScenarioList = new JList<String>();
 	    JScrollPane scrollableList = new JScrollPane(sessionScenarioList);
 		sessionScenarioList.setModel(sessionListModel);
+		sessionScenarioList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		sessionScenarioList.setFixedCellHeight(LIST_CELL_HEIGHT);
+		sessionScenarioList.setFixedCellWidth(LIST_CELL_WIDTH);
 		sessionScenarioList.addListSelectionListener(new ListSelectionListener() {
 			@Override
 			public void valueChanged(ListSelectionEvent arg0) {
-				listBoxIndex = sessionScenarioList.getSelectedIndex();
+				
+				sessionScenarioListValueChangedHandler();
+				
 			}
 
 		});
@@ -295,6 +302,13 @@ public class ScenarioCreator extends JPanel {
 
 	}
 
+	/**
+	 * Handles event when list box selection is changed.
+	 */
+	private void sessionScenarioListValueChangedHandler()
+	{
+		listBoxSelectedIndices = sessionScenarioList.getSelectedIndices();
+	}
 	/**
 	 * Handles the event when a selection is made in the combo box.
 	 */
@@ -537,12 +551,19 @@ public class ScenarioCreator extends JPanel {
 	}
 
 	/**
-	 * Handles the click event for the remove command button
+	 * Handles the click event for the remove command button.
+	 * Will remove all selected items from the list
 	 */
 	private void btnRemoveClickHandler() {
-		if (listBoxIndex >= 0) {
-			workingScenario.removeCommand(workingScenario.getCommand(listBoxIndex));
+		
+		int positionModifier = 0;
+		
+		for(int i : listBoxSelectedIndices)
+		{
+			workingScenario.removeCommand(workingScenario.getCommand(i-positionModifier));
+			positionModifier++;
 		}
+		
 		updateSessionModel();
 	}
 
@@ -551,8 +572,9 @@ public class ScenarioCreator extends JPanel {
 	 */
 	private void btnMoveUpClickHandler() {
 		// swapCommands(sessionScenarioList.getSelectedIndex(),sessionScenarioList.getSelectedIndex()-1);
-		if (listBoxIndex > 0) {
-			workingScenario.moveCommand(workingScenario.getCommand(listBoxIndex), listBoxIndex - 1);
+		int listIndex = sessionScenarioList.getSelectedIndex();
+		if ( listIndex > 0) {
+			workingScenario.moveCommand(workingScenario.getCommand(listIndex), listIndex - 1);
 		}
 		updateSessionModel();
 	}
@@ -562,8 +584,9 @@ public class ScenarioCreator extends JPanel {
 	 */
 	private void btnMoveDownClickHandler() {
 		// swapCommands(sessionScenarioList.getSelectedIndex(),sessionScenarioList.getSelectedIndex()+1);
-		if (listBoxIndex >= 0 && listBoxIndex != sessionListModel.size() - 1) {
-			workingScenario.moveCommand(workingScenario.getCommand(listBoxIndex), listBoxIndex + 1);
+		int listIndex = sessionScenarioList.getSelectedIndex();
+		if (listIndex >= 0 && listIndex != sessionListModel.size() - 1) {
+			workingScenario.moveCommand(workingScenario.getCommand(listIndex), listIndex + 1);
 		}
 		updateSessionModel();
 	}
