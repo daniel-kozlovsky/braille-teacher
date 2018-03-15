@@ -470,24 +470,24 @@ public class ScenarioCreator extends JPanel {
 
 			//file save dir chooser
 			btnFileLocation.addActionListener(new ActionListener() {		
-449.			
-450.					@Override		
-451.					public void actionPerformed(ActionEvent e) {		
-452.			
-453.						// file chooser for .wav file save location		
-454.						JFileChooser destChooser = new JFileChooser();		
-455.			
-456.						// file chooser attributes		
-457.						destChooser.setDialogTitle("Select recording save location");		
-458.						destChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);		
-459.						destChooser.setAcceptAllFileFilterUsed(false);		
-460.			
-461.						if (destChooser.showOpenDialog(ScenarioCreator.this) == JFileChooser.APPROVE_OPTION) {		
-462.			
-463.							// update save location		
-464.							saveLoc = destChooser.getSelectedFile();		
-465.						}		
-466.					}
+			
+					@Override		
+					public void actionPerformed(ActionEvent e) {		
+			
+						// file chooser for .wav file save location		
+						JFileChooser destChooser = new JFileChooser();		
+			
+						// file chooser attributes		
+						destChooser.setDialogTitle("Select recording save location");		
+						destChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);		
+						destChooser.setAcceptAllFileFilterUsed(false);		
+			
+						if (destChooser.showOpenDialog(ScenarioCreator.this) == JFileChooser.APPROVE_OPTION) {		
+			
+							// update save location		
+							saveLoc = destChooser.getSelectedFile();		
+						}		
+					}
 			});
 			
 			// start recording
