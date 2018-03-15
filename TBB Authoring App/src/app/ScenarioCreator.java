@@ -53,6 +53,8 @@ public class ScenarioCreator extends JPanel {
 	GroupLayout gl_componentsPanel;
 	private JButton btnExport;
 	private JPanel panel;
+	// Audio Recording		
+	File saveLoc;
 
 	public ScenarioCreator(JFrame parent, Scenario importedScenario) {
 
@@ -430,11 +432,12 @@ public class ScenarioCreator extends JPanel {
 			labelOR.setHorizontalAlignment(SwingConstants.CENTER);
 
 			JTextField inputFileName = new JTextField("");
+			JButton btnFileLocation = new JButton("Choose File Location");
 
 			JLabel labelRecording = new JLabel("Recording...");
 			labelRecording.setForeground(Color.RED);
 
-			inputFileName.setText("File name...");
+			inputFileName.setText("RecordingName");
 
 			JButton btnChooseFile = new JButton("Choose existing sound file");
 
@@ -443,7 +446,7 @@ public class ScenarioCreator extends JPanel {
 			JButton btnStop = new JButton("Stop Recording");
 
 			final JComponent[] inputs = new JComponent[] { labelFile, labelFilePath, btnChooseFile, labelOR,
-					inputFileName, labelRecording, btnRecord, btnStop };
+					inputFileName, btnFileLocation, labelRecording, btnRecord, btnStop };
 
 			btnRecord.setEnabled(true);
 			btnStop.setEnabled(false);
@@ -465,6 +468,28 @@ public class ScenarioCreator extends JPanel {
 
 			AudioRecorder audioRecorder = new AudioRecorder();
 
+			//file save dir chooser
+			btnFileLocation.addActionListener(new ActionListener() {		
+449.			
+450.					@Override		
+451.					public void actionPerformed(ActionEvent e) {		
+452.			
+453.						// file chooser for .wav file save location		
+454.						JFileChooser destChooser = new JFileChooser();		
+455.			
+456.						// file chooser attributes		
+457.						destChooser.setDialogTitle("Select recording save location");		
+458.						destChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);		
+459.						destChooser.setAcceptAllFileFilterUsed(false);		
+460.			
+461.						if (destChooser.showOpenDialog(ScenarioCreator.this) == JFileChooser.APPROVE_OPTION) {		
+462.			
+463.							// update save location		
+464.							saveLoc = destChooser.getSelectedFile();		
+465.						}		
+466.					}
+			});
+			
 			// start recording
 			btnRecord.addActionListener(new ActionListener() {
 				@Override
@@ -475,7 +500,7 @@ public class ScenarioCreator extends JPanel {
 					labelRecording.setVisible(true);
 
 					try {
-						audioRecorder.recordAndSave(inputFileName.getText());
+						audioRecorder.recordAndSave(inputFileName.getText(), saveLoc);
 					} catch (NumberFormatException | IOException e) {
 						System.out.print("Record failed, Exception: " + e.getMessage() + " due to " + e.getCause());
 						e.printStackTrace();
