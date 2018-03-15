@@ -24,7 +24,7 @@ public class AudioRecorder extends JPanel {
 	private static final long serialVersionUID = 1L;
 
 	// audio resources
-	private String saveLoc = "AudioFiles/";
+	// private String saveLoc = "AudioFiles/";
 	private AudioFileFormat.Type fileType = AudioFileFormat.Type.WAVE;
 	TargetDataLine dataLine;
 	private AudioFormat format;
@@ -109,7 +109,7 @@ public class AudioRecorder extends JPanel {
 		btnRecord.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
-					recordAndSave(txtFileName.getText());
+					recordAndSave(txtFileName.getText(), null);
 				} catch (NumberFormatException | IOException e) {
 					System.out.print("Record failed, Exception: " + e.getMessage() + " due to " + e.getCause());
 					e.printStackTrace();
@@ -127,11 +127,11 @@ public class AudioRecorder extends JPanel {
 		});
 	}
 
-	public void recordAndSave(String fileName) throws IOException {
+	public void recordAndSave(String fileName, File saveLoc) throws IOException {
 
 		lblRecording.setVisible(true);
 
-		audioFile = new File(saveLoc + fileName + ".wav");
+		audioFile = new File(saveLoc + "\\" + fileName + ".wav");
 
 		if (audioFile.exists() != true) {
 			audioFile.createNewFile();
