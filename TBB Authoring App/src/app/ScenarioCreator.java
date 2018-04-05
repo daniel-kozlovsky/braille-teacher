@@ -3,6 +3,8 @@ package app;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 import javax.swing.*;
@@ -10,7 +12,6 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-
 import scenario.EnumPossibleCommands;
 import scenario.Scenario;
 import scenario.ScenarioCommand;
@@ -598,9 +599,10 @@ public class ScenarioCreator extends JPanel {
 	private void btnMoveUpClickHandler() {
 		// swapCommands(sessionScenarioList.getSelectedIndex(),sessionScenarioList.getSelectedIndex()-1);
 		
-		//TODO allow multiple commands to be moved. 
-		int listIndex = sessionScenarioList.getSelectedIndex();
-		if ( listIndex > 0) {
+		int[] listIndices = sessionScenarioList.getSelectedIndices();
+		
+		for(int listIndex : listIndices) {
+		if ( listIndex == 0) {break;}
 			workingScenario.moveCommand(workingScenario.getCommand(listIndex), listIndex - 1);
 		}
 		updateSessionModel();
@@ -611,10 +613,15 @@ public class ScenarioCreator extends JPanel {
 	 */
 	private void btnMoveDownClickHandler() {
 		// swapCommands(sessionScenarioList.getSelectedIndex(),sessionScenarioList.getSelectedIndex()+1);
-		int listIndex = sessionScenarioList.getSelectedIndex();
-		if (listIndex >= 0 && listIndex != sessionListModel.size() - 1) {
-			workingScenario.moveCommand(workingScenario.getCommand(listIndex), listIndex + 1);
+		
+		int[] listIndices = sessionScenarioList.getSelectedIndices();
+		
+		if(listIndices[listIndices.length-1]==sessionListModel.size()-1) {
+			return;
 		}
+		
+		workingScenario.moveCommand(workingScenario.getCommand(listIndices[listIndices.length-1]+1), listIndices[0] );
+			
 		updateSessionModel();
 	}
 
@@ -685,4 +692,22 @@ public class ScenarioCreator extends JPanel {
 			ScenarioFormatter.export(workingScenario, saveFilePrompt.getSelectedFile().getAbsolutePath());
 		}
 	}
+	
+	
+	   private class ListKeyShortcuts extends KeyAdapter {
+		      @Override
+		      public void keyPressed(KeyEvent e) {
+		         switch (e.getKeyCode()) {
+		         case KeyEvent.VK_DELETE:
+		        	 btnRemoveClickHandler();
+		            break;
+		         case KeyEvent.VK_UP:
+		        	 btnMoveUpClickHandler();
+		            break;
+		         case KeyEvent.VK_DOWN:
+		        	 btnMoveDownClickHandler();
+		            break;
+		         }
+		      }
+		   }
 }
