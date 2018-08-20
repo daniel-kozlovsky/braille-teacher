@@ -38,24 +38,15 @@ public class ScenarioCreator extends JPanel {
 	// panels
 	private JPanel scenarioProgressPanel;
 	private JPanel componentsPanel;
-	// buttons
-	private JButton btnAdd;
-	private JButton btnRemove;
-	private JButton btnMoveUp;
-	private JButton btnMoveDown;
 	// labels
-	private JLabel lblNewLabel;
-	// combo-boxes
-	private JComboBox<String> commandsComboBox;
 	// fonts
 	Font mainButtonFont = new Font("Tahoma", Font.PLAIN, 14);
 	// colors
 	Color mainButtonColour = new Color(0, 0, 0);
 	// Layouts
-	GroupLayout mainGroupLayout;
+	BoxLayout mainGroupLayout;
 	GroupLayout gl_componentsPanel;
 	private JButton btnExport;
-	private JPanel panel;
 	//context menus
 	JPopupMenu rClickContextLBox;
 	JMenu addContextSubMenu;
@@ -99,33 +90,19 @@ public class ScenarioCreator extends JPanel {
 	}
 
 	private void initComponents() {
-		// Labels
-		lblNewLabel = new JLabel("Choose a command from the menu below ");
-		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 14));
-		// Buttons
-		btnAdd = new JButton("Add Command");
-		btnAdd.setFont(mainButtonFont);
-		btnAdd.setForeground(mainButtonColour);
-		btnAdd.addActionListener(new ActionListener() {
+		
+		//Buttons
+		btnExport = new JButton("Export Scenario");
+		btnExport.setForeground(Color.BLACK);
+		btnExport.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		btnExport.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				btnAddClickHandler();
+				btnExportClickHandler();
 			}
 		});
-
-		btnRemove = new JButton("Remove");
-		btnRemove.setFont(mainButtonFont);
-		btnRemove.setForeground(mainButtonColour);
-		btnRemove.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				btnRemoveClickHandler();
-			}
-		});
-
+		
 		// ListBox
 		sessionListModel = new DefaultListModel<>();
 		sessionScenarioList = new JList<String>();
@@ -222,36 +199,25 @@ public class ScenarioCreator extends JPanel {
 		scenarioProgressPanel.setLayout(new BorderLayout(0, 0));
 		scenarioProgressPanel.add(scrollableList, BorderLayout.CENTER);
 		componentsPanel = new JPanel();
-
-		// combo-boxes
-		commandsComboBox = new JComboBox<String>();
-		commandsComboBox.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		// Populate comboBox with all possible commands
-		for (EnumPossibleCommands cmd : EnumPossibleCommands.values()) {
-			commandsComboBox.addItem(cmd.getName());
-		}
-
-		commandsComboBox.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				comboBoxSelectionChangedHandler();
-			}
-		});
+	
 	}
+
+	
+		
 
 	// TODO change component layout to have two columns if enough space after
 	// resizing window.
 	private void initLayout() {
 		// group layout customizations
-		mainGroupLayout = new GroupLayout(this);
+		mainGroupLayout = new BoxLayout(this, BoxLayout.Y_AXIS);
 		mainGroupLayout.setHorizontalGroup(
+				mainGroupLayout.addLayoutComponent(scenarioProgressPanel);
 			mainGroupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(mainGroupLayout.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(scenarioProgressPanel, 0, 795, Short.MAX_VALUE)
+					.addComponent(scenarioProgressPanel, 0, this.getWidth(), Short.MAX_VALUE)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(componentsPanel, GroupLayout.PREFERRED_SIZE, 339, GroupLayout.PREFERRED_SIZE)
+					.addComponent(componentsPanel, GroupLayout.PREFERRED_SIZE, this.getWidth(), GroupLayout.PREFERRED_SIZE)
 					.addGap(5))
 		);
 		mainGroupLayout.setVerticalGroup(
@@ -264,22 +230,7 @@ public class ScenarioCreator extends JPanel {
 					.addContainerGap())
 		);
 
-		btnExport = new JButton("Export Scenario");
-		btnExport.setForeground(Color.BLACK);
-		btnExport.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		btnExport.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				btnExportClickHandler();
-			}
-		});
 		
-		panel = new JPanel();
-		
-		JLabel lblEditSelectedCommand = new JLabel("Edit selected command");
-		lblEditSelectedCommand.setHorizontalAlignment(SwingConstants.CENTER);
-		lblEditSelectedCommand.setFont(new Font("Tahoma", Font.BOLD, 14));
 
 		// componentsPanel customizations
 		gl_componentsPanel = new GroupLayout(componentsPanel);
@@ -288,80 +239,26 @@ public class ScenarioCreator extends JPanel {
 				.addGroup(gl_componentsPanel.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(gl_componentsPanel.createParallelGroup(Alignment.LEADING)
-						.addComponent(panel, GroupLayout.DEFAULT_SIZE, 319, Short.MAX_VALUE)
-						.addComponent(commandsComboBox, 0, 319, Short.MAX_VALUE)
 						.addComponent(btnExport, GroupLayout.DEFAULT_SIZE, 319, Short.MAX_VALUE)
-						.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 319, Short.MAX_VALUE)
-						.addComponent(btnRemove, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 319, Short.MAX_VALUE)
-						.addComponent(btnAdd, GroupLayout.DEFAULT_SIZE, 319, Short.MAX_VALUE)
-						.addComponent(lblEditSelectedCommand, GroupLayout.PREFERRED_SIZE, 319, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap())
-		);
+						
+		)));
 		gl_componentsPanel.setVerticalGroup(
 			gl_componentsPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_componentsPanel.createSequentialGroup()
-					.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(commandsComboBox, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(btnAdd, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
 					.addGap(7)
-					.addComponent(lblEditSelectedCommand, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 41, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(btnRemove, GroupLayout.PREFERRED_SIZE, 44, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED, 321, Short.MAX_VALUE)
 					.addComponent(btnExport, GroupLayout.PREFERRED_SIZE, 48, GroupLayout.PREFERRED_SIZE))
 		);
-				panel.setLayout(new GridLayout(0, 2, 10, 0));
+			
 		
-				btnMoveUp = new JButton("Move Up");
-				panel.add(btnMoveUp);
-				btnMoveUp.setFont(mainButtonFont);
-				btnMoveUp.setForeground(mainButtonColour);
-				
-						btnMoveDown = new JButton("Move down");
-						panel.add(btnMoveDown);
-						btnMoveDown.setFont(mainButtonFont);
-						btnMoveDown.setForeground(mainButtonColour);
-						btnMoveDown.addActionListener(new ActionListener() {
-
-							@Override
-							public void actionPerformed(ActionEvent arg0) {
-								btnMoveDownClickHandler();
-							}
-						});
-						
-								btnMoveDown.getAccessibleContext().setAccessibleName("Move command down");
-								btnMoveDown.getAccessibleContext()
-										.setAccessibleDescription("Move the selected command down the scenario queue");
-				btnMoveUp.addActionListener(new ActionListener() {
-
-					@Override
-					public void actionPerformed(ActionEvent arg0) {
-						btnMoveUpClickHandler();
-					}
-				});
-				
-						btnMoveUp.getAccessibleContext().setAccessibleName("Move command up");
-						btnMoveUp.getAccessibleContext().setAccessibleDescription("Move the selected command up the scenario queue");
-
-		// accessibility
+				// accessibility
 
 		sessionScenarioList.getAccessibleContext().setAccessibleName("Sceanrio commands");
 		sessionScenarioList.getAccessibleContext().setAccessibleDescription("Scenario commands shown as a queue");
-
-		commandsComboBox.getAccessibleContext().setAccessibleName("Commands drop-down");
-		commandsComboBox.getAccessibleContext()
-				.setAccessibleDescription("Select a command to add in the scenaio queue");
-
-		btnAdd.getAccessibleContext().setAccessibleName("Add command");
-		btnAdd.getAccessibleContext()
-				.setAccessibleDescription("Create and add the selected command in the drop-down to the scenario");
-
-		btnRemove.getAccessibleContext().setAccessibleName("Remove command");
-		btnRemove.getAccessibleContext().setAccessibleDescription("Remove the selected command from the scenario");
 
 		btnExport.getAccessibleContext().setAccessibleName("Exprot scenario");
 		btnExport.getAccessibleContext().setAccessibleDescription("Save the scenario as a file");
@@ -375,12 +272,7 @@ public class ScenarioCreator extends JPanel {
 	{
 		listBoxSelectedIndices = sessionScenarioList.getSelectedIndices();
 	}
-	/**
-	 * Handles the event when a selection is made in the combo box.
-	 */
-	private void comboBoxSelectionChangedHandler() {
-		comboIndex = commandsComboBox.getSelectedIndex();
-	}
+	
 
 	/**
 	 * Handler for right clicks on list elements. Meant to bring up menu.
@@ -389,6 +281,7 @@ public class ScenarioCreator extends JPanel {
 	{
 		rClickContextLBox.show(this, x+5, y+5);
 	}
+	
 	/**
 	 * Handles the click event for the add command button
 	 */
@@ -541,6 +434,7 @@ public class ScenarioCreator extends JPanel {
 		updateSessionModel();
 	}
 
+	
 	/**
 	 * Handles the click event for the remove command button.
 	 * Will remove all selected items from the list
@@ -558,6 +452,7 @@ public class ScenarioCreator extends JPanel {
 		updateSessionModel();
 	}
 
+	
 	/**
 	 * Handles the click event for the Move Up button
 	 */
@@ -572,6 +467,7 @@ public class ScenarioCreator extends JPanel {
 		updateSessionModel();
 	}
 
+	
 	/**
 	 * Handles the click event for the Move Down button
 	 */
@@ -584,6 +480,7 @@ public class ScenarioCreator extends JPanel {
 		updateSessionModel();
 	}
 
+	
 	/**
 	 * Displays a new dialog box that prompts the user for braille cell and button
 	 * amounts
@@ -597,6 +494,7 @@ public class ScenarioCreator extends JPanel {
 		numButtons = Integer.parseInt(JOptionPane.showInputDialog(parent, "How many buttons do you need?", null));
 	}
 
+	
 	/**
 	 * Prompts user for arguments to a command. Should be used when adding or
 	 * editing a command.
@@ -629,6 +527,7 @@ public class ScenarioCreator extends JPanel {
 		return args;
 	}
 
+	
 	/**
 	 * Updates the list box to current state. Should be done when changes are meant
 	 * to be seen by the user
@@ -643,6 +542,9 @@ public class ScenarioCreator extends JPanel {
 		sessionListModel.addElement("+");
 	}
 
+	/**
+	 * Export button click handler
+	 */
 	public void btnExportClickHandler() {
 		// save prompt
 		JFileChooser saveFilePrompt = new JFileChooser();
