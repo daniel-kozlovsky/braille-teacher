@@ -58,6 +58,7 @@ public class ScenarioCreator extends JPanel {
 	private JPanel panel;
 	//context menus
 	JPopupMenu rClickContextLBox;
+	JMenu addContextSubMenu;
 
 	public ScenarioCreator(JFrame parent, Scenario importedScenario) {
 
@@ -151,25 +152,34 @@ public class ScenarioCreator extends JPanel {
 				//If right click
 				if(me.getButton() == MouseEvent.BUTTON3)
 				{
-					listBoxElementRClickedHandler();
+					listBoxElementRClickedHandler(me.getPoint().x, me.getPoint().y);
 				}
 				
 			}
 		};
 		
 		sessionScenarioList.addMouseListener(mouselistener);
+		//Submenu for add context
+		addContextSubMenu = new JMenu("Add");
+		
+		//populate submenu with all possible commands
+		for(EnumPossibleCommands e : EnumPossibleCommands.values())
+		{
+			JMenuItem item = new JMenuItem(e.getName());
+			item.addActionListener(new ActionListener() {
+				@Override 
+				public void actionPerformed(ActionEvent arg0)
+				{
+					//click on command
+				}
+			});
+			addContextSubMenu.add(item);
+		}
+		
+		
+		
 		//Custom context menu for listbox
 		rClickContextLBox = new JPopupMenu();
-		//Add command menu item
-		JMenuItem menuItemAdd = new JMenuItem("Add");
-		menuItemAdd.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0)
-			{
-				//TODO: implement Add command
-			}
-		});
-		
 		
 		//Remove command menu item
 		JMenuItem menuItemRemove = new JMenuItem("Remove");
@@ -198,11 +208,12 @@ public class ScenarioCreator extends JPanel {
 				btnMoveDownClickHandler();
 			}
 		});
-		//
+		//populate menu
+		rClickContextLBox.add(addContextSubMenu);
 		rClickContextLBox.add(menuItemRemove);
 		rClickContextLBox.add(menuItemMoveUp);
 		rClickContextLBox.add(menuItemMoveDown);
-		rClickContextLBox.add(menuItemAdd);
+		
 		//
 		
 		// Panels
@@ -373,9 +384,9 @@ public class ScenarioCreator extends JPanel {
 	/**
 	 * Handler for right clicks on list elements. Meant to bring up menu.
 	 */
-	private void listBoxElementRClickedHandler()
+	private void listBoxElementRClickedHandler(int x, int y)
 	{
-		rClickContextLBox.show(this, 10, 10);
+		rClickContextLBox.show(this, x+5, y+5);
 	}
 	/**
 	 * Handles the click event for the add command button
