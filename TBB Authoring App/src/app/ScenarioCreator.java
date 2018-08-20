@@ -3,6 +3,9 @@ package app;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
 import javax.swing.*;
@@ -53,6 +56,8 @@ public class ScenarioCreator extends JPanel {
 	GroupLayout gl_componentsPanel;
 	private JButton btnExport;
 	private JPanel panel;
+	//context menus
+	JPopupMenu rClickContextLBox;
 
 	public ScenarioCreator(JFrame parent, Scenario importedScenario) {
 
@@ -137,7 +142,69 @@ public class ScenarioCreator extends JPanel {
 			}
 
 		});
-
+		//refers right click event to handler
+		MouseListener mouselistener = new MouseAdapter() {
+			public void mouseClicked(MouseEvent me)
+			{
+				//select right clicked element
+				sessionScenarioList.setSelectedIndex(sessionScenarioList.locationToIndex(me.getPoint()));
+				//If right click
+				if(me.getButton() == MouseEvent.BUTTON3)
+				{
+					listBoxElementRClickedHandler();
+				}
+				
+			}
+		};
+		
+		sessionScenarioList.addMouseListener(mouselistener);
+		//Custom context menu for listbox
+		rClickContextLBox = new JPopupMenu();
+		//Add command menu item
+		JMenuItem menuItemAdd = new JMenuItem("Add");
+		menuItemAdd.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0)
+			{
+				//TODO: implement Add command
+			}
+		});
+		
+		
+		//Remove command menu item
+		JMenuItem menuItemRemove = new JMenuItem("Remove");
+		menuItemRemove.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0)
+			{
+				btnRemoveClickHandler();
+			}
+		});
+		//move command up 
+		JMenuItem menuItemMoveUp = new JMenuItem("Move up");
+		menuItemMoveUp.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0)
+			{
+				btnMoveUpClickHandler();
+			}
+		});
+		//move command down
+		JMenuItem menuItemMoveDown = new JMenuItem("Move down");
+		menuItemMoveDown.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0)
+			{
+				btnMoveDownClickHandler();
+			}
+		});
+		//
+		rClickContextLBox.add(menuItemRemove);
+		rClickContextLBox.add(menuItemMoveUp);
+		rClickContextLBox.add(menuItemMoveDown);
+		rClickContextLBox.add(menuItemAdd);
+		//
+		
 		// Panels
 		scenarioProgressPanel = new JPanel();
 		scenarioProgressPanel.setLayout(new BorderLayout(0, 0));
@@ -152,19 +219,6 @@ public class ScenarioCreator extends JPanel {
 			commandsComboBox.addItem(cmd.getName());
 		}
 
-		/*
-		 * OLD: If you prefer this way, remove my 'for loop' above and use
-		 * btnAddClickHandler_OLD()
-		 * 
-		 * -DKozlovsky
-		 * 
-		 * comboBox.addItem("Add Audio"); comboBox.addItem("Add a Question");
-		 * comboBox.addItem("Pause"); comboBox.addItem("disp-string");
-		 * comboBox.addItem("Skip"); comboBox.addItem("Skip Button");
-		 * comboBox.addItem("Repeat Button"); comboBox.addItem("User input");
-		 * comboBox.addItem("disp clearAll"); comboBox.addItem("disp clear cell");
-		 * comboBox.addItem("disp cell lower"); comboBox.addItem("disp cell pins");
-		 */
 		commandsComboBox.addActionListener(new ActionListener() {
 
 			@Override
@@ -317,88 +371,12 @@ public class ScenarioCreator extends JPanel {
 	}
 
 	/**
-	 * Handles the click event for the add command button
+	 * Handler for right clicks on list elements. Meant to bring up menu.
 	 */
-	// Keep this if you prefer your method
-	/*
-	 * // -DKozlovsky
-	 * 
-	 * private void btnAddClickHandler_OLD() { // add audio add command if
-	 * (comboIndex == 0) { addAudio audio = new addAudio(); audio.revalidate();
-	 * audio.setVisible(true); // audio.setSize(300, 500); } // add question add
-	 * command else if (comboIndex == 1) { JOptionPane question = new JOptionPane();
-	 * question.getAccessibleContext().
-	 * setAccessibleDescription(" Enter the question below "); qst =
-	 * JOptionPane.showInputDialog(parent, "Enter the question below  ", null);
-	 * EnumPossibleCommands cmd = EnumPossibleCommands.DISP_STRING;
-	 * workingScenario.addCommand(workingScenario.createNewCommand(cmd, new String[]
-	 * { qst })); } // pause command else if (comboIndex == 2) { JOptionPane pause =
-	 * new JOptionPane(); pause.getAccessibleContext()
-	 * .setAccessibleDescription(" please enter the number of seconds you want to pause "
-	 * ); secpause = Integer.parseInt(JOptionPane.showInputDialog(parent,
-	 * "please enter the number of seconds you want to pause  ", null)); Object[]
-	 * obj = new Object[] { secpause };
-	 * workingScenario.addCommand(workingScenario.createNewCommand(
-	 * EnumPossibleCommands.PAUSE, obj)); } // disp-string else if (comboIndex == 3)
-	 * { String dispstring; JOptionPane disp = new JOptionPane();
-	 * disp.getAccessibleContext().
-	 * setAccessibleDescription("Please write the string disp "); dispstring =
-	 * JOptionPane.showInputDialog(parent, "please write the String here ", null);
-	 * EnumPossibleCommands cmd = EnumPossibleCommands.DISP_STRING;
-	 * workingScenario.addCommand(workingScenario.createNewCommand(cmd, new String[]
-	 * { dispstring })); }
-	 * 
-	 * // Skip else if (comboIndex == 4) { String skip; JOptionPane skipp = new
-	 * JOptionPane(); skipp.getAccessibleContext().
-	 * setAccessibleDescription("Please write the string you want to skip "); skip =
-	 * JOptionPane.showInputDialog(parent,
-	 * "please write the String you want to skip ", null); EnumPossibleCommands cmd
-	 * = EnumPossibleCommands.SKIP;
-	 * workingScenario.addCommand(workingScenario.createNewCommand(cmd, new String[]
-	 * { skip })); } // skip button else if (comboIndex == 5) { String str; int
-	 * bnts; JTextField btn = new JTextField();
-	 * 
-	 * Object[] obj = { "please enter the button number:", btn,
-	 * "please enter the string here:", };
-	 * 
-	 * JOptionPane skipp = new JOptionPane(); str =
-	 * (JOptionPane.showInputDialog(null, obj, "skip button",
-	 * JOptionPane.OK_CANCEL_OPTION)); bnts = Integer.parseInt(btn.getText());
-	 * EnumPossibleCommands cmd = EnumPossibleCommands.SKIP_BUTTON;
-	 * workingScenario.addCommand(workingScenario.createNewCommand(cmd, new Object[]
-	 * { bnts, str })); }
-	 * 
-	 * // Repeat Button else if (comboIndex == 6) {
-	 * 
-	 * JOptionPane rebnt = new JOptionPane(); rebnt.getAccessibleContext()
-	 * .setAccessibleDescription(" please enter the button number you want to repeat "
-	 * ); int btns; btns = Integer.parseInt( JOptionPane.showInputDialog(parent,
-	 * "please enter the button number you want to repeat ", null));
-	 * EnumPossibleCommands cmd = EnumPossibleCommands.REPEAT_BUTTON;
-	 * workingScenario.addCommand(workingScenario.createNewCommand(cmd, new Object[]
-	 * { btns })); } // disp clear cell else if (comboIndex == 9) { int cells;
-	 * JOptionPane clrcell = new JOptionPane(); clrcell.getAccessibleContext().
-	 * setAccessibleDescription(" please enter the cell number you want to clear ");
-	 * cells = Integer.parseInt( JOptionPane.showInputDialog(parent,
-	 * "please enter the cell number you want to clear ", null));
-	 * EnumPossibleCommands cmd = EnumPossibleCommands.DISP_CLEAR_CELL;
-	 * workingScenario.addCommand(workingScenario.createNewCommand(cmd, new Object[]
-	 * { cells })); } // disp cell pin else if (comboIndex == 11) { int cell; int
-	 * pin; JTextField pins = new JTextField();
-	 * 
-	 * Object[] obj = { "please enter the cell number:", pins,
-	 * "please enter the pin number :", };
-	 * 
-	 * JOptionPane skipp = new JOptionPane(); pin =
-	 * Integer.parseInt(JOptionPane.showInputDialog(null, obj, "skip button",
-	 * JOptionPane.OK_CANCEL_OPTION)); cell = Integer.parseInt(pins.getText());
-	 * EnumPossibleCommands cmd = EnumPossibleCommands.DISP_CELL_PINS;
-	 * workingScenario.addCommand(workingScenario.createNewCommand(cmd, new Object[]
-	 * { cell, pin })); }
-	 * 
-	 * updateSessionModel(); }
-	 */
-
+	private void listBoxElementRClickedHandler()
+	{
+		rClickContextLBox.show(this, 10, 10);
+	}
 	/**
 	 * Handles the click event for the add command button
 	 */
@@ -648,6 +626,8 @@ public class ScenarioCreator extends JPanel {
 		for (ScenarioCommand cmd : workingScenario) {
 			sessionListModel.addElement(cmd.toString());
 		}
+		//Last element in list. Makes it more intuitive for user to add commands.
+		sessionListModel.addElement("+");
 	}
 
 	public void btnExportClickHandler() {
