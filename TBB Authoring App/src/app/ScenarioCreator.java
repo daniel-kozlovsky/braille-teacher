@@ -171,6 +171,7 @@ public class ScenarioCreator extends JPanel {
 				public void actionPerformed(ActionEvent arg0)
 				{
 					//click on command
+					btnAddClickHandler(e);
 				}
 			});
 			addContextSubMenu.add(item);
@@ -391,8 +392,9 @@ public class ScenarioCreator extends JPanel {
 	/**
 	 * Handles the click event for the add command button
 	 */
-	private void btnAddClickHandler() {
-		EnumPossibleCommands cmdType = EnumPossibleCommands.values()[comboIndex];
+	private void btnAddClickHandler(EnumPossibleCommands command) {
+		
+		EnumPossibleCommands cmdType = command;
 		Object[] args = null;
 
 		switch (cmdType) {
