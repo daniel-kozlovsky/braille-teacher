@@ -520,7 +520,8 @@ public class ScenarioCreator extends JPanel {
 		Object[] args = new Object[argTypes.length];
 
 		for (int i = 0; i < args.length; i++) {
-			String input = JOptionPane.showInputDialog(this, "Input " + argTypes[i].getSimpleName() + " for " + cmd.getName());
+			String input = JOptionPane.showInputDialog(this, "Input " + argTypes[i].getSimpleName() 
+					+ " for " + cmd.getName());
 
 			if (input != null && input.length() > 0) {
 				if (argTypes[i].equals(Integer.class)) {
@@ -550,7 +551,7 @@ public class ScenarioCreator extends JPanel {
 			sessionListModel.addElement(cmd.toString());
 		}
 		//Last element in list. Makes it more intuitive for user to add commands.
-		sessionListModel.addElement("+");
+		sessionListModel.addElement("   +");
 	}
 
 	/**
