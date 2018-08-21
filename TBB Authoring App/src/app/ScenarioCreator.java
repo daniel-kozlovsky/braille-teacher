@@ -40,6 +40,7 @@ public class ScenarioCreator extends JPanel {
 	private JPanel scenarioProgressPanel;
 	private JPanel componentsPanel;
 	// labels
+	private JLabel userInteractionPrompt;
 	// fonts
 	Font mainButtonFont = new Font("Tahoma", Font.PLAIN, 14);
 	// colors
@@ -89,6 +90,9 @@ public class ScenarioCreator extends JPanel {
 
 	private void initComponents() {
 		
+		//Labels
+		userInteractionPrompt = new JLabel("Right click to interact...");
+		userInteractionPrompt.setFont(new Font("Tahoma", Font.ITALIC, 16));
 		//Buttons
 		btnExport = new JButton("Export Scenario");
 		btnExport.setForeground(Color.BLACK);
@@ -200,11 +204,6 @@ public class ScenarioCreator extends JPanel {
 	
 	}
 
-	
-		
-
-	// TODO change component layout to have two columns if enough space after
-	// resizing window.
 	private void initLayout() {
 		
 		/*// group layout customizations
@@ -257,20 +256,22 @@ public class ScenarioCreator extends JPanel {
 		
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		scenarioProgressPanel.add(sessionScenarioList);
+		
 		sessionScenarioList.setPreferredSize(new Dimension
 				(scenarioProgressPanel.getPreferredSize().width-10, scenarioProgressPanel.getPreferredSize().height-5));
 		componentsPanel.add(btnExport);
 		
+		this.add(userInteractionPrompt);
 		this.add(scenarioProgressPanel);
 		this.add(componentsPanel);
 		
 		
 		// accessibility
 
-		sessionScenarioList.getAccessibleContext().setAccessibleName("Sceanrio commands");
+		sessionScenarioList.getAccessibleContext().setAccessibleName("Scenario commands");
 		sessionScenarioList.getAccessibleContext().setAccessibleDescription("Scenario commands shown as a queue");
 
-		btnExport.getAccessibleContext().setAccessibleName("Exprot scenario");
+		btnExport.getAccessibleContext().setAccessibleName("Export scenario");
 		btnExport.getAccessibleContext().setAccessibleDescription("Save the scenario as a file");
 
 	}
@@ -423,14 +424,14 @@ public class ScenarioCreator extends JPanel {
 			args = getArgumentsThroughDialog(cmdType);
 			workingScenario.addCommand(workingScenario.createNewCommand(cmdType, args));
 			workingScenario.addCommand(
-					workingScenario.createNewCommand(EnumPossibleCommands.SKIP_LOCATION, new Object[] { args[1] }));
+					workingScenario.createNewCommand(EnumPossibleCommands.SKIP_LOCATION, new Object[] { args[0] }));
 			break;
 
 		case SKIP:
 			args = getArgumentsThroughDialog(cmdType);
 			workingScenario.addCommand(workingScenario.createNewCommand(cmdType, args));
 			workingScenario.addCommand(
-					workingScenario.createNewCommand(EnumPossibleCommands.SKIP_LOCATION, new Object[] { args[1] }));
+					workingScenario.createNewCommand(EnumPossibleCommands.SKIP_LOCATION, new Object[] { args[0] }));
 			break;
 
 		// All other commands are fine
@@ -519,7 +520,7 @@ public class ScenarioCreator extends JPanel {
 		Object[] args = new Object[argTypes.length];
 
 		for (int i = 0; i < args.length; i++) {
-			String input = JOptionPane.showInputDialog(this, "Input argument " + (i + 1) + " for " + cmd.getName());
+			String input = JOptionPane.showInputDialog(this, "Input " + argTypes[i].getSimpleName() + " for " + cmd.getName());
 
 			if (input != null && input.length() > 0) {
 				if (argTypes[i].equals(Integer.class)) {
