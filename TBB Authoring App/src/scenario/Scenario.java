@@ -2,7 +2,7 @@ package scenario;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-//TODO: add checks to make sure certain commands are paired
+
 
 /**
  * Data structure which defines a scenario. Used for storing and accessing a

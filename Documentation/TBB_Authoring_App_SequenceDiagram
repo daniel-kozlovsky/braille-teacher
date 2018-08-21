@@ -1,0 +1,50 @@
+TRACE_MODELER_FILE_FORMAT 2
+
+# Created with Trace Modeler v1.6.14
+
+ENCODING UTF-8
+TIMESTAMP 2018/04/02 03:55:40:984
+
+# diagram style
+LIFELINE_SPACING 140
+FOUND_CALL_LENGTH 70
+
+MESSAGE_SPACING 20
+ACTIVATION_WIDTH large
+TARGET_ICON_SIZE large
+CALL_ALIGNMENT sender
+RETURN_ALIGNMENT receiver
+SHOW_FLOW false
+FLOW_COLOR #90C0FF80
+MESSAGE_NUMBERING off
+SHOW_EMPTY_RETURNS true
+LAYOUT_LEFT_TO_RIGHT true
+FONT font0 "Arial" 11
+FONT_REGULAR font0
+FONT_COMMENTS font0
+FONT_TARGETS font0
+
+
+
+DIAGRAM_FRAME "TBB_Authoring_App_Import"
+
+# targets
+OBJECT target0 "MainPanel"
+OBJECT target1 "buttonImportScenario"
+OBJECT target2 "JFileChooser" DESTROY_AFTER_LAST_CALL
+OBJECT target3 "ScenarioFormatter"
+OBJECT target4 "ScenarioCreator"
+
+# trace
+CALL target0 "PanelComponentField.setVisible(true)"   
+   CALL target1 "actionPerformed\n"   
+      CALL target2 "showOpenDialog"   
+         CALL target3 "importParse"   
+         RETURN ""
+      RETURN ""
+   RETURN ""
+   CALL target4 "setVisible(true)\n"   
+   RETURN ""
+RETURN ""
+
+# comments

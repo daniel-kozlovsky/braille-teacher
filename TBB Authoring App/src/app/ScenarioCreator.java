@@ -3,11 +3,15 @@ package app;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
 import javax.swing.*;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.border.Border;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -35,26 +39,25 @@ public class ScenarioCreator extends JPanel {
 	// panels
 	private JPanel scenarioProgressPanel;
 	private JPanel componentsPanel;
-	// buttons
-	private JButton btnAdd;
-	private JButton btnRemove;
-	private JButton btnMoveUp;
-	private JButton btnMoveDown;
 	// labels
-	private JLabel lblNewLabel;
-	// combo-boxes
-	private JComboBox<String> commandsComboBox;
+	private JLabel userInteractionPrompt;
 	// fonts
 	Font mainButtonFont = new Font("Tahoma", Font.PLAIN, 14);
 	// colors
 	Color mainButtonColour = new Color(0, 0, 0);
 	// Layouts
-	GroupLayout mainGroupLayout;
-	GroupLayout gl_componentsPanel;
+	
+	//buttons
 	private JButton btnExport;
+
 	private JPanel panel;
 	// Audio Recording		
 	File saveLoc;
+
+	//context menus
+	JPopupMenu rClickContextLBox;
+	JMenu addContextSubMenu;
+
 
 	public ScenarioCreator(JFrame parent, Scenario importedScenario) {
 
@@ -87,41 +90,27 @@ public class ScenarioCreator extends JPanel {
 		initComponents();
 		initLayout();
 
-		this.setLayout(mainGroupLayout);
-		componentsPanel.setLayout(gl_componentsPanel);
-
 		// populates list box
 		updateSessionModel();
 	}
 
 	private void initComponents() {
-		// Labels
-		lblNewLabel = new JLabel("Choose a command from the menu below ");
-		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 14));
-		// Buttons
-		btnAdd = new JButton("Add Command");
-		btnAdd.setFont(mainButtonFont);
-		btnAdd.setForeground(mainButtonColour);
-		btnAdd.addActionListener(new ActionListener() {
+		
+		//Labels
+		userInteractionPrompt = new JLabel("Right click to interact...");
+		userInteractionPrompt.setFont(new Font("Tahoma", Font.ITALIC, 16));
+		//Buttons
+		btnExport = new JButton("Export Scenario");
+		btnExport.setForeground(Color.BLACK);
+		btnExport.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		btnExport.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				btnAddClickHandler();
+				btnExportClickHandler();
 			}
 		});
-
-		btnRemove = new JButton("Remove");
-		btnRemove.setFont(mainButtonFont);
-		btnRemove.setForeground(mainButtonColour);
-		btnRemove.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				btnRemoveClickHandler();
-			}
-		});
-
+		
 		// ListBox
 		sessionListModel = new DefaultListModel<>();
 		sessionScenarioList = new JList<String>();
@@ -139,55 +128,100 @@ public class ScenarioCreator extends JPanel {
 			}
 
 		});
-
+		//refers right click event to handler
+		MouseListener mouselistener = new MouseAdapter() {
+			public void mouseClicked(MouseEvent me)
+			{
+				//select right clicked element
+				sessionScenarioList.setSelectedIndex(sessionScenarioList.locationToIndex(me.getPoint()));
+				//If right click
+				if(me.getButton() == MouseEvent.BUTTON3)
+				{
+					listBoxElementRClickedHandler(me.getPoint().x, me.getPoint().y);
+				}
+				
+			}
+		};
+		
+		sessionScenarioList.addMouseListener(mouselistener);
+		//Submenu for add context
+		addContextSubMenu = new JMenu("Add");
+		
+		//populate submenu with all possible commands
+		for(EnumPossibleCommands e : EnumPossibleCommands.values())
+		{
+			JMenuItem item = new JMenuItem(e.getName());
+			item.addActionListener(new ActionListener() {
+				@Override 
+				public void actionPerformed(ActionEvent arg0)
+				{
+					//click on command
+					btnAddClickHandler(e);
+				}
+			});
+			addContextSubMenu.add(item);
+		}
+		
+		
+		
+		//Custom context menu for listbox
+		rClickContextLBox = new JPopupMenu();
+		
+		//Remove command menu item
+		JMenuItem menuItemRemove = new JMenuItem("Remove");
+		menuItemRemove.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0)
+			{
+				btnRemoveClickHandler();
+			}
+		});
+		//move command up 
+		JMenuItem menuItemMoveUp = new JMenuItem("Move up");
+		menuItemMoveUp.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0)
+			{
+				btnMoveUpClickHandler();
+			}
+		});
+		//move command down
+		JMenuItem menuItemMoveDown = new JMenuItem("Move down");
+		menuItemMoveDown.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0)
+			{
+				btnMoveDownClickHandler();
+			}
+		});
+		//populate menu
+		rClickContextLBox.add(addContextSubMenu);
+		rClickContextLBox.add(menuItemRemove);
+		rClickContextLBox.add(menuItemMoveUp);
+		rClickContextLBox.add(menuItemMoveDown);
+		
+		//
+		
 		// Panels
 		scenarioProgressPanel = new JPanel();
 		scenarioProgressPanel.setLayout(new BorderLayout(0, 0));
 		scenarioProgressPanel.add(scrollableList, BorderLayout.CENTER);
 		componentsPanel = new JPanel();
-
-		// combo-boxes
-		commandsComboBox = new JComboBox<String>();
-		commandsComboBox.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		// Populate comboBox with all possible commands
-		for (EnumPossibleCommands cmd : EnumPossibleCommands.values()) {
-			commandsComboBox.addItem(cmd.getName());
-		}
-
-		/*
-		 * OLD: If you prefer this way, remove my 'for loop' above and use
-		 * btnAddClickHandler_OLD()
-		 * 
-		 * -DKozlovsky
-		 * 
-		 * comboBox.addItem("Add Audio"); comboBox.addItem("Add a Question");
-		 * comboBox.addItem("Pause"); comboBox.addItem("disp-string");
-		 * comboBox.addItem("Skip"); comboBox.addItem("Skip Button");
-		 * comboBox.addItem("Repeat Button"); comboBox.addItem("User input");
-		 * comboBox.addItem("disp clearAll"); comboBox.addItem("disp clear cell");
-		 * comboBox.addItem("disp cell lower"); comboBox.addItem("disp cell pins");
-		 */
-		commandsComboBox.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				comboBoxSelectionChangedHandler();
-			}
-		});
+	
 	}
 
-	// TODO change component layout to have two columns if enough space after
-	// resizing window.
 	private void initLayout() {
-		// group layout customizations
-		mainGroupLayout = new GroupLayout(this);
+		
+		/*// group layout customizations
+		mainGroupLayout = new BoxLayout(this, BoxLayout.Y_AXIS);
 		mainGroupLayout.setHorizontalGroup(
+				mainGroupLayout.addLayoutComponent(scenarioProgressPanel);
 			mainGroupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(mainGroupLayout.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(scenarioProgressPanel, 0, 795, Short.MAX_VALUE)
+					.addComponent(scenarioProgressPanel, 0, this.getWidth(), Short.MAX_VALUE)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(componentsPanel, GroupLayout.PREFERRED_SIZE, 339, GroupLayout.PREFERRED_SIZE)
+					.addComponent(componentsPanel, GroupLayout.PREFERRED_SIZE, this.getWidth(), GroupLayout.PREFERRED_SIZE)
 					.addGap(5))
 		);
 		mainGroupLayout.setVerticalGroup(
@@ -200,22 +234,7 @@ public class ScenarioCreator extends JPanel {
 					.addContainerGap())
 		);
 
-		btnExport = new JButton("Export Scenario");
-		btnExport.setForeground(Color.BLACK);
-		btnExport.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		btnExport.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				btnExportClickHandler();
-			}
-		});
 		
-		panel = new JPanel();
-		
-		JLabel lblEditSelectedCommand = new JLabel("Edit selected command");
-		lblEditSelectedCommand.setHorizontalAlignment(SwingConstants.CENTER);
-		lblEditSelectedCommand.setFont(new Font("Tahoma", Font.BOLD, 14));
 
 		// componentsPanel customizations
 		gl_componentsPanel = new GroupLayout(componentsPanel);
@@ -224,82 +243,41 @@ public class ScenarioCreator extends JPanel {
 				.addGroup(gl_componentsPanel.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(gl_componentsPanel.createParallelGroup(Alignment.LEADING)
-						.addComponent(panel, GroupLayout.DEFAULT_SIZE, 319, Short.MAX_VALUE)
-						.addComponent(commandsComboBox, 0, 319, Short.MAX_VALUE)
 						.addComponent(btnExport, GroupLayout.DEFAULT_SIZE, 319, Short.MAX_VALUE)
-						.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 319, Short.MAX_VALUE)
-						.addComponent(btnRemove, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 319, Short.MAX_VALUE)
-						.addComponent(btnAdd, GroupLayout.DEFAULT_SIZE, 319, Short.MAX_VALUE)
-						.addComponent(lblEditSelectedCommand, GroupLayout.PREFERRED_SIZE, 319, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap())
-		);
+						
+		)));
 		gl_componentsPanel.setVerticalGroup(
 			gl_componentsPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_componentsPanel.createSequentialGroup()
-					.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(commandsComboBox, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(btnAdd, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
 					.addGap(7)
-					.addComponent(lblEditSelectedCommand, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 41, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(btnRemove, GroupLayout.PREFERRED_SIZE, 44, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED, 321, Short.MAX_VALUE)
 					.addComponent(btnExport, GroupLayout.PREFERRED_SIZE, 48, GroupLayout.PREFERRED_SIZE))
 		);
-				panel.setLayout(new GridLayout(0, 2, 10, 0));
+			*/
 		
-				btnMoveUp = new JButton("Move Up");
-				panel.add(btnMoveUp);
-				btnMoveUp.setFont(mainButtonFont);
-				btnMoveUp.setForeground(mainButtonColour);
-				
-						btnMoveDown = new JButton("Move down");
-						panel.add(btnMoveDown);
-						btnMoveDown.setFont(mainButtonFont);
-						btnMoveDown.setForeground(mainButtonColour);
-						btnMoveDown.addActionListener(new ActionListener() {
-
-							@Override
-							public void actionPerformed(ActionEvent arg0) {
-								btnMoveDownClickHandler();
-							}
-						});
-						
-								btnMoveDown.getAccessibleContext().setAccessibleName("Move command down");
-								btnMoveDown.getAccessibleContext()
-										.setAccessibleDescription("Move the selected command down the scenario queue");
-				btnMoveUp.addActionListener(new ActionListener() {
-
-					@Override
-					public void actionPerformed(ActionEvent arg0) {
-						btnMoveUpClickHandler();
-					}
-				});
-				
-						btnMoveUp.getAccessibleContext().setAccessibleName("Move command up");
-						btnMoveUp.getAccessibleContext().setAccessibleDescription("Move the selected command up the scenario queue");
-
+		
+		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		scenarioProgressPanel.add(sessionScenarioList);
+		
+		sessionScenarioList.setPreferredSize(new Dimension
+				(scenarioProgressPanel.getPreferredSize().width-10, scenarioProgressPanel.getPreferredSize().height-5));
+		componentsPanel.add(btnExport);
+		
+		this.add(userInteractionPrompt);
+		this.add(scenarioProgressPanel);
+		this.add(componentsPanel);
+		
+		
 		// accessibility
 
-		sessionScenarioList.getAccessibleContext().setAccessibleName("Sceanrio commands");
+		sessionScenarioList.getAccessibleContext().setAccessibleName("Scenario commands");
 		sessionScenarioList.getAccessibleContext().setAccessibleDescription("Scenario commands shown as a queue");
 
-		commandsComboBox.getAccessibleContext().setAccessibleName("Commands drop-down");
-		commandsComboBox.getAccessibleContext()
-				.setAccessibleDescription("Select a command to add in the scenaio queue");
-
-		btnAdd.getAccessibleContext().setAccessibleName("Add command");
-		btnAdd.getAccessibleContext()
-				.setAccessibleDescription("Create and add the selected command in the drop-down to the scenario");
-
-		btnRemove.getAccessibleContext().setAccessibleName("Remove command");
-		btnRemove.getAccessibleContext().setAccessibleDescription("Remove the selected command from the scenario");
-
-		btnExport.getAccessibleContext().setAccessibleName("Exprot scenario");
+		btnExport.getAccessibleContext().setAccessibleName("Export scenario");
 		btnExport.getAccessibleContext().setAccessibleDescription("Save the scenario as a file");
 
 	}
@@ -311,101 +289,22 @@ public class ScenarioCreator extends JPanel {
 	{
 		listBoxSelectedIndices = sessionScenarioList.getSelectedIndices();
 	}
+	
+
 	/**
-	 * Handles the event when a selection is made in the combo box.
+	 * Handler for right clicks on list elements. Meant to bring up menu.
 	 */
-	private void comboBoxSelectionChangedHandler() {
-		comboIndex = commandsComboBox.getSelectedIndex();
+	private void listBoxElementRClickedHandler(int x, int y)
+	{
+		rClickContextLBox.show(this, x+5, y+5);
 	}
-
+	
 	/**
 	 * Handles the click event for the add command button
 	 */
-	// Keep this if you prefer your method
-	/*
-	 * // -DKozlovsky
-	 * 
-	 * private void btnAddClickHandler_OLD() { // add audio add command if
-	 * (comboIndex == 0) { addAudio audio = new addAudio(); audio.revalidate();
-	 * audio.setVisible(true); // audio.setSize(300, 500); } // add question add
-	 * command else if (comboIndex == 1) { JOptionPane question = new JOptionPane();
-	 * question.getAccessibleContext().
-	 * setAccessibleDescription(" Enter the question below "); qst =
-	 * JOptionPane.showInputDialog(parent, "Enter the question below  ", null);
-	 * EnumPossibleCommands cmd = EnumPossibleCommands.DISP_STRING;
-	 * workingScenario.addCommand(workingScenario.createNewCommand(cmd, new String[]
-	 * { qst })); } // pause command else if (comboIndex == 2) { JOptionPane pause =
-	 * new JOptionPane(); pause.getAccessibleContext()
-	 * .setAccessibleDescription(" please enter the number of seconds you want to pause "
-	 * ); secpause = Integer.parseInt(JOptionPane.showInputDialog(parent,
-	 * "please enter the number of seconds you want to pause  ", null)); Object[]
-	 * obj = new Object[] { secpause };
-	 * workingScenario.addCommand(workingScenario.createNewCommand(
-	 * EnumPossibleCommands.PAUSE, obj)); } // disp-string else if (comboIndex == 3)
-	 * { String dispstring; JOptionPane disp = new JOptionPane();
-	 * disp.getAccessibleContext().
-	 * setAccessibleDescription("Please write the string disp "); dispstring =
-	 * JOptionPane.showInputDialog(parent, "please write the String here ", null);
-	 * EnumPossibleCommands cmd = EnumPossibleCommands.DISP_STRING;
-	 * workingScenario.addCommand(workingScenario.createNewCommand(cmd, new String[]
-	 * { dispstring })); }
-	 * 
-	 * // Skip else if (comboIndex == 4) { String skip; JOptionPane skipp = new
-	 * JOptionPane(); skipp.getAccessibleContext().
-	 * setAccessibleDescription("Please write the string you want to skip "); skip =
-	 * JOptionPane.showInputDialog(parent,
-	 * "please write the String you want to skip ", null); EnumPossibleCommands cmd
-	 * = EnumPossibleCommands.SKIP;
-	 * workingScenario.addCommand(workingScenario.createNewCommand(cmd, new String[]
-	 * { skip })); } // skip button else if (comboIndex == 5) { String str; int
-	 * bnts; JTextField btn = new JTextField();
-	 * 
-	 * Object[] obj = { "please enter the button number:", btn,
-	 * "please enter the string here:", };
-	 * 
-	 * JOptionPane skipp = new JOptionPane(); str =
-	 * (JOptionPane.showInputDialog(null, obj, "skip button",
-	 * JOptionPane.OK_CANCEL_OPTION)); bnts = Integer.parseInt(btn.getText());
-	 * EnumPossibleCommands cmd = EnumPossibleCommands.SKIP_BUTTON;
-	 * workingScenario.addCommand(workingScenario.createNewCommand(cmd, new Object[]
-	 * { bnts, str })); }
-	 * 
-	 * // Repeat Button else if (comboIndex == 6) {
-	 * 
-	 * JOptionPane rebnt = new JOptionPane(); rebnt.getAccessibleContext()
-	 * .setAccessibleDescription(" please enter the button number you want to repeat "
-	 * ); int btns; btns = Integer.parseInt( JOptionPane.showInputDialog(parent,
-	 * "please enter the button number you want to repeat ", null));
-	 * EnumPossibleCommands cmd = EnumPossibleCommands.REPEAT_BUTTON;
-	 * workingScenario.addCommand(workingScenario.createNewCommand(cmd, new Object[]
-	 * { btns })); } // disp clear cell else if (comboIndex == 9) { int cells;
-	 * JOptionPane clrcell = new JOptionPane(); clrcell.getAccessibleContext().
-	 * setAccessibleDescription(" please enter the cell number you want to clear ");
-	 * cells = Integer.parseInt( JOptionPane.showInputDialog(parent,
-	 * "please enter the cell number you want to clear ", null));
-	 * EnumPossibleCommands cmd = EnumPossibleCommands.DISP_CLEAR_CELL;
-	 * workingScenario.addCommand(workingScenario.createNewCommand(cmd, new Object[]
-	 * { cells })); } // disp cell pin else if (comboIndex == 11) { int cell; int
-	 * pin; JTextField pins = new JTextField();
-	 * 
-	 * Object[] obj = { "please enter the cell number:", pins,
-	 * "please enter the pin number :", };
-	 * 
-	 * JOptionPane skipp = new JOptionPane(); pin =
-	 * Integer.parseInt(JOptionPane.showInputDialog(null, obj, "skip button",
-	 * JOptionPane.OK_CANCEL_OPTION)); cell = Integer.parseInt(pins.getText());
-	 * EnumPossibleCommands cmd = EnumPossibleCommands.DISP_CELL_PINS;
-	 * workingScenario.addCommand(workingScenario.createNewCommand(cmd, new Object[]
-	 * { cell, pin })); }
-	 * 
-	 * updateSessionModel(); }
-	 */
-
-	/**
-	 * Handles the click event for the add command button
-	 */
-	private void btnAddClickHandler() {
-		EnumPossibleCommands cmdType = EnumPossibleCommands.values()[comboIndex];
+	private void btnAddClickHandler(EnumPossibleCommands command) {
+		
+		EnumPossibleCommands cmdType = command;
 		Object[] args = null;
 
 		switch (cmdType) {
@@ -554,14 +453,14 @@ public class ScenarioCreator extends JPanel {
 			args = getArgumentsThroughDialog(cmdType);
 			workingScenario.addCommand(workingScenario.createNewCommand(cmdType, args));
 			workingScenario.addCommand(
-					workingScenario.createNewCommand(EnumPossibleCommands.SKIP_LOCATION, new Object[] { args[1] }));
+					workingScenario.createNewCommand(EnumPossibleCommands.SKIP_LOCATION, new Object[] { args[0] }));
 			break;
 
 		case SKIP:
 			args = getArgumentsThroughDialog(cmdType);
 			workingScenario.addCommand(workingScenario.createNewCommand(cmdType, args));
 			workingScenario.addCommand(
-					workingScenario.createNewCommand(EnumPossibleCommands.SKIP_LOCATION, new Object[] { args[1] }));
+					workingScenario.createNewCommand(EnumPossibleCommands.SKIP_LOCATION, new Object[] { args[0] }));
 			break;
 
 		// All other commands are fine
@@ -575,6 +474,7 @@ public class ScenarioCreator extends JPanel {
 		updateSessionModel();
 	}
 
+	
 	/**
 	 * Handles the click event for the remove command button.
 	 * Will remove all selected items from the list
@@ -592,6 +492,7 @@ public class ScenarioCreator extends JPanel {
 		updateSessionModel();
 	}
 
+	
 	/**
 	 * Handles the click event for the Move Up button
 	 */
@@ -606,6 +507,7 @@ public class ScenarioCreator extends JPanel {
 		updateSessionModel();
 	}
 
+	
 	/**
 	 * Handles the click event for the Move Down button
 	 */
@@ -618,6 +520,7 @@ public class ScenarioCreator extends JPanel {
 		updateSessionModel();
 	}
 
+	
 	/**
 	 * Displays a new dialog box that prompts the user for braille cell and button
 	 * amounts
@@ -631,6 +534,7 @@ public class ScenarioCreator extends JPanel {
 		numButtons = Integer.parseInt(JOptionPane.showInputDialog(parent, "How many buttons do you need?", null));
 	}
 
+	
 	/**
 	 * Prompts user for arguments to a command. Should be used when adding or
 	 * editing a command.
@@ -645,7 +549,8 @@ public class ScenarioCreator extends JPanel {
 		Object[] args = new Object[argTypes.length];
 
 		for (int i = 0; i < args.length; i++) {
-			String input = JOptionPane.showInputDialog(this, "Input argument " + (i + 1) + " for " + cmd.getName());
+			String input = JOptionPane.showInputDialog(this, "Input " + argTypes[i].getSimpleName() 
+					+ " for " + cmd.getName());
 
 			if (input != null && input.length() > 0) {
 				if (argTypes[i].equals(Integer.class)) {
@@ -663,6 +568,7 @@ public class ScenarioCreator extends JPanel {
 		return args;
 	}
 
+	
 	/**
 	 * Updates the list box to current state. Should be done when changes are meant
 	 * to be seen by the user
@@ -673,8 +579,13 @@ public class ScenarioCreator extends JPanel {
 		for (ScenarioCommand cmd : workingScenario) {
 			sessionListModel.addElement(cmd.toString());
 		}
+		//Last element in list. Makes it more intuitive for user to add commands.
+		sessionListModel.addElement("   +");
 	}
 
+	/**
+	 * Export button click handler
+	 */
 	public void btnExportClickHandler() {
 		// save prompt
 		JFileChooser saveFilePrompt = new JFileChooser();
