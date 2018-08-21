@@ -11,6 +11,7 @@ import java.io.IOException;
 import javax.swing.*;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.border.Border;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -44,8 +45,8 @@ public class ScenarioCreator extends JPanel {
 	// colors
 	Color mainButtonColour = new Color(0, 0, 0);
 	// Layouts
-	BoxLayout mainGroupLayout;
-	GroupLayout gl_componentsPanel;
+	
+	//buttons
 	private JButton btnExport;
 	//context menus
 	JPopupMenu rClickContextLBox;
@@ -81,9 +82,6 @@ public class ScenarioCreator extends JPanel {
 		
 		initComponents();
 		initLayout();
-
-		this.setLayout(mainGroupLayout);
-		componentsPanel.setLayout(gl_componentsPanel);
 
 		// populates list box
 		updateSessionModel();
@@ -208,7 +206,8 @@ public class ScenarioCreator extends JPanel {
 	// TODO change component layout to have two columns if enough space after
 	// resizing window.
 	private void initLayout() {
-		// group layout customizations
+		
+		/*// group layout customizations
 		mainGroupLayout = new BoxLayout(this, BoxLayout.Y_AXIS);
 		mainGroupLayout.setHorizontalGroup(
 				mainGroupLayout.addLayoutComponent(scenarioProgressPanel);
@@ -253,9 +252,20 @@ public class ScenarioCreator extends JPanel {
 					.addPreferredGap(ComponentPlacement.RELATED, 321, Short.MAX_VALUE)
 					.addComponent(btnExport, GroupLayout.PREFERRED_SIZE, 48, GroupLayout.PREFERRED_SIZE))
 		);
-			
+			*/
 		
-				// accessibility
+		
+		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		scenarioProgressPanel.add(sessionScenarioList);
+		sessionScenarioList.setPreferredSize(new Dimension
+				(scenarioProgressPanel.getPreferredSize().width-10, scenarioProgressPanel.getPreferredSize().height-5));
+		componentsPanel.add(btnExport);
+		
+		this.add(scenarioProgressPanel);
+		this.add(componentsPanel);
+		
+		
+		// accessibility
 
 		sessionScenarioList.getAccessibleContext().setAccessibleName("Sceanrio commands");
 		sessionScenarioList.getAccessibleContext().setAccessibleDescription("Scenario commands shown as a queue");
