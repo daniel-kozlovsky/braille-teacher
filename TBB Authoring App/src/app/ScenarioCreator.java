@@ -93,6 +93,8 @@ public class ScenarioCreator extends JPanel {
 		// populates list box
 		updateSessionModel();
 
+		//key bindings:
+		
 		// remove
 		Action remove = new AbstractAction() {
 			public void actionPerformed(ActionEvent e) {
@@ -112,7 +114,68 @@ public class ScenarioCreator extends JPanel {
 
 		sessionScenarioList.getInputMap().put(KeyStroke.getKeyStroke("S"), "S");
 		sessionScenarioList.getActionMap().put("S", save);
+
+		// read text
+		Action read = new AbstractAction() {
+			public void actionPerformed(ActionEvent e) {
+				btnAddClickHandler(EnumPossibleCommands.READ_TEXT);
+			}
+		};
+
+		sessionScenarioList.getInputMap().put(KeyStroke.getKeyStroke("R"), "R");
+		sessionScenarioList.getActionMap().put("R", read);
+
+		// display string
+		Action string = new AbstractAction() {
+			public void actionPerformed(ActionEvent e) {
+				btnAddClickHandler(EnumPossibleCommands.DISP_STRING);
+			}
+		};
+
+		sessionScenarioList.getInputMap().put(KeyStroke.getKeyStroke("T"), "T");
+		sessionScenarioList.getActionMap().put("T", string);
+
+		// pause
+		Action pause = new AbstractAction() {
+			public void actionPerformed(ActionEvent e) {
+				btnAddClickHandler(EnumPossibleCommands.PAUSE);
+			}
+		};
+
+		sessionScenarioList.getInputMap().put(KeyStroke.getKeyStroke("P"), "P");
+		sessionScenarioList.getActionMap().put("P", pause);
+
+		// user input
+		Action input = new AbstractAction() {
+			public void actionPerformed(ActionEvent e) {
+				btnAddClickHandler(EnumPossibleCommands.USER_INPUT);
+			}
+		};
+
+		sessionScenarioList.getInputMap().put(KeyStroke.getKeyStroke("I"), "I");
+		sessionScenarioList.getActionMap().put("I", input);
+
+		// sound
+		Action sound = new AbstractAction() {
+			public void actionPerformed(ActionEvent e) {
+				btnAddClickHandler(EnumPossibleCommands.SOUND);
+			}
+		};
+
+		sessionScenarioList.getInputMap().put(KeyStroke.getKeyStroke("A"), "A");
+		sessionScenarioList.getActionMap().put("A", sound);
+
+		// reset buttons
+		Action reset = new AbstractAction() {
+			public void actionPerformed(ActionEvent e) {
+				btnAddClickHandler(EnumPossibleCommands.RESET_BUTTONS);
+			}
+		};
+
+		sessionScenarioList.getInputMap().put(KeyStroke.getKeyStroke("X"), "X");
+		sessionScenarioList.getActionMap().put("X", reset);
 	}
+	
 	private void initComponents() {
 		
 		//Labels
