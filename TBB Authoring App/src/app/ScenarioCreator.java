@@ -92,8 +92,27 @@ public class ScenarioCreator extends JPanel {
 
 		// populates list box
 		updateSessionModel();
-	}
 
+		// remove
+		Action remove = new AbstractAction() {
+			public void actionPerformed(ActionEvent e) {
+				btnRemoveClickHandler();
+			}
+		};
+
+		sessionScenarioList.getInputMap().put(KeyStroke.getKeyStroke("DELETE"), "DELETE");
+		sessionScenarioList.getActionMap().put("DELETE", remove);
+
+		// save
+		Action save = new AbstractAction() {
+			public void actionPerformed(ActionEvent e) {
+				btnExportClickHandler();
+			}
+		};
+
+		sessionScenarioList.getInputMap().put(KeyStroke.getKeyStroke("S"), "S");
+		sessionScenarioList.getActionMap().put("S", save);
+	}
 	private void initComponents() {
 		
 		//Labels
